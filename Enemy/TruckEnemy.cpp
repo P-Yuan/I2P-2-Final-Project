@@ -2,17 +2,16 @@
 #include <cmath>
 #include <string>
 
-#include "AttackEnemy.hpp"
+#include "TruckEnemy.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Bullet/FireBullet.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-
-AttackEnemy::AttackEnemy(int x, int y) : Enemy("play/enemy-6.png", x, y, 10, 60,50, 1000) {
+TruckEnemy::TruckEnemy(int x, int y) : Enemy("play/big_car.png", x, y, 50, 80, 40, 800) {
 }
 
-void AttackEnemy::CreateBullet() {
+void TruckEnemy::CreateBullet() {
     
 }

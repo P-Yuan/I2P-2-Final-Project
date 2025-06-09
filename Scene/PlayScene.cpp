@@ -11,10 +11,13 @@
 #include <iostream>
 
 #include "Enemy/Enemy.hpp"
-#include "Enemy/SoldierEnemy.hpp"
-#include "Enemy/CuteEnemy.hpp"
+#include "Enemy/GrandmaEnemy.hpp"
+#include "Enemy/CarEnemy.hpp"
 #include "Enemy/TankEnemy.hpp" 
-#include "Enemy/AttackEnemy.hpp" 
+#include "Enemy/HoleEnemy.hpp" 
+#include "Enemy/BikeEnemy.hpp"
+#include "Enemy/TreeEnemy.hpp"
+#include "Enemy/TruckEnemy.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
@@ -33,11 +36,6 @@
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
 
-// TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
-// TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
-// TODO HACKATHON-4 (3/3): When the cheat code is entered, a plane should be spawned and added to the scene.
-// TODO HACKATHON-5 (1/4): There's a bug in this file, which crashes the game when you win. Try to find it.
-// TODO HACKATHON-5 (2/4): The "LIFE" label are not updated when you lose a life. Try to fix it.
 
 bool PlayScene::DebugMode = false;
 int PlayScene :: lives=0;
@@ -48,6 +46,9 @@ const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
 const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(-1, 0);
+const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(21, 7);
+const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(21, 9);
+const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(21, 11);
 const Engine::Point PlayScene::EndGridPoint = Engine::Point(MapWidth, MapHeight - 1);
 const std::vector<int> PlayScene::code = {
     ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
@@ -81,7 +82,7 @@ void PlayScene::Initialize() {
     AddNewObject(TowerGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
     AddNewObject(BulletGroup = new Group());
-     AddNewObject(EffectGroup = new Group());
+    AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
@@ -339,50 +340,74 @@ void PlayScene::Update(float deltaTime) {
         IScene::Update(deltaTime);
         // Check if we should create new enemy.
         ticks += deltaTime;
-        if (enemyWaveData.empty()) { 
+        // if (enemyWaveData.empty()) { 
+        //     if (EnemyGroup->GetObjects().empty()) {
+        //         WinScene :: storelives();
+        //         Engine::GameEngine::GetInstance().ChangeScene("win");
+        //     }
+        //     continue;
+        // }
+        if (enemyWaveData_new.empty()) { 
             if (EnemyGroup->GetObjects().empty()) {
-            //     // Free resources.
-            //     delete TileMapGroup;
-            //     delete GroundEffectGroup;
-            //     delete DebugIndicatorGroup;
-            //     delete TowerGroup;
-            //     delete EnemyGroup;
-            //     delete BulletGroup;
-            //     delete EffectGroup;
-            //     delete UIGroup;
-            //     delete imgTarget;
-            //     // Win.
-                
                 WinScene :: storelives();
                 Engine::GameEngine::GetInstance().ChangeScene("win");
             }
             continue;
         }
-        auto current = enemyWaveData.front();
-        if (ticks < current.second)
+        //auto current = enemyWaveData.front();
+        // if (ticks < current.second)
+        //     continue;
+        // ticks -= current.second;
+        //enemyWaveData.pop_front();
+        //Engine::Point SpawnCoordinate = Engine::Point(SpawnGridPoint.x * BlockSize + BlockSize / 2, SpawnGridPoint.y * BlockSize + BlockSize / 2);
+        auto current = enemyWaveData_new.front();
+        if (ticks < current[1])
             continue;
-        ticks -= current.second;
-        enemyWaveData.pop_front();
-        const Engine::Point SpawnCoordinate = Engine::Point(SpawnGridPoint.x * BlockSize + BlockSize / 2, SpawnGridPoint.y * BlockSize + BlockSize / 2);
+        ticks -= current[1];
+
+        Engine::Point SpawnCoordinate;
+        switch (current[2])
+        {
+        case 1:
+            SpawnCoordinate = Engine::Point(SpawnGridPoint_1.x * BlockSize + BlockSize / 2, SpawnGridPoint_1.y * BlockSize );
+            break;
+        case 2:
+            SpawnCoordinate = Engine::Point(SpawnGridPoint_2.x * BlockSize + BlockSize / 2, SpawnGridPoint_2.y * BlockSize );
+            break;
+        case 3:
+            SpawnCoordinate = Engine::Point(SpawnGridPoint_3.x * BlockSize + BlockSize / 2, SpawnGridPoint_3.y * BlockSize );
+            break;
+        
+        default:
+            SpawnCoordinate = Engine::Point(SpawnGridPoint_1.x * BlockSize + BlockSize / 2, SpawnGridPoint_1.y * BlockSize );
+            break;
+        }
+        enemyWaveData_new.erase(enemyWaveData_new.begin());
+        
         Enemy *enemy;
-        switch (current.first) {
+        switch (current[0]) {
             case 1:
-                EnemyGroup->AddNewObject(enemy = new SoldierEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
-            // TODO HACKATHON-3 (2/3): Add your new enemy here.
             case 2:
-                EnemyGroup->AddNewObject(enemy = new CuteEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
             case 3:
-                EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y,3));
+                EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
             case 4:
-                EnemyGroup->AddNewObject(enemy = new AttackEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                break;
+            case 5:
+                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                break;
+            case 6:
+                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
             default:
                 continue;
         }
-        enemy->UpdatePath(mapDistance);
+        //enemy->UpdatePath(mapDistance);
         // Compensate the time lost.
         enemy->Update(ticks);
     }
@@ -566,11 +591,16 @@ void PlayScene::ReadMap() {
     // Read map file.
     char c;
     std::vector<bool> mapData;
+    std::vector<int> roadData;
     std::ifstream fin(filename);
     while (fin >> c) {
         switch (c) {
-            case '0': mapData.push_back(false); break;
-            case '1': mapData.push_back(true); break;
+            // case '0': mapData.push_back(false); break;
+            // case '1': mapData.push_back(true); break;
+            case '0': roadData.push_back(0); break;
+            case '1': roadData.push_back(1); break;
+            case '2': roadData.push_back(2); break;
+            case '3': roadData.push_back(3); break;
             case '\n':
             case '\r':
                 if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -581,16 +611,29 @@ void PlayScene::ReadMap() {
     }
     fin.close();
     // Validate map data.
-    if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
+    // if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
+    //     throw std::ios_base::failure("Map data is corrupted.");
+    if (static_cast<int>(roadData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
     // Store map in 2d array.
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
-            const int num = mapData[i * MapWidth + j];
+            // const int num = mapData[i * MapWidth + j];
+            // mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
+            const int num = roadData[i * MapWidth + j];
             mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            if (num)
-                TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            if (num){
+                if(num==1){
+                    TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                }
+                if(num==2){
+                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_up.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                }
+                if(num==3){
+                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_down.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                }
+            }
             else
                 TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
         }
@@ -599,12 +642,19 @@ void PlayScene::ReadMap() {
 void PlayScene::ReadEnemyWave() {
     std::string filename = std::string("Resource/enemy")+ std::to_string(MapId) + ".txt";
     // Read enemy file.
-    float type, wait, repeat;
+    float type, wait, repeat, line;
     enemyWaveData.clear();
     std::ifstream fin(filename);
-    while (fin >> type && fin >> wait && fin >> repeat) {
-        for (int i = 0; i < repeat; i++)
-            enemyWaveData.emplace_back(type, wait);
+    while (fin >> type && fin >> wait && fin >> repeat && fin>>line) {
+        for (int i = 0; i < repeat; i++){
+            std::vector<int> oneEnemy;
+            oneEnemy.emplace_back(type);
+            oneEnemy.emplace_back(wait);
+            oneEnemy.emplace_back(line);
+            enemyWaveData_new.emplace_back(oneEnemy);
+        }
+            //enemyWaveData.emplace_back(type, wait);
+            
     }
     fin.close();
 }

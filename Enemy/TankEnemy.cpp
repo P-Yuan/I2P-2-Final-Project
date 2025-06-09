@@ -20,13 +20,13 @@ PlayScene *TankEnemy::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 TankEnemy::TankEnemy(int x, int y,float c)
-    : Enemy("play/enemy-3.png", x, y, 20, 20, 30, 500),
+    : Enemy("play/bikeman.png", x, y, 50, 80, 30, 500),
       head("play/enemy-3-head.png", x, y), targetRotation(0),
       coolDown(c) {
 }
 void TankEnemy::Draw() const {
     Enemy::Draw();
-    head.Draw();
+    //head.Draw();
 }
 void TankEnemy::Update(float deltaTime) {
     Enemy::Update(deltaTime);

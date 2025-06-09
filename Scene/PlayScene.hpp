@@ -39,6 +39,9 @@ public:
     static const int BlockSize;
     static const float DangerTime;
     static const Engine::Point SpawnGridPoint;
+    static const Engine::Point SpawnGridPoint_1;
+    static const Engine::Point SpawnGridPoint_2;
+    static const Engine::Point SpawnGridPoint_3;
     static const Engine::Point EndGridPoint;
     static const std::vector<int> code;
     std::vector<int> temp;
@@ -65,6 +68,7 @@ public:
     std::vector<std::vector<TileType>> mapState;
     std::vector<std::vector<int>> mapDistance;
     std::list<std::pair<int, float>> enemyWaveData;
+    std::vector<std::vector<int>> enemyWaveData_new;
     std::list<int> keyStrokes;
     static Engine::Point GetClientSize();
     explicit PlayScene() = default;

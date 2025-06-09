@@ -39,7 +39,7 @@ Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float
     hp(hp),
     money(money) {
     CollisionRadius = radius;
-    reachEndTime = 0;
+    reachEndTime = 10;
 }
 void Enemy::Hit(float damage) {
     hp -= damage;
@@ -101,34 +101,35 @@ void Enemy::UpdatePath(const std::vector<std::vector<int>> &mapDistance) {
 }
 void Enemy::Update(float deltaTime) {
     // Pre-calculate the velocity.
-    float remainSpeed = speed * deltaTime;
-    while (remainSpeed != 0) {
-        if (path.empty()) {
-            // Reach end point.
-            Hit(hp);
-            getPlayScene()->Hit(1);
-            reachEndTime = 0;
-            return;
-        }
-        Engine::Point target = path.back() * PlayScene::BlockSize + Engine::Point(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-        Engine::Point vec = target - Position;
-        // Add up the distances:
-        // 1. to path.back()
-        // 2. path.back() to border
-        // 3. All intermediate block size
-        // 4. to end point
-        reachEndTime = (vec.Magnitude() + (path.size() - 1) * PlayScene::BlockSize - remainSpeed) / speed;
-        Engine::Point normalized = vec.Normalize();
-        if (remainSpeed - vec.Magnitude() > 0) {
-            Position = target;
-            path.pop_back();
-            remainSpeed -= vec.Magnitude();
-        } else {
-            Velocity = normalized * remainSpeed / deltaTime;
-            remainSpeed = 0;
-        }
-    }
-    Rotation = atan2(Velocity.y, Velocity.x);
+    // float remainSpeed = speed * deltaTime;
+    // while (remainSpeed != 0) {
+    //     if (path.empty()) {
+    //         // Reach end point.
+    //         Hit(hp);
+    //         getPlayScene()->Hit(1);
+    //         reachEndTime = 0;
+    //         return;
+    //     }
+    //     Engine::Point target = path.back() * PlayScene::BlockSize + Engine::Point(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    //     Engine::Point vec = target - Position;
+    //     // Add up the distances:
+    //     // 1. to path.back()
+    //     // 2. path.back() to border
+    //     // 3. All intermediate block size
+    //     // 4. to end point
+    //     reachEndTime = (vec.Magnitude() + (path.size() - 1) * PlayScene::BlockSize - remainSpeed) / speed;
+    //     Engine::Point normalized = vec.Normalize();
+    //     if (remainSpeed - vec.Magnitude() > 0) {
+    //         Position = target;
+    //         path.pop_back();
+    //         remainSpeed -= vec.Magnitude();
+    //     } else {
+    //         Velocity = normalized * remainSpeed / deltaTime;
+    //         remainSpeed = 0;
+    //     }
+    // }
+    // Rotation = atan2(Velocity.y, Velocity.x);
+    Position.x-=speed*0.1;
     Sprite::Update(deltaTime);
 }
 void Enemy::Draw() const {

@@ -27,14 +27,20 @@ add_executable(2025_I2P2_TowerDefense
     # TODO HACKATHON-3 (3/3): Add the new enemy source files here
     Enemy/Enemy.cpp
     Enemy/Enemy.hpp
-    Enemy/SoldierEnemy.cpp
-    Enemy/SoldierEnemy.hpp
-    Enemy/CuteEnemy.cpp
-    Enemy/CuteEnemy.hpp
+    Enemy/GrandmaEnemy.cpp
+    Enemy/GrandmaEnemy.hpp
+    Enemy/CarEnemy.cpp
+    Enemy/CarEnemy.hpp
     Enemy/TankEnemy.cpp
     Enemy/TankEnemy.hpp
-    Enemy/AttackEnemy.cpp
-    Enemy/AttackEnemy.hpp
+    Enemy/HoleEnemy.cpp
+    Enemy/HoleEnemy.hpp
+    Enemy/BikeEnemy.cpp
+    Enemy/BikeEnemy.hpp
+    Enemy/TreeEnemy.cpp
+    Enemy/TreeEnemy.hpp
+    Enemy/TruckEnemy.cpp
+    Enemy/TruckEnemy.hpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp
