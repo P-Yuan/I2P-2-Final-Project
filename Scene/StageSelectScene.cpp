@@ -24,6 +24,7 @@ void StageSelectScene::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
     Engine::ImageButton *btn;
+    
 
     //stage1 button
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 - 50, 400, 100);

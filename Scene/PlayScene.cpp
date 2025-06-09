@@ -71,7 +71,7 @@ void PlayScene::Initialize() {
     ticks = 0;
     deathCountDown = -1;
     lives = 10;
-    money = 500;
+    money = 10;
     SpeedMult = 1;
     pauseflag=false;
     pauseinitflag=false;
