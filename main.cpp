@@ -10,6 +10,7 @@
 #include "Scene/StartScene.hpp"
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
+#include "Scene/plotScene.hpp"
 
 int main(int argc, char **argv) {
 	Engine::LOG::SetConfig(true);
