@@ -2,6 +2,7 @@
 #include <string>
 #include<iostream>
 #include <sstream>
+#include <iomanip>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
@@ -26,7 +27,7 @@ void WinScene::Initialize() {
     s="|";
     NEWs="|";
     textGroup = new Group();
-    AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
+    AddNewObject(new Engine::Image("win/doge.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
     AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  0, 0, 0, 255, 0.5, 0.5));
     AddNewObject(new Engine::Label("Please Enter Your Name", "pirulen.ttf", 24, halfW+300, halfH-100, 255, 255, 255, 255, 0.5, 0.5));
