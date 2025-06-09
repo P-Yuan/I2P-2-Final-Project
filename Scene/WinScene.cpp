@@ -23,14 +23,15 @@ void WinScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
+    AddNewObject(new Engine::Image("start_back.jpg", halfW, halfH, 1600, 800, 0.5, 0.5));
     s="|";
     NEWs="|";
     textGroup = new Group();
     AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
     AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Please Enter Your Name", "pirulen.ttf", 24, halfW+300, halfH-100, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW-300, halfH / 4 - 10, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Please Enter Your Name", "pirulen.ttf", 24, halfW+300, halfH-100, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW-300, halfH / 4 - 10, 0, 0, 0, 255, 0.5, 0.5));
     // Engine::ImageButton *btn;
     // btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 500, halfH * 7 / 4 - 50, 400, 100);
     // btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
@@ -71,8 +72,6 @@ void WinScene::OnKeyDown(int keyCode)
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    
-    
     
     IScene::OnKeyDown(keyCode);
     if(keyCode>=1 && keyCode<=26) 
