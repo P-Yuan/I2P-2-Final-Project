@@ -10,6 +10,7 @@
 #include "Scene/StartScene.hpp"
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
+#include "Scene/plotScene.hpp"
 
 int main(int argc, char **argv) {
 	Engine::LOG::SetConfig(true);
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("lose", new LoseScene());
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("scoreboard-scene", new ScoreboardScene());
+	game.AddNewScene("plot", new plotScene());
 
 	ScoreboardScene :: inputtoset();
 
