@@ -9,7 +9,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-BikeEnemy::BikeEnemy(int x, int y) : Enemy("play/bikeman.png", x, y, 50, 100, 40, 800) {
+BikeEnemy::BikeEnemy(int x, int y) : Enemy("play/bikeman.png", x, y, 50, 80, 40, 800) {
 }
 
 void BikeEnemy::CreateBullet() {

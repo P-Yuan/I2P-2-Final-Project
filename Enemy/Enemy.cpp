@@ -12,6 +12,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/IScene.hpp"
 #include "Engine/LOG.hpp"
+#include "Engine/Collider.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Turret/Turret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
@@ -43,7 +44,7 @@ Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float
 }
 void Enemy::Hit(float damage) {
     hp -= damage;
-    if (hp <= 0) {
+    if (1) {
         OnExplode();
         // Remove all turret's reference to target.
         for (auto &it : lockedTurrets)
@@ -131,6 +132,22 @@ void Enemy::Update(float deltaTime) {
     // Rotation = atan2(Velocity.y, Velocity.x);
     Position.x-=speed*0.1;
     Sprite::Update(deltaTime);
+
+    PlayScene *scene = getPlayScene();
+
+    for (auto &it : scene->EnemyGroup->GetObjects()) {
+        Enemy *enemy = dynamic_cast<Enemy *>(it);
+        if (!enemy->Visible || enemy==this)
+        {
+            continue;
+        }
+        if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) 
+        {
+            enemy->Hit(20);
+            //getPlayScene()->BulletGroup->RemoveObject(objectIterator);
+            return;
+        }
+    }
 }
 void Enemy::Draw() const {
     Sprite::Draw();

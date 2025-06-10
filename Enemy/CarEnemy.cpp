@@ -9,9 +9,10 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-CarEnemy::CarEnemy(int x, int y) : Enemy("play/small_car.png", x, y, 50, 100, 40, 800) {
+CarEnemy::CarEnemy(int x, int y) : Enemy("play/small_car.png", x, y, 50, 80, 40, 800) {
 }
 
-void CarEnemy::CreateBullet() {
+void CarEnemy::CreateBullet() 
+{
     
 }

@@ -19,7 +19,7 @@ namespace Engine {
         // Color tint.
         ALLEGRO_COLOR Tint;
         // Assume a circle is a good approximation of the sprite's boundary.
-        float CollisionRadius = 0;
+        float CollisionRadius = 10;
         /// <summary>
         /// Construct a sprite object.
         /// </summary>

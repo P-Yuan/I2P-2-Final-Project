@@ -24,7 +24,6 @@ protected:
     PlayScene *getPlayScene();
     virtual void OnExplode();
     virtual void CreateBullet() = 0;
-
 public:
     bool Enabled = true;
     bool Preview = false;

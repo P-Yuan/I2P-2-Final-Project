@@ -13,9 +13,7 @@ namespace Engine {
     class backgroundImage : public IObject {
     public:
         float sx=0;
-        float ssx=0;
         float dx=0;
-        float ddx=1280;
         float scrollSpeed = 1.0f;
         int bgWidth;
         int sy,sw,sh;
