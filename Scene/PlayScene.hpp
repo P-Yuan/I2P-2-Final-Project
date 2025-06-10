@@ -8,6 +8,7 @@
 
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
+#include "UI/Component/backgroundImage.hpp"
 
 class Turret;
 namespace Engine {
@@ -27,6 +28,7 @@ private:
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
+
 protected:
     static int lives;
     static int money;
@@ -34,6 +36,7 @@ protected:
 
 public:
     static bool DebugMode;
+    static int backgroundflag;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
     static const int BlockSize;
@@ -49,6 +52,8 @@ public:
     int MapId;
     float ticks;
     float deathCountDown;
+    Engine::backgroundImage *back1;
+    Engine::backgroundImage *back2;
     // Map tiles.
     Group *TileMapGroup;
     Group *GroundEffectGroup;
@@ -57,6 +62,7 @@ public:
     Group *TowerGroup;
     Group *EnemyGroup;
     Group *PlaneGroup;
+    Group *backgroundGroup;
     Group *EffectGroup;
     Group *UIGroup;
     Group *PauseGroup;
