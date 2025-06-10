@@ -82,14 +82,14 @@ void Player::Update(float deltaTime){
                 //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
+                HitTicks=0.4;
                 Hit(enemy->getdamage());
-                cooldown=2;
+                cooldown=1.5;
                 return;
             }
         }
     }
-    else
-    {
+    else{
         cooldown-=deltaTime;
     }
 }
@@ -118,7 +118,7 @@ void Player::Hitting(float deltaTime) {
         return;
     }
     int phase = floor((HitSpan*4 - HitTicks) / HitSpan);
-    Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    //Engine::LOG(Engine::INFO)<<"Find hitting phase:"<<phase;
     bmp = hit_bmps[phase];
     Sprite::Update(deltaTime);
 }
