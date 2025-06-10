@@ -44,6 +44,7 @@ bool PlayScene::DebugMode = false;
 int PlayScene::backgroundflag = 1;
 int PlayScene :: lives=0;
 int PlayScene :: money=0;
+float player_y_2=0;
 
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
 const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
@@ -63,7 +64,6 @@ Engine::Point PlayScene::GetClientSize() {
     return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
 void PlayScene::Initialize() {
-    
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
@@ -108,7 +108,7 @@ void PlayScene::Initialize() {
     UIGroup->AddNewObject(imgTarget);
 
     //Add player
-    PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 200, halfH / 2 + 350,50,0,100,110));
+    PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 200, halfH / 2 +365, 50,0,100,110));
 
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+500, halfH / 2 +500, 200, 100);
@@ -542,48 +542,59 @@ void PlayScene::OnKeyDown(int keyCode) {
     {
         DebugMode = !DebugMode;
     }
-    else if(keyCode == ALLEGRO_KEY_A || keyCode == ALLEGRO_KEY_B || keyCode == ALLEGRO_KEY_UP || keyCode == ALLEGRO_KEY_DOWN || keyCode == ALLEGRO_KEY_LEFT || keyCode == ALLEGRO_KEY_RIGHT || keyCode == ALLEGRO_KEY_LSHIFT ||keyCode == ALLEGRO_KEY_ENTER )
-    {
-        temp.push_back(keyCode);
-    } 
-    
-    else if (keyCode == ALLEGRO_KEY_Q) {
-        // Hotkey for MachineGunTurret.
-        UIBtnClicked(0);
-    } 
-    else if (keyCode == ALLEGRO_KEY_W) {
-        // Hotkey for LaserTurret.
-        UIBtnClicked(1);
-    }
-    
-    else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
-        // Hotkey for Speed up.
-        SpeedMult = keyCode - ALLEGRO_KEY_0;
-    }
-    else 
-    {
-        keyStrokes.push_back(keyCode);
-        if (keyStrokes.size() > code.size())
-            keyStrokes.pop_front();
-    }
 
-    int l =temp.size();
-    int addflag=0;
-    for(int i=0;i<l;i++)
-    {
-        if(code[i]!=temp[i])
-        {
-            temp.clear();
-            break;
-        }
+    if(keyCode == ALLEGRO_KEY_UP || keyCode == ALLEGRO_KEY_DOWN){
+        Engine::LOG(Engine::INFO)<<"key up/down";
+        auto it = PlayerGroup->GetObjects().back();
+        Player *player = dynamic_cast<Player *>(it);
+        player->OnKeyDown(keyCode);
     }
-    if(l==code.size() && planeflag)
-    {
-        temp.clear();
-        EarnMoney(10000);
-        Plane *newplane=new Plane();
-        PlaneGroup->AddNewObject(newplane);
-    }
+    // if(keyCode == ALLEGRO_KEY_DOWN){
+    //     Engine::LOG(Engine::INFO)<<"key down";
+    // }
+
+    // else if(keyCode == ALLEGRO_KEY_A || keyCode == ALLEGRO_KEY_B || keyCode == ALLEGRO_KEY_UP || keyCode == ALLEGRO_KEY_DOWN || keyCode == ALLEGRO_KEY_LEFT || keyCode == ALLEGRO_KEY_RIGHT || keyCode == ALLEGRO_KEY_LSHIFT ||keyCode == ALLEGRO_KEY_ENTER )
+    // {
+    //     temp.push_back(keyCode);
+    // } 
+    
+    // else if (keyCode == ALLEGRO_KEY_Q) {
+    //     // Hotkey for MachineGunTurret.
+    //     UIBtnClicked(0);
+    // } 
+    // else if (keyCode == ALLEGRO_KEY_W) {
+    //     // Hotkey for LaserTurret.
+    //     UIBtnClicked(1);
+    // }
+    
+    // else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
+    //     // Hotkey for Speed up.
+    //     SpeedMult = keyCode - ALLEGRO_KEY_0;
+    // }
+    // else 
+    // {
+    //     keyStrokes.push_back(keyCode);
+    //     if (keyStrokes.size() > code.size())
+    //         keyStrokes.pop_front();
+    // }
+
+    // int l =temp.size();
+    // int addflag=0;
+    // for(int i=0;i<l;i++)
+    // {
+    //     if(code[i]!=temp[i])
+    //     {
+    //         temp.clear();
+    //         break;
+    //     }
+    // }
+    // if(l==code.size() && planeflag)
+    // {
+    //     temp.clear();
+    //     EarnMoney(10000);
+    //     Plane *newplane=new Plane();
+    //     PlaneGroup->AddNewObject(newplane);
+    // }
     
 }
 void PlayScene::Hit(int l) {

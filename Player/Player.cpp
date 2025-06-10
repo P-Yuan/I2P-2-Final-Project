@@ -47,10 +47,13 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
     CollisionRadius = radius;
     cooldown=0;
     timeTicks=0;
+    HitTicks=0;
     for (int i = 1; i <= 6; i++) {
-        bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_walk" + std::to_string(i) + ".png"));
+        walk_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_walk" + std::to_string(i) + ".png"));
     }
-    Engine::LOG(Engine::INFO)<<"bmps size:"<<bmps.size();
+    for (int i = 1; i <= 4; i++) {
+        hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_hit" + std::to_string(i) + ".png"));
+    }
 }
 void Player::Hit(float damage) {
     hp -= damage;
@@ -59,19 +62,29 @@ void Player::Hit(float damage) {
 
 void Player::Update(float deltaTime){
     //Sprite::Update(deltaTime);
-    Walking(deltaTime);
+    
+    if(HitTicks>=0){
+        Hitting(deltaTime);
+    }
+    if(MoveTicks>0){
+        Position.y+=32*move_dir;
+        MoveTicks-=0.01;
+    }
+
     if(cooldown<=0){
+        Walking(deltaTime);
         PlayScene *scene = getPlayScene();
         for (auto &it : scene->EnemyGroup->GetObjects()) {
             Enemy *enemy = dynamic_cast<Enemy *>(it);
             if (!enemy->Visible)
                 continue;
             if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) {
-                OnExplode();
+                //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
+                HitTicks=0.4;
                 Hit(1);
-                cooldown=2;
+                cooldown=1.5;
                 return;
             }
         }
@@ -92,8 +105,41 @@ void Player::Draw() const {
 void Player::Walking(float deltaTime) {
     timeTicks+=deltaTime;
     if(timeTicks>=timeSpan) timeTicks-=timeSpan;
-    int phase = floor(timeTicks / timeSpan * bmps.size());
+    int phase = floor(timeTicks / timeSpan * walk_bmps.size());
     //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
-    bmp = bmps[phase];
+    bmp = walk_bmps[phase];
     Sprite::Update(deltaTime);
+}
+
+void Player::Hitting(float deltaTime) {
+    HitTicks-=deltaTime;
+    if(HitTicks<=0){
+        //Engine::LOG(Engine::INFO)<<"End hit";
+        return;
+    }
+    int phase = floor((HitSpan*4 - HitTicks) / HitSpan);
+    Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    bmp = hit_bmps[phase];
+    Sprite::Update(deltaTime);
+}
+
+void Player::OnKeyDown(int keyCode){
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+    int halfH = h / 2;
+    if(keyCode==ALLEGRO_KEY_UP){
+        if(Position.y >= halfH / 2 +365){
+            MoveTicks=0.04;
+            move_dir=UP;
+            Engine::LOG(Engine::INFO)<<"player move up";
+        }
+    }
+    else if(keyCode==ALLEGRO_KEY_DOWN){
+        if(Position.y <= halfH / 2 +365){
+            MoveTicks=0.04;
+            move_dir=DOWN;
+            Engine::LOG(Engine::INFO)<<"player move down";
+        }
+    }
 }
