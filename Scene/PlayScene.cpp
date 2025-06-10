@@ -10,6 +10,7 @@
 #include <ctime>
 #include <iostream>
 
+#include "Player/Player.hpp"
 #include "Enemy/Enemy.hpp"
 #include "Enemy/GrandmaEnemy.hpp"
 #include "Enemy/CarEnemy.hpp"
@@ -79,11 +80,13 @@ void PlayScene::Initialize() {
     AddNewObject(TileMapGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
     AddNewObject(DebugIndicatorGroup = new Group());
+    AddNewObject(PlayerGroup = new Group());
     AddNewObject(TowerGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
+    
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
@@ -96,6 +99,9 @@ void PlayScene::Initialize() {
     imgTarget->Visible = false;
     preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
+
+    //Add player
+    PlayerGroup->AddNewObject(new Player("play/enemy-1.png", 200, halfH / 2 + 400,50,0,100,110));
 
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+500, halfH / 2 +500, 200, 100);

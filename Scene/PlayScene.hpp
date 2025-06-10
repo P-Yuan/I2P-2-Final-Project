@@ -60,6 +60,7 @@ public:
     Group *EffectGroup;
     Group *UIGroup;
     Group *PauseGroup;
+    Group *PlayerGroup;
     Engine::Label *UIMoney;
     Engine::Label *UILives;
     Engine::Image *imgTarget;
