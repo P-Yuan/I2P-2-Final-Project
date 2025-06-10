@@ -1,5 +1,6 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
+#include <allegro5/allegro.h>
 #include <cmath>
 #include <random>
 #include <string>
@@ -14,10 +15,13 @@
 #include "Engine/Group.hpp"
 #include "Engine/IScene.hpp"
 #include "Engine/LOG.hpp"
+#include "Engine/Allegro5Exception.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Turret/Turret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
+#include "Engine/Resources.hpp"
+#include "Engine/LOG.hpp"
 
 PlayScene *Player::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
@@ -42,6 +46,11 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
     money(money) {
     CollisionRadius = radius;
     cooldown=0;
+    timeTicks=0;
+    for (int i = 1; i <= 6; i++) {
+        bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_walk" + std::to_string(i) + ".png"));
+    }
+    Engine::LOG(Engine::INFO)<<"bmps size:"<<bmps.size();
 }
 void Player::Hit(float damage) {
     hp -= damage;
@@ -49,7 +58,8 @@ void Player::Hit(float damage) {
 }
 
 void Player::Update(float deltaTime){
-    Sprite::Update(deltaTime);
+    //Sprite::Update(deltaTime);
+    Walking(deltaTime);
     if(cooldown<=0){
         PlayScene *scene = getPlayScene();
         for (auto &it : scene->EnemyGroup->GetObjects()) {
@@ -77,4 +87,13 @@ void Player::Draw() const {
         // Draw collision radius.
         al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
     }
+}
+
+void Player::Walking(float deltaTime) {
+    timeTicks+=deltaTime;
+    if(timeTicks>=timeSpan) timeTicks-=timeSpan;
+    int phase = floor(timeTicks / timeSpan * bmps.size());
+    //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    bmp = bmps[phase];
+    Sprite::Update(deltaTime);
 }

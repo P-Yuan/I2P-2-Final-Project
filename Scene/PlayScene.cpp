@@ -108,7 +108,7 @@ void PlayScene::Initialize() {
     UIGroup->AddNewObject(imgTarget);
 
     //Add player
-    PlayerGroup->AddNewObject(new Player("play/enemy-1.png", 200, halfH / 2 + 400,50,0,100,110));
+    PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 200, halfH / 2 + 350,50,0,100,110));
 
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+500, halfH / 2 +500, 200, 100);
