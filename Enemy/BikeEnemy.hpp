@@ -4,7 +4,7 @@
 
 class BikeEnemy : public Enemy {
 public:
-    BikeEnemy(int x, int y);
+    BikeEnemy(int x, int y, std::string type);
     void CreateBullet() override;
 };
 #endif   // BikeEnemy_HPP

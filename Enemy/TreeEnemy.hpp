@@ -4,7 +4,7 @@
 
 class TreeEnemy : public Enemy {
 public:
-    TreeEnemy(int x, int y);
+    TreeEnemy(int x, int y,std::string type);
     void CreateBullet() override;
 };
 #endif   // CarEnemy_HPP

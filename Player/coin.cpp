@@ -8,7 +8,7 @@
 
 #include "Bullet/Bullet.hpp"
 #include "Enemy/Enemy.hpp"
-#include "Player.hpp"
+#include "coin.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/GameEngine.hpp"
@@ -23,11 +23,11 @@
 #include "Engine/Resources.hpp"
 #include "Engine/LOG.hpp"
 
-PlayScene *Player::getPlayScene() {
+PlayScene *coin::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 
-void Player::OnExplode() {
+void coin::OnExplode() {
     getPlayScene()->EffectGroup->AddNewObject(new ExplosionEffect(Position.x, Position.y));
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -40,7 +40,7 @@ void Player::OnExplode() {
 }
 
 
-Player::Player(std::string img, float x, float y, float radius, float speed, float hp, int money) :
+coin::coin(std::string img, float x, float y, float radius, float speed, float hp, int money) :
     Sprite(img, x, y),
     hp(hp),
     money(money) {
@@ -52,14 +52,14 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
     }
     Engine::LOG(Engine::INFO)<<"bmps size:"<<bmps.size();
 }
-void Player::Hit(float damage) {
+void coin::Hit(float damage) {
     hp -= damage;
     getPlayScene()->Hit(damage);
 }
 
-void Player::Update(float deltaTime){
+void coin::Update(float deltaTime){
     //Sprite::Update(deltaTime);
-    Walking(deltaTime);
+    rotate(deltaTime);
     if(cooldown<=0){
         PlayScene *scene = getPlayScene();
         for (auto &it : scene->EnemyGroup->GetObjects()) {
@@ -70,19 +70,18 @@ void Player::Update(float deltaTime){
                 OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-                Hit(enemy->getdamage());
+                Hit(1);
                 cooldown=2;
                 return;
             }
         }
     }
-    else
-    {
+    else{
         cooldown-=deltaTime;
     }
 }
 
-void Player::Draw() const {
+void coin::Draw() const {
     Sprite::Draw();
     if (PlayScene::DebugMode) {
         // Draw collision radius.
@@ -90,7 +89,7 @@ void Player::Draw() const {
     }
 }
 
-void Player::Walking(float deltaTime) {
+void coin::rotate(float deltaTime) {
     timeTicks+=deltaTime;
     if(timeTicks>=timeSpan) timeTicks-=timeSpan;
     int phase = floor(timeTicks / timeSpan * bmps.size());

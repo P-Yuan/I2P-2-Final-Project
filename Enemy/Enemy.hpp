@@ -15,11 +15,12 @@ class Enemy : public Engine::Sprite {
 protected:
     std::vector<Engine::Point> path;
     float speed;
-    float hp;
+    int damage;
     int money;
     float coolDown;
     float reload = 0;
     float rotateRadian = 2 * ALLEGRO_PI;
+    std::string type;
     std::list<Enemy*>::iterator lockedEnemyIterator;
     PlayScene *getPlayScene();
     virtual void OnExplode();
@@ -30,11 +31,12 @@ public:
     float reachEndTime;
     std::list<Turret *> lockedTurrets;
     std::list<Bullet *> lockedBullets;
-    Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money);
-    void Hit(float damage);
+    Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money, std::string type);
+    void Hit();
     void FireHit();
     void UpdatePath(const std::vector<std::vector<int>> &mapDistance);
     void Update(float deltaTime) override;
     void Draw() const override;
+    int getdamage();
 };
 #endif   // ENEMY_HPP

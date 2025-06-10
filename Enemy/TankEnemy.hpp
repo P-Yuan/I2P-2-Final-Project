@@ -14,7 +14,7 @@ private:
     int flag=0;
 
 public:
-    TankEnemy(int x, int y,float coolDown);
+    TankEnemy(int x, int y,float coolDown,std::string type);
     Plane *Target=nullptr;
     void Draw() const override;
     void Update(float deltaTime) override;

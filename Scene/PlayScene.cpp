@@ -74,7 +74,7 @@ void PlayScene::Initialize() {
     planeflag=false;
     ticks = 0;
     deathCountDown = -1;
-    lives = 10;
+    lives = 100;
     money = 10;
     SpeedMult = 1;
     pauseflag=false;
@@ -402,22 +402,22 @@ void PlayScene::Update(float deltaTime) {
         Enemy *enemy;
         switch (current[0]) {
             case 1:
-                EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Hole"));
                 break;
             case 2:
-                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Grandma"));
                 break;
             case 3:
-                EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Bike"));
                 break;
             case 4:
-                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Car"));
                 break;
             case 5:
-                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Tree"));
                 break;
             case 6:
-                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Truck"));
                 break;
             default:
                 continue;
@@ -676,6 +676,28 @@ void PlayScene::ReadEnemyWave() {
     }
     fin.close();
 }
+
+void PlayScene::ReadCoinWave() {
+    std::string filename = std::string("Resource/coin")+ std::to_string(MapId) + ".txt";
+    // Read enemy file.
+    float type, wait, repeat, line;
+    enemyWaveData.clear();
+    std::ifstream fin(filename);
+    while (fin >> type && fin >> wait && fin >> repeat && fin>>line) {
+        for (int i = 0; i < repeat; i++){
+            std::vector<int> oneEnemy;
+            oneEnemy.emplace_back(type);
+            oneEnemy.emplace_back(wait);
+            oneEnemy.emplace_back(line);
+            enemyWaveData_new.emplace_back(oneEnemy);
+        }
+            //enemyWaveData.emplace_back(type, wait);
+            
+    }
+    fin.close();
+}
+
+
 void PlayScene::ConstructUI() {
     // Background
     UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));

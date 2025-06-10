@@ -69,6 +69,8 @@ add_executable(2025_I2P2_TowerDefense
     
     Player/Player.cpp
     Player/Player.hpp
+    Player/coin.cpp
+    Player/coin.hpp
 
     # TODO HACKATHON-2 (3/3): Add the new scene source files here
     Scene/LoseScene.cpp

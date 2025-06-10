@@ -10,7 +10,7 @@
 #include "Engine/Point.hpp"
 
 
-GrandmaEnemy::GrandmaEnemy(int x, int y) : Enemy("play/grandma.png", x, y, 50, 50, 50, 1000) {
+GrandmaEnemy::GrandmaEnemy(int x, int y,std::string type) : Enemy("play/grandma.png", x, y, 50, 50, 20, 1000,type) {
 }
 
 void GrandmaEnemy::CreateBullet() {

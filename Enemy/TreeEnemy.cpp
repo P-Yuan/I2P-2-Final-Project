@@ -9,7 +9,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-TreeEnemy::TreeEnemy(int x, int y) : Enemy("play/tree.png", x, y, 50, 30, 40, 800) {
+TreeEnemy::TreeEnemy(int x, int y,std::string type) : Enemy("play/tree.png", x, y, 50, 30, 20, 800,type) {
 }
 
 void TreeEnemy::CreateBullet() {

@@ -34,27 +34,26 @@ void Enemy::OnExplode() {
 }
 
 
-Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money) :
+Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float damage, int money, std::string type) :
     Sprite(img, x, y),
     speed(speed),
-    hp(hp),
-    money(money) {
+    damage(damage),
+    money(money),
+    type(type){
     CollisionRadius = radius;
     reachEndTime = 10;
+
 }
-void Enemy::Hit(float damage) {
-    hp -= damage;
-    if (1) {
-        OnExplode();
-        // Remove all turret's reference to target.
-        for (auto &it : lockedTurrets)
-            it->Target = nullptr;
-        for (auto &it : lockedBullets)
-            it->Target = nullptr;
-        getPlayScene()->EarnMoney(money);
-        getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-        AudioHelper::PlayAudio("explosion.wav");
-    }
+void Enemy::Hit() {
+    OnExplode();
+    // Remove all turret's reference to target.
+    for (auto &it : lockedTurrets)
+        it->Target = nullptr;
+    for (auto &it : lockedBullets)
+        it->Target = nullptr;
+    getPlayScene()->EarnMoney(money);
+    getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
+    AudioHelper::PlayAudio("explosion.wav");
 }
 void Enemy::FireHit()
 {
@@ -134,16 +133,28 @@ void Enemy::Update(float deltaTime) {
     Sprite::Update(deltaTime);
 
     PlayScene *scene = getPlayScene();
+    Engine:: Point max;
+    Engine:: Point min;
+    Engine:: Point Emax;
+    Engine:: Point Emin;
+    min.x=Position.x-(this->GetBitmapWidth()/3);
+    min.y=Position.y-(this->GetBitmapHeight()/3);
+    max.x=Position.x+(this->GetBitmapWidth()/3);
+    max.y=Position.y+(this->GetBitmapHeight()/3);
 
     for (auto &it : scene->EnemyGroup->GetObjects()) {
         Enemy *enemy = dynamic_cast<Enemy *>(it);
-        if (!enemy->Visible || enemy==this)
+        Emin.x=enemy->Position.x-(enemy->GetBitmapWidth()/3);
+        Emin.y=enemy->Position.y-(enemy->GetBitmapHeight()/3);
+        Emax.x=enemy->Position.x+(enemy->GetBitmapWidth()/3);
+        Emax.y=enemy->Position.y+(enemy->GetBitmapHeight()/3);
+        if (!enemy->Visible || enemy==this || enemy->type!="Car"||(enemy->type=="Car" && this->type=="Hole"))
         {
             continue;
         }
-        if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) 
+        if (Engine::Collider::IsRectOverlap(min, max, Emin, Emax)) 
         {
-            enemy->Hit(20);
+            Hit();
             //getPlayScene()->BulletGroup->RemoveObject(objectIterator);
             return;
         }
@@ -153,6 +164,15 @@ void Enemy::Draw() const {
     Sprite::Draw();
     if (PlayScene::DebugMode) {
         // Draw collision radius.
-        al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/3),Position.y-(this->GetBitmapHeight()/3),
+                          Position.x+(this->GetBitmapWidth()/3),Position.y+(this->GetBitmapHeight()/3)
+                          , al_map_rgb(255, 0, 0), 2);
     }
+}
+
+
+int Enemy::getdamage()
+{
+    return damage;
 }

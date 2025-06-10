@@ -93,6 +93,7 @@ public:
     void EarnMoney(int money);
     void ReadMap();
     void ReadEnemyWave();
+    void ReadCoinWave();
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
