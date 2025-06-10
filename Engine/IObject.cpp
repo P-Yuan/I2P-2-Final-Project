@@ -6,7 +6,7 @@ namespace Engine {
     std::list<std::pair<bool, IObject *>>::iterator IObject::GetObjectIterator() const {
         return objectIterator;
     }
-    void IObject::Draw() const {}
-    void IObject::Update(float deltaTime) {}
+    void IObject::Draw() const {};
+    void IObject::Update(float deltaTime) {};
     
 }

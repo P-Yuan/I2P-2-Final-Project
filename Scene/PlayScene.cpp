@@ -35,9 +35,12 @@
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
+#include "UI/Component/backgroundImage.hpp"
+
 
 
 bool PlayScene::DebugMode = false;
+int PlayScene::backgroundflag = 1;
 int PlayScene :: lives=0;
 int PlayScene :: money=0;
 
@@ -75,6 +78,7 @@ void PlayScene::Initialize() {
     SpeedMult = 1;
     pauseflag=false;
     pauseinitflag=false;
+    
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
@@ -84,10 +88,13 @@ void PlayScene::Initialize() {
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
+    AddNewObject(backgroundGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
-   
+
+    backgroundGroup->AddNewObject(new Engine::backgroundImage("play/background.png",1280,385));
+
     ReadMap();
     ReadEnemyWave();
     mapDistance = CalculateBFSDistance();
@@ -103,6 +110,7 @@ void PlayScene::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 30, halfW+600, halfH / 2 +550, 0, 0, 0, 255, 0.5, 0.5));
 
+    
     // Preload Lose Scene
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
@@ -233,6 +241,7 @@ void PlayScene::Terminate() {
     deathBGMInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 }
+
 void PlayScene::pauseinit()
 {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -411,6 +420,9 @@ void PlayScene::Update(float deltaTime) {
         // Compensate the time lost.
         enemy->Update(ticks);
     }
+    backgroundGroup->Update(deltaTime);
+
+
     if (preview) {
         preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
         // To keep responding when paused.

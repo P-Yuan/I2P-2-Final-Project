@@ -103,6 +103,8 @@ add_executable(2025_I2P2_TowerDefense
     UI/Animation/Plane.cpp
     UI/Animation/Plane.hpp
 
+    UI/Component/backgroundImage.cpp
+    UI/Component/backgroundImage.hpp
     UI/Component/Image.cpp
     UI/Component/Image.hpp
     UI/Component/ImageButton.cpp

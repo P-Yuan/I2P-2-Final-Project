@@ -49,12 +49,7 @@ void WinScene::Draw() const {
     IScene::Draw();
 }
 void WinScene::Update(float deltaTime) {
-
-    
     IScene :: Update(deltaTime);
-   
-    
-    
     ticks += deltaTime;
     if (ticks > 4 && ticks < 100 &&
         dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"))->MapId == 2) {
