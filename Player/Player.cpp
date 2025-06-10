@@ -82,7 +82,7 @@ void Player::Update(float deltaTime){
                 //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-                Hit(1);
+                Hit(enemy->getdamage());
                 cooldown=2;
                 return;
             }
