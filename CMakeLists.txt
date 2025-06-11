@@ -31,8 +31,8 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/GrandmaEnemy.hpp
     Enemy/CarEnemy.cpp
     Enemy/CarEnemy.hpp
-    Enemy/TankEnemy.cpp
-    Enemy/TankEnemy.hpp
+    Enemy/GangEnemy.cpp
+    Enemy/GangEnemy.hpp
     Enemy/HoleEnemy.cpp
     Enemy/HoleEnemy.hpp
     Enemy/BikeEnemy.cpp

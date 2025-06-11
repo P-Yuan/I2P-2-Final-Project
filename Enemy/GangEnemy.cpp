@@ -6,7 +6,7 @@
 
 #include "Engine/Point.hpp"
 #include "Engine/AudioHelper.hpp"
-#include "TankEnemy.hpp"
+#include "GangEnemy.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"

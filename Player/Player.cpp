@@ -45,27 +45,43 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
     hp(hp),
     money(money) {
     CollisionRadius = radius;
+    
     cooldown=0;
     timeTicks=0;
     HitTicks=0;
+    MoveTicks=0;
+    DyingTicks=0.4;
+    WinningTicks=0.8;
+
+    walk_bmps.clear();
+    hit_bmps.clear();
+    win_bmps.clear();
     for (int i = 1; i <= 6; i++) {
         walk_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_walk" + std::to_string(i) + ".png"));
     }
     for (int i = 1; i <= 4; i++) {
         hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_hit" + std::to_string(i) + ".png"));
     }
+    hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_hit4.png"));
+    hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_hit4.png"));
+    for (int i = 1; i <= 8; i++) {
+        win_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_jump" + std::to_string(i%4 +1) + ".png"));
+    }
+    Engine::LOG(Engine::INFO)<<"spawn player at"<<x<<","<<y;
 }
 
 void Player::Hit(float damage) {
-    hp -= damage;
     getPlayScene()->Hit(damage);
 }
 
 void Player::Update(float deltaTime){
     //Sprite::Update(deltaTime);
-    
-    if(HitTicks>=0){
+    //Engine::LOG(Engine::INFO)<<"update player ";
+    if(HitTicks>0){
         Hitting(deltaTime);
+    }
+    else{
+        Walking(deltaTime);
     }
     if(MoveTicks>0){
         Position.y+=32*move_dir;
@@ -73,8 +89,7 @@ void Player::Update(float deltaTime){
     }
 
     if(cooldown<=0){
-        Walking(deltaTime);
-        
+        //Walking(deltaTime);
         PlayScene *scene = getPlayScene();
         Engine:: Point max;
         Engine:: Point min;
@@ -97,7 +112,7 @@ void Player::Update(float deltaTime){
                 //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-                HitTicks=0.4;
+                HitTicks=0.6;
                 Hit(enemy->getdamage());
                 cooldown=1.5;
                 return;
@@ -111,7 +126,19 @@ void Player::Update(float deltaTime){
 
 void Player::Draw() const {
     Sprite::Draw();
-     if (PlayScene::DebugMode) {
+    if(cooldown>0 && HitTicks<=0){
+        al_draw_tinted_scaled_rotated_bitmap(bmp.get(), al_map_rgba(0, 255, 255, 255), Anchor.x * GetBitmapWidth(), Anchor.y * GetBitmapHeight(),
+                                             Position.x, Position.y, Size.x / GetBitmapWidth(), Size.y / GetBitmapHeight(), Rotation, 0);
+    }
+    else if(DyingTicks<0.4f){
+        al_draw_tinted_scaled_rotated_bitmap(bmp.get(), al_map_rgba(255, 0, 0, 255), Anchor.x * GetBitmapWidth(), Anchor.y * GetBitmapHeight(),
+                                             Position.x, Position.y, Size.x / GetBitmapWidth(), Size.y / GetBitmapHeight(), Rotation, 0);
+    }
+    else{
+        Sprite::Draw();
+    }
+    
+    if (PlayScene::DebugMode) {
         // Draw collision radius.
         //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
         al_draw_rectangle(Position.x-(this->GetBitmapWidth()/3),Position.y-(this->GetBitmapHeight()/3),
@@ -135,7 +162,7 @@ void Player::Hitting(float deltaTime) {
         //Engine::LOG(Engine::INFO)<<"End hit";
         return;
     }
-    int phase = floor((HitSpan*4 - HitTicks) / HitSpan);
+    int phase = floor((HitSpan*6 - HitTicks) / HitSpan);
     //Engine::LOG(Engine::INFO)<<"Find hitting phase:"<<phase;
     bmp = hit_bmps[phase];
     Sprite::Update(deltaTime);
@@ -146,18 +173,44 @@ void Player::OnKeyDown(int keyCode){
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    if(keyCode==ALLEGRO_KEY_UP){
-        if(Position.y >= halfH / 2 +365){
-            MoveTicks=0.04;
-            move_dir=UP;
-            Engine::LOG(Engine::INFO)<<"player move up";
+    if(cooldown<=0){
+        if(keyCode==ALLEGRO_KEY_UP){
+            if(Position.y >= halfH / 2 +365){
+                MoveTicks=0.04;
+                move_dir=UP;
+                Engine::LOG(Engine::INFO)<<"player move up";
+            }
+        }
+        else if(keyCode==ALLEGRO_KEY_DOWN){
+            if(Position.y <= halfH / 2 +365){
+                MoveTicks=0.04;
+                move_dir=DOWN;
+                Engine::LOG(Engine::INFO)<<"player move down";
+            }
         }
     }
-    else if(keyCode==ALLEGRO_KEY_DOWN){
-        if(Position.y <= halfH / 2 +365){
-            MoveTicks=0.04;
-            move_dir=DOWN;
-            Engine::LOG(Engine::INFO)<<"player move down";
-        }
+}
+
+void Player::Dying(float deltaTime){
+    DyingTicks-=deltaTime;
+    if(DyingTicks<=0){
+        //Engine::LOG(Engine::INFO)<<"End hit";
+        return;
     }
+    int phase = floor((DyingSpan*4 - DyingTicks) / DyingSpan);
+    Engine::LOG(Engine::INFO)<<"Find dying phase:"<<phase;
+    bmp = hit_bmps[phase];
+    Sprite::Update(deltaTime);
+}
+
+void Player::Winning(float deltaTime){
+    WinningTicks-=deltaTime;
+    if(WinningTicks<=0){
+        WinningTicks=0.8;
+        return;
+    }
+    int phase = floor((WinningSpan*4 - WinningTicks) / WinningSpan);
+    Engine::LOG(Engine::INFO)<<"Find winning phase:"<<phase;
+    bmp = win_bmps[phase];
+    Sprite::Update(deltaTime);
 }
