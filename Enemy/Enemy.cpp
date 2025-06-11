@@ -34,7 +34,7 @@ void Enemy::OnExplode() {
 }
 
 
-Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float damage, int money, std::string type) :
+Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float damage, int money, int type) :
     Sprite(img, x, y),
     speed(speed),
     damage(damage),
@@ -129,7 +129,7 @@ void Enemy::Update(float deltaTime) {
     //     }
     // }
     // Rotation = atan2(Velocity.y, Velocity.x);
-    if(type!="89" && !((type=="Hole" || type=="Tree") && (getPlayScene()->DyingAnimation || getPlayScene()->WinningAnimation))) Position.x-=speed*0.1;
+    if(type!=7 && !((type==1 || type==2) && (getPlayScene()->DyingAnimation || getPlayScene()->WinningAnimation))) Position.x-=speed*0.1;
     Sprite::Update(deltaTime);
 
     PlayScene *scene = getPlayScene();
@@ -148,7 +148,7 @@ void Enemy::Update(float deltaTime) {
         Emin.y=enemy->Position.y-(enemy->GetBitmapHeight()/3);
         Emax.x=enemy->Position.x+(enemy->GetBitmapWidth()/3);
         Emax.y=enemy->Position.y+(enemy->GetBitmapHeight()/3);
-        if (this->type=="Coin" || !enemy->Visible || enemy==this || enemy->type!="Car"||(enemy->type=="Car" && this->type=="Hole"))
+        if (this->type==8 || !enemy->Visible || enemy==this || enemy->type!=6||(enemy->type==6 && this->type==1))
         {
             continue;
         }

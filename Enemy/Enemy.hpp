@@ -20,7 +20,7 @@ protected:
     float coolDown;
     float reload = 0;
     float rotateRadian = 2 * ALLEGRO_PI;
-    std::string type;
+    int type;
     std::list<Enemy*>::iterator lockedEnemyIterator;
     PlayScene *getPlayScene();
     virtual void OnExplode();
@@ -31,7 +31,7 @@ public:
     float reachEndTime;
     std::list<Turret *> lockedTurrets;
     std::list<Bullet *> lockedBullets;
-    Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money, std::string type);
+    Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money,int type);
     void Hit();
     void FireHit();
     void UpdatePath(const std::vector<std::vector<int>> &mapDistance);

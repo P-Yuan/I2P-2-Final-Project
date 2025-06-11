@@ -17,6 +17,7 @@ protected:
     float hp;
     int money;
     float cooldown;
+    float attackcooldown;
     float timeTicks;
     float timeSpan = 0.7;
     float HitTicks;
@@ -27,6 +28,8 @@ protected:
     float DyingSpan = 0.1;
     float WinningTicks;
     float WinningSpan = 0.2;
+    int attackingcnt=0;
+    
     PlayScene *getPlayScene();
     virtual void OnExplode();
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> walk_bmps;
@@ -46,5 +49,7 @@ public:
     void OnKeyDown(int keyCode);
     void Dying(float deltaTime);
     void Winning(float deltaTime);
+    void attacking();
+    static bool attackingmode;
 };
 #endif   // PLAYER_HPP

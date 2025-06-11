@@ -4,7 +4,7 @@
 
 class GrandmaEnemy : public Enemy {
 public:
-    GrandmaEnemy(int x, int y,std::string type);
+    GrandmaEnemy(int x, int y,int type);
     void CreateBullet() override;
 };
 #endif   // ATTACKENEMY_HPP

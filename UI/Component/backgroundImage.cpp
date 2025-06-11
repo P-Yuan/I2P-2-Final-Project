@@ -62,8 +62,7 @@ namespace Engine {
         }
         else if(type==2)
         {
-            
-            if(sh==bgWidth)
+            if(sh>bgWidth)
             {
                 return;
             }

@@ -69,6 +69,8 @@ add_executable(2025_I2P2_TowerDefense
     
     Player/Player.cpp
     Player/Player.hpp
+    Player/gun.cpp
+    Player/gun.hpp
     Player/coin.cpp
     Player/coin.hpp
 
@@ -99,8 +101,6 @@ add_executable(2025_I2P2_TowerDefense
     Turret/MachineGunTurret.hpp
     Turret/Turret.cpp
     Turret/Turret.hpp
-    Turret/TurretButton.cpp
-    Turret/TurretButton.hpp
 
     UI/Animation/DirtyEffect.cpp
     UI/Animation/DirtyEffect.hpp
@@ -119,6 +119,8 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Label.hpp
     UI/Component/Slider.cpp
     UI/Component/Slider.hpp
+    UI/Component/skillImage.cpp
+    UI/Component/skillImage.hpp
     
     main.cpp
 )

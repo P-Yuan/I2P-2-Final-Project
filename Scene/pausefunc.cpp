@@ -31,12 +31,12 @@
 #include "Scene/WinScene.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
-#include "Turret/TurretButton.hpp"
 #include "Turret/FireTurret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/backgroundImage.hpp"
+#include "UI/Component/skillImage.hpp"
 #include "Player/coin.hpp"
 
 void PlayScene::pauseinit()
@@ -90,73 +90,73 @@ void PlayScene::ShopOnClick()
 }
 void PlayScene::laserOnClick()
 {
-    if(money-500>=0)
-    {
+    // if(money-500>=0)
+    // {
         
-        auto it = UIGroup->GetObjects();
-        TurretButton* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<TurretButton*>(*itt);
-            if(btn!=nullptr && btn->useflag!=true)
-            {
-                if(btn->type=="laser")
-                {
-                    EarnMoney(-500);
-                    btn->useflag=true;
-                    UIGroup->Update(0);
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-        Engine::Sprite *sprite;
+    //     auto it = UIGroup->GetObjects();
+    //     TurretButton* btn=nullptr;
+    //     for(auto itt =it.begin();itt!=it.end();itt++)
+    //     {
+    //         btn = dynamic_cast<TurretButton*>(*itt);
+    //         if(btn!=nullptr && btn->useflag!=true)
+    //         {
+    //             if(btn->type=="laser")
+    //             {
+    //                 EarnMoney(-500);
+    //                 btn->useflag=true;
+    //                 UIGroup->Update(0);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //     Engine::Sprite *sprite;
 
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
+    //     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    //     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    //     int shift = 135 + 25;
+    //     PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
+    //     sprite->Rotation = 0;
+    // }
 }
 void PlayScene::fireOnClick()
 {
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    if(money-1000>=0)
-    {
+    // int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    // int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    // int halfW = w / 2;
+    // int halfH = h / 2;
+    // if(money-1000>=0)
+    // {
         
-        auto it = UIGroup->GetObjects();
-        TurretButton* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<TurretButton*>(*itt);
-            if(btn!=nullptr && btn->useflag!=true)
-            {
-                if(btn->type=="fire")
-                {
-                    EarnMoney(-1000);
-                    btn->useflag=true;
-                    UIGroup->Update(0);
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-       Engine::Sprite *sprite;
+    //     auto it = UIGroup->GetObjects();
+    //     TurretButton* btn=nullptr;
+    //     for(auto itt =it.begin();itt!=it.end();itt++)
+    //     {
+    //         btn = dynamic_cast<TurretButton*>(*itt);
+    //         if(btn!=nullptr && btn->useflag!=true)
+    //         {
+    //             if(btn->type=="fire")
+    //             {
+    //                 EarnMoney(-1000);
+    //                 btn->useflag=true;
+    //                 UIGroup->Update(0);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //    Engine::Sprite *sprite;
 
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
+    //     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    //     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    //     int shift = 135 + 25;
+    //     PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
+    //     sprite->Rotation = 0;
+    // }
 }
 
 void PlayScene::planeOnClick()

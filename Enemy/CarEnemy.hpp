@@ -4,7 +4,7 @@
 
 class CarEnemy : public Enemy {
 public:
-    CarEnemy(int x, int y,std::string type);
+    CarEnemy(int x, int y,int type);
     void CreateBullet() override;
 };
 #endif   // CarEnemy_HPP

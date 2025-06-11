@@ -19,7 +19,7 @@
 PlayScene *TankEnemy::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
-TankEnemy::TankEnemy(int x, int y,float c,std::string type)
+TankEnemy::TankEnemy(int x, int y,float c,int type)
     : Enemy("play/bikeman.png", x, y, 50, 80, 30, 500,type),
       head("play/enemy-3-head.png", x, y), targetRotation(0),
       coolDown(c) {

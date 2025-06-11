@@ -17,10 +17,6 @@ namespace Engine {
     void Sprite::Update(float deltaTime) {
         Position.x += Velocity.x * deltaTime;
         Position.y += Velocity.y * deltaTime;
-        if (useflag==2) 
-        {
-            Tint = al_map_rgba(255, 255, 255, 255);
-        }
 
     }
 };

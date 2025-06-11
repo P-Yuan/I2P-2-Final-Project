@@ -9,7 +9,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-TruckEnemy::TruckEnemy(int x, int y,std::string type) : Enemy("play/big_car.png", x, y, 50, 80, 40, 800,type) {
+TruckEnemy::TruckEnemy(int x, int y,int type) : Enemy("play/big_car.png", x, y, 50, 80, 40, 800,type) {
 }
 
 void TruckEnemy::CreateBullet() {

@@ -4,8 +4,9 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <iostream>
 
-#include "coin.hpp"
+#include "gun.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Bullet/FireBullet.hpp"
 #include "Engine/AudioHelper.hpp"
@@ -15,44 +16,43 @@
 #include "Player.hpp"
 #include "Engine/Collider.hpp"
 
-
-Coin::Coin(int x, int y,int type) : Enemy("play/coins_1.png", x, y, 50, 50, 20, 1000,type) 
+Gun::Gun(int x, int y,int type) : Enemy("play/gun.png", x, y, 50, 50, 20, 1000,type) 
 {
     timeTicks=0;
-    for (int i = 1; i <= 8; i++) {
-        rotate_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
-    }
+    // for (int i = 1; i <= 8; i++) {
+    //     rotate_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
+    // }
 
-     for (int i = 9; i<=16 ; i++) {
+     for (int i =13; i<=16 ; i++) {
         hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
     }
 }
 
-void Coin::CreateBullet() {
+void Gun::CreateBullet() {
     
 }
 
-void Coin::Draw() const
+void Gun::Draw() const
 {
      al_draw_tinted_scaled_rotated_bitmap(bmp.get(), Tint, Anchor.x * GetBitmapWidth(), Anchor.y * GetBitmapHeight(),
-                                             Position.x, Position.y, Size.x/3 , Size.y/3 , Rotation, 0);
+                                             Position.x, Position.y, Size.x / (GetBitmapWidth()*4), Size.y / (GetBitmapHeight()*4) , Rotation, 0);
     if (PlayScene::DebugMode) {
         // Draw collision radius.
         //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
-        al_draw_rectangle(Position.x-(this->GetBitmapWidth()),Position.y-(this->GetBitmapHeight()),
-                          Position.x+(this->GetBitmapWidth()),Position.y+(this->GetBitmapHeight())
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/12),Position.y-(this->GetBitmapHeight()/12),
+                          Position.x+(this->GetBitmapWidth()/12),Position.y+(this->GetBitmapHeight()/12)
                           , al_map_rgb(255, 0, 0), 2);
     }
     
 }
 
-void Coin::Update(float deltatime)
+void Gun::Update(float deltatime)
 {
-    timeTicks+=deltatime;
-    if(timeTicks>=timeSpan) timeTicks-=timeSpan;
-    int phase = floor(timeTicks / timeSpan * rotate_bmps.size());
-    //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
-    bmp = rotate_bmps[phase];
+    // timeTicks+=deltatime;
+    // if(timeTicks>=timeSpan) timeTicks-=timeSpan;
+    // int phase = floor(timeTicks / timeSpan * rotate_bmps.size());
+    // //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    // bmp = rotate_bmps[phase];
     Enemy::Update(deltatime);
 
     PlayScene *scene = getPlayScene();
@@ -60,10 +60,10 @@ void Coin::Update(float deltatime)
     Engine:: Point min;
     Engine:: Point Pmax;
     Engine:: Point Pmin;
-    min.x=Position.x-(this->GetBitmapWidth());
-    min.y=Position.y-(this->GetBitmapHeight());
-    max.x=Position.x+(this->GetBitmapWidth());
-    max.y=Position.y+(this->GetBitmapHeight());
+    min.x=Position.x-(this->GetBitmapWidth()/12);
+    min.y=Position.y-(this->GetBitmapHeight()/12);
+    max.x=Position.x+(this->GetBitmapWidth()/12);
+    max.y=Position.y+(this->GetBitmapHeight()/12);
 
      for (auto &it : scene->PlayerGroup->GetObjects()) 
      {
@@ -79,7 +79,7 @@ void Coin::Update(float deltatime)
      }
 }
 
-void Coin::OnExplode(float deltatime)
+void Gun::OnExplode(float deltatime)
 {
     timeTicks+=deltatime;
     if(timeTicks>=timeSpan) timeTicks-=timeSpan;
@@ -87,14 +87,19 @@ void Coin::OnExplode(float deltatime)
     //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
     bmp = hit_bmps[phase];
     PlayScene *scene = getPlayScene();
-    if(phase<4)
+    // if(phase<4)
+    // {
+    //     AudioHelper::PlayAudio("coins.wav");
+    // }
+    if(phase==1)
     {
-        AudioHelper::PlayAudio("coins.wav");
-    }
-    if(phase==7)
-    {
+        for (auto &it : scene->PlayerGroup->GetObjects()) 
+        {
+            Player *player = dynamic_cast<Player *>(it);
+            player->attackingmode=true;
+        }
         scene->coinGroup->RemoveObject(objectIterator);
-        scene->EarnMoney(10);
+        //scene->EarnMoney(10);
     }
     //std::cout << phase << std::endl;
 }

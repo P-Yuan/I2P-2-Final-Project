@@ -20,9 +20,13 @@
 #include "Turret/Turret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
+#include "UI/Component/skillImage.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/LOG.hpp"
+#include "Bullet/LaserBullet.hpp"
+#
 
+bool Player::attackingmode=false;
 PlayScene *Player::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
@@ -45,7 +49,7 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
     hp(hp),
     money(money) {
     CollisionRadius = radius;
-    
+    attackcooldown=0;
     cooldown=0;
     timeTicks=0;
     HitTicks=0;
@@ -77,6 +81,7 @@ void Player::Hit(float damage) {
 void Player::Update(float deltaTime){
     //Sprite::Update(deltaTime);
     //Engine::LOG(Engine::INFO)<<"update player ";
+    PlayScene *scene = getPlayScene();
     if(HitTicks>0){
         Hitting(deltaTime);
     }
@@ -87,10 +92,64 @@ void Player::Update(float deltaTime){
         Position.y+=32*move_dir;
         MoveTicks-=0.01;
     }
+    if(attackingmode)
+    {
+        if(attackingcnt==0)
+        {
+            auto it = scene->UIGroup->GetObjects();
+            skillImage* btn=nullptr;
+            for(auto itt =it.begin();itt!=it.end();itt++)
+            {
+                btn = dynamic_cast<skillImage*>(*itt);
+                if(btn!=nullptr && btn->useflag!=true)
+                {
+                    if(btn->type=="gun")
+                    {
+                        // EarnMoney(-500);
+                        btn->useflag=true;
+                        // UIGroup->Update(0);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        attackingcnt++;
+        if (attackcooldown<=0) {
+            attacking();
+            attackcooldown=0.5;
+        }
+        else
+        {
+            attackcooldown-=deltaTime;
+        }
+        if(attackingcnt>200)
+        {
+            attackingmode=false;
+            attackingcnt=0;
+            attackcooldown=0;
+            auto it = scene->UIGroup->GetObjects();
+            skillImage* btn=nullptr;
+            for(auto itt =it.begin();itt!=it.end();itt++)
+            {
+                btn = dynamic_cast<skillImage*>(*itt);
+                if(btn!=nullptr && btn->useflag!=false)
+                {
+                    if(btn->type=="gun")
+                    {
+                        btn->useflag=false;
+                        //scene->UIGroup->Update(0);
+                        break;
+                    }
+                }
+            }
+            
+        }
+    }
 
     if(cooldown<=0){
         //Walking(deltaTime);
-        PlayScene *scene = getPlayScene();
+        
         Engine:: Point max;
         Engine:: Point min;
         Engine:: Point Emax;
@@ -213,4 +272,17 @@ void Player::Winning(float deltaTime){
     Engine::LOG(Engine::INFO)<<"Find winning phase:"<<phase;
     bmp = win_bmps[phase];
     Sprite::Update(deltaTime);
+}
+
+void Player::attacking()
+{
+    //Engine::Point diff = Engine::Point(0,0);//cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));
+    Engine::Point diff = Engine::Point(cos(Rotation ), sin(Rotation - ALLEGRO_PI ));
+    float rotation = atan2(diff.y, diff.x);
+    Engine::Point normalized = diff.Normalize();
+    Engine::Point normal = Engine::Point(-normalized.y, normalized.x);
+    // Change bullet position to the front of the gun barrel.
+    getPlayScene()->BulletGroup->AddNewObject(new LaserBullet(Position + normalized * 36 - normal * 6, diff, rotation));
+    //getPlayScene()->BulletGroup->AddNewObject(new Fireball(Position + normalized * 36 + normal * 6, diff, rotation, this));
+    AudioHelper::PlayAudio("fireball.wav");
 }

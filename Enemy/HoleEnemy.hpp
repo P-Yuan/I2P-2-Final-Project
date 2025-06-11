@@ -4,7 +4,7 @@
 
 class HoleEnemy : public Enemy {
 public:
-    HoleEnemy(int x, int y,std::string type);
+    HoleEnemy(int x, int y,int type);
     void CreateBullet() override;
 };
 #endif   // HoleEnemy_HPP

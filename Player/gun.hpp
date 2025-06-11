@@ -1,15 +1,13 @@
-#ifndef Coin_HPP
-#define Coin_HPP
+#ifndef gun_HPP
+#define gun_HPP
 #include "Enemy/Enemy.hpp"
 
-class Coin : public Enemy {
+class Gun : public Enemy {
 public:
     float timeTicks;
-    float timeSpan = 0.7;
-    std::vector<std::shared_ptr<ALLEGRO_BITMAP>> rotate_bmps;
+    float timeSpan = 0.7;    
+    Gun(int x, int y,int type);
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> hit_bmps;
-    Coin(int x, int y,int type);
-
     void Draw() const override;
     void Update(float deltaTime) override;
     void OnExplode(float deltatime);

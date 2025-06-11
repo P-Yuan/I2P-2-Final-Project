@@ -31,13 +31,14 @@
 #include "Scene/WinScene.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
-#include "Turret/TurretButton.hpp"
 #include "Turret/FireTurret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/backgroundImage.hpp"
+#include "UI/Component/skillImage.hpp"
 #include "Player/coin.hpp"
+#include "Player/gun.hpp"
 
 bool PlayScene::DebugMode = false;
 // int PlayScene::backgroundflag = 1;
@@ -138,7 +139,8 @@ void PlayScene::Terminate() {
     IScene::Terminate();
 }
 
-void PlayScene::Update(float deltaTime) {
+void PlayScene::Update(float deltaTime) 
+{
     if (DyingAnimation) {
         // Only update player and possibly effect/animation groups
         auto it = PlayerGroup->GetObjects().back();
@@ -292,28 +294,31 @@ void PlayScene::Update(float deltaTime) {
         Enemy *enemy;
         switch (current[0]) {
             case 1:
-                EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Hole"));
+                EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y,1));
                 break;
             case 2:
-                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Tree"));
+                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,2));
                 break;
             case 3:
-                EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Bike"));
+                EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,3));
                 break;
             case 4:
-                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Grandma"));
+                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y,4));
                 break;
             case 5:
-                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Truck"));
+                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,5));
                 break;
             case 6:
-                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Car"));
+                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y,6));
                 break;
             case 7:
-                EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y,3,"89"));
+                EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y,3,7));
                 break;
             case 8:
-                coinGroup->AddNewObject(enemy = new Coin(SpawnCoordinate.x, SpawnCoordinate.y,"Coin"));
+                coinGroup->AddNewObject(enemy = new Coin(SpawnCoordinate.x, SpawnCoordinate.y,8));
+                break;
+            case 9:
+                coinGroup->AddNewObject(enemy = new Gun(SpawnCoordinate.x, SpawnCoordinate.y,9));
                 break;
             default:
                 continue;
@@ -324,7 +329,7 @@ void PlayScene::Update(float deltaTime) {
 
 
     backgroundGroup->Update(deltaTime);
-
+    BulletGroup->Update(deltaTime);
 
     if (preview) {
         preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
@@ -595,41 +600,50 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1294, 0));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
-    TurretButton *btn;
+    
+
+    
+    
+    
+    
+    skillImage *btn;
+    Engine::Image *bbtn;
     // Button 1
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1294, 136, 0, 0, 0, 0),
-                           Engine::Sprite("play/turret-1.png", 1294, 136 - 8, 0, 0, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
+    
+    //UIGroup->AddNewObject(bbtn=new Engine::Image("play/tower-base.png",1294,136,100,100));
+    UIGroup->AddNewObject(btn=new skillImage("play/gun.png",1340,180,100,100,"gun"));
+    // Engine::Sprite("play/tower-base.png", 1294, 136, 100, 100, 0, 0),
+    //                        Engine::Sprite(, 1294, 136 - 8, 75, 75, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
     // Reference: Class Member Function Pointer and std::bind.
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
-    UIGroup->AddNewControlObject(btn);
-    UIGroup->AddNewObject(new Engine::Label("$50", "pirulen.ttf", 15, 1320, 210, 0, 0, 0, 255, 0.5, 0.5));
+    //btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
+    //AddNewObject(btn);
+    //UIGroup->AddNewObject(new Engine::Label("$50", "pirulen.ttf", 15, 1320, 210, 0, 0, 0, 255, 0.5, 0.5));
 
 
 
-    // Button 2
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1370, 136, 0, 0, 0, 0),
-                           Engine::Sprite("play/turret-2.png", 1370, 136 - 8, 0, 0, 0, 0), 1370, 136, LaserTurret::Price,"laser");
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
-    UIGroup->AddNewControlObject(btn);
-     UIGroup->AddNewObject(new Engine::Label("$200", "pirulen.ttf", 15, 1396, 210, 0, 0, 0, 255, 0.5, 0.5));
-    //Button 3
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1446, 136, 0, 0, 0, 0),
-                           Engine::Sprite("play/turret-fire.png", 1446, 143 - 8, 0, 0, 0, 0), 1446, 136, FireTurret::Price,"fire");
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2));
-    UIGroup->AddNewControlObject(btn);
-     UIGroup->AddNewObject(new Engine::Label("$400", "pirulen.ttf", 15, 1472, 210, 0, 0, 0, 255, 0.5, 0.5));
-    //Buttonheart
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1294, 236, 0, 0, 0, 0),
-                           Engine::Sprite("play/heart.png", 1294, 236, 0, 0, 0, 0), 1294, 236, 0,"heart");
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
-    UIGroup->AddNewControlObject(btn);
-    UIGroup->AddNewObject(new Engine::Label("$50", "pirulen.ttf", 15, 1320, 310, 0, 0, 0, 255, 0.5, 0.5));
-    //Imageplane
-    UIGroup->AddNewObject(new Engine::Sprite("play/plane.png", 1370, 236, 0, 0, 0, 0,0,0,0,0, 0, 0, 160));
+    // // Button 2
+    // btn = new TurretButton("play/floor.png", "play/dirt.png",
+    //                        Engine::Sprite("play/tower-base.png", 1370, 136, 0, 0, 0, 0),
+    //                        Engine::Sprite("play/turret-2.png", 1370, 136 - 8, 0, 0, 0, 0), 1370, 136, LaserTurret::Price,"laser");
+    // btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
+    // UIGroup->AddNewControlObject(btn);
+    //  UIGroup->AddNewObject(new Engine::Label("$200", "pirulen.ttf", 15, 1396, 210, 0, 0, 0, 255, 0.5, 0.5));
+    // //Button 3
+    // btn = new TurretButton("play/floor.png", "play/dirt.png",
+    //                        Engine::Sprite("play/tower-base.png", 1446, 136, 0, 0, 0, 0),
+    //                        Engine::Sprite("play/turret-fire.png", 1446, 143 - 8, 0, 0, 0, 0), 1446, 136, FireTurret::Price,"fire");
+    // btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2));
+    // UIGroup->AddNewControlObject(btn);
+    //  UIGroup->AddNewObject(new Engine::Label("$400", "pirulen.ttf", 15, 1472, 210, 0, 0, 0, 255, 0.5, 0.5));
+    // //Buttonheart
+    // btn = new TurretButton("play/floor.png", "play/dirt.png",
+    //                        Engine::Sprite("play/tower-base.png", 1294, 236, 0, 0, 0, 0),
+    //                        Engine::Sprite("play/heart.png", 1294, 236, 0, 0, 0, 0), 1294, 236, 0,"heart");
+    // btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
+    // UIGroup->AddNewControlObject(btn);
+    // UIGroup->AddNewObject(new Engine::Label("$50", "pirulen.ttf", 15, 1320, 310, 0, 0, 0, 255, 0.5, 0.5));
+    // //Imageplane
+    // UIGroup->AddNewObject(new Engine::Sprite("play/plane.png", 1370, 236, 0, 0, 0, 0,0,0,0,0, 0, 0, 160));
     
     // btn = new TurretButton("play/floor.png", "play/dirt.png",
     //                        Engine::Sprite("play/tower-base.png", 1370, 236, 0, 0, 0, 0),
