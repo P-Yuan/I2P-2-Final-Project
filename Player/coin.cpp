@@ -65,8 +65,9 @@ void Coin::Update(float deltatime)
     max.x=Position.x+(this->GetBitmapWidth());
     max.y=Position.y+(this->GetBitmapHeight());
 
-     for (auto &it : scene->PlayerGroup->GetObjects()) 
-     {
+    //  for (auto &it : scene->PlayerGroup->GetObjects()) 
+    //  {
+        auto &it= scene->PlayerGroup->GetObjects().back();
         Player *player = dynamic_cast<Player *>(it);
         Pmin.x=player->Position.x-(player->GetBitmapWidth()/3);
         Pmin.y=player->Position.y-(player->GetBitmapHeight()/3);
@@ -76,7 +77,7 @@ void Coin::Update(float deltatime)
         {
             OnExplode(deltatime);
         }
-     }
+    // }
 }
 
 void Coin::OnExplode(float deltatime)

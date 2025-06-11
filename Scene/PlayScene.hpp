@@ -115,6 +115,7 @@ public:
     float DyingTimer;
     bool WinningAnimation = false; // True when dying or winning animation is playing
     float WinningTimer;
+    bool GangHit = false;
 };
 #endif   // PLAYSCENE_HPP
  
