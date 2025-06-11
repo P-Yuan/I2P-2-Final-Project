@@ -12,6 +12,7 @@ namespace Engine {
     /// </summary>
     class backgroundImage : public IObject {
     public:
+        bool winflag=false;
         float sx=0;
         float dx=0;
         float scrollSpeed = 1.0f;
@@ -31,7 +32,7 @@ namespace Engine {
         /// <param name="h">Height of the image, 0 indicates original size.</param>
         /// <param name="anchorX">The centerX of the object. (0, 0) means top-left, while (1, 0) means top-right.</param>
         /// <param name="anchorY">The centerY of the object. (0, 1) means bottom-left, while (1, 1) means bottom-right.</param>
-        explicit backgroundImage(std::string img,int w,int h);
+        explicit backgroundImage(std::string img,int w,int h,int t);
         /// Draw the loaded image.
         /// </summary>
         void Draw() const override;

@@ -37,11 +37,10 @@
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/backgroundImage.hpp"
-
-
+#include "Player/coin.hpp"
 
 bool PlayScene::DebugMode = false;
-int PlayScene::backgroundflag = 1;
+// int PlayScene::backgroundflag = 1;
 int PlayScene :: lives=0;
 int PlayScene :: money=0;
 float player_y_2=0;
@@ -73,6 +72,7 @@ void PlayScene::Initialize() {
     keyStrokes.clear();
     planeflag=false;
     ticks = 0;
+    ticks_coin=0;
     deathCountDown = -1;
     lives = 100;
     money = 10;
@@ -90,16 +90,17 @@ void PlayScene::Initialize() {
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
-    
+    AddNewObject(coinGroup = new Group());
     AddNewObject(backgroundGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
 
-    backgroundGroup->AddNewObject(new Engine::backgroundImage("play/background.png",1280,385));
+    backgroundGroup->AddNewObject(new Engine::backgroundImage("play/background.png",1280,385,1));
 
     ReadMap();
     ReadEnemyWave();
+    // ReadCoinWave();
     mapDistance = CalculateBFSDistance();
     ConstructUI();
     imgTarget = new Engine::Image("play/target.png", 0, 0);
@@ -123,123 +124,7 @@ void PlayScene::Initialize() {
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("play.ogg");
 }
-void PlayScene::ShopOnClick()
-{
-    Engine::GameEngine::GetInstance().resume=true;
-    pauseflag=true;
-}
-void PlayScene::laserOnClick()
-{
-    if(money-500>=0)
-    {
-        
-        auto it = UIGroup->GetObjects();
-        TurretButton* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<TurretButton*>(*itt);
-            if(btn!=nullptr && btn->useflag!=true)
-            {
-                if(btn->type=="laser")
-                {
-                    EarnMoney(-500);
-                    btn->useflag=true;
-                    UIGroup->Update(0);
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-        Engine::Sprite *sprite;
 
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
-}
-void PlayScene::fireOnClick()
-{
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    if(money-1000>=0)
-    {
-        
-        auto it = UIGroup->GetObjects();
-        TurretButton* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<TurretButton*>(*itt);
-            if(btn!=nullptr && btn->useflag!=true)
-            {
-                if(btn->type=="fire")
-                {
-                    EarnMoney(-1000);
-                    btn->useflag=true;
-                    UIGroup->Update(0);
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-       Engine::Sprite *sprite;
-
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
-}
-
-void PlayScene::planeOnClick()
-{
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    if(money-1500>=0)
-    {
-        
-        auto it = UIGroup->GetObjects();
-        planeflag=true;
-        Engine::Sprite* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<Engine::Sprite*>(*itt);
-            if(btn!=nullptr && btn->useflag!=2)
-            {
-                EarnMoney(-1500);
-                btn->useflag=2;
-                UIGroup->Update(0);
-                break;
-            }
-        }
-    }
-    else
-    {
-       Engine::Sprite *sprite;
-
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
-}
-void PlayScene::backOnClick()
-{
-    PauseGroup->Clear();
-    pauseflag=false;
-    pauseinitflag=false;
-}
 
 void PlayScene::Terminate() {
     AudioHelper::StopBGM(bgmId);
@@ -248,49 +133,6 @@ void PlayScene::Terminate() {
     IScene::Terminate();
 }
 
-void PlayScene::pauseinit()
-{
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    //Engine::GameEngine::GetInstance().ChangeScene("shop");
-
-    Engine::ImageButton *btn;
-    PauseGroup->AddNewObject(new Engine::Image("play/shovel-base.png", halfW-100, halfH, 1000, 800, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 48, halfW-100, halfH-350, 0, 0, 0, 255, 0.5, 0.5));
-    //laserturret
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/turret-2.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
-    //fireturret
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/turret-fire.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
-    //plane
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/plane.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
-    //laserbutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-500, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::laserOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW-400, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
-    //firebutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-200, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::fireOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1000", "pirulen.ttf", 30, halfW-100, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
-    //planebutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+100, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::planeOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1500", "pirulen.ttf", 30, halfW+200, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
-    
-
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-300, halfH +250, 400, 100);
-    btn->SetOnClickCallback(std::bind(&PlayScene::backOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW-100, halfH+300, 0, 0, 0, 255, 0.5, 0.5));
-
-}
 void PlayScene::Update(float deltaTime) {
    
     if(pauseflag)
@@ -355,6 +197,7 @@ void PlayScene::Update(float deltaTime) {
         IScene::Update(deltaTime);
         // Check if we should create new enemy.
         ticks += deltaTime;
+        // ticks_coin+=deltaTime;
         // if (enemyWaveData.empty()) { 
         //     if (EnemyGroup->GetObjects().empty()) {
         //         WinScene :: storelives();
@@ -364,8 +207,10 @@ void PlayScene::Update(float deltaTime) {
         // }
         if (enemyWaveData_new.empty()) { 
             if (EnemyGroup->GetObjects().empty()) {
-                WinScene :: storelives();
-                Engine::GameEngine::GetInstance().ChangeScene("win");
+                Engine::backgroundImage *it;
+                backgroundGroup->AddNewObject(it=new Engine::backgroundImage("play/you_win.png",1280,385,2));
+                //WinScene :: storelives();
+                //Engine::GameEngine::GetInstance().ChangeScene("win");
             }
             continue;
         }
@@ -381,6 +226,7 @@ void PlayScene::Update(float deltaTime) {
         ticks -= current[1];
 
         Engine::Point SpawnCoordinate;
+        Engine::Point SpawnCoordinate_coin;
         switch (current[2])
         {
         case 1:
@@ -419,13 +265,17 @@ void PlayScene::Update(float deltaTime) {
             case 6:
                 EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Truck"));
                 break;
+            case 7:
+                coinGroup->AddNewObject(enemy = new Coin(SpawnCoordinate.x, SpawnCoordinate.y,"Coin"));
+                break;
             default:
                 continue;
         }
-        //enemy->UpdatePath(mapDistance);
         // Compensate the time lost.
         enemy->Update(ticks);
     }
+
+
     backgroundGroup->Update(deltaTime);
 
 
@@ -435,7 +285,8 @@ void PlayScene::Update(float deltaTime) {
         preview->Update(deltaTime);
     }
 }
-void PlayScene::Draw() const {
+void PlayScene::Draw() const 
+{
     IScene::Draw();
     if (DebugMode) {
         // Draw reverse BFS distance on all reachable blocks.
@@ -687,27 +538,6 @@ void PlayScene::ReadEnemyWave() {
     }
     fin.close();
 }
-
-void PlayScene::ReadCoinWave() {
-    std::string filename = std::string("Resource/coin")+ std::to_string(MapId) + ".txt";
-    // Read enemy file.
-    float type, wait, repeat, line;
-    enemyWaveData.clear();
-    std::ifstream fin(filename);
-    while (fin >> type && fin >> wait && fin >> repeat && fin>>line) {
-        for (int i = 0; i < repeat; i++){
-            std::vector<int> oneEnemy;
-            oneEnemy.emplace_back(type);
-            oneEnemy.emplace_back(wait);
-            oneEnemy.emplace_back(line);
-            enemyWaveData_new.emplace_back(oneEnemy);
-        }
-            //enemyWaveData.emplace_back(type, wait);
-            
-    }
-    fin.close();
-}
-
 
 void PlayScene::ConstructUI() {
     // Background

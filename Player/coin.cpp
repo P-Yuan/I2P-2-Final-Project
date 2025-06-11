@@ -1,99 +1,100 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
-#include <allegro5/allegro.h>
 #include <cmath>
 #include <random>
 #include <string>
 #include <vector>
 
-#include "Bullet/Bullet.hpp"
-#include "Enemy/Enemy.hpp"
 #include "coin.hpp"
-#include "Engine/AudioHelper.hpp"
-#include "Engine/Collider.hpp"
-#include "Engine/GameEngine.hpp"
-#include "Engine/Group.hpp"
-#include "Engine/IScene.hpp"
-#include "Engine/LOG.hpp"
-#include "Engine/Allegro5Exception.hpp"
 #include "Scene/PlayScene.hpp"
-#include "Turret/Turret.hpp"
-#include "UI/Animation/DirtyEffect.hpp"
-#include "UI/Animation/ExplosionEffect.hpp"
+#include "Bullet/FireBullet.hpp"
+#include "Engine/AudioHelper.hpp"
+#include "Engine/Group.hpp"
+#include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
-#include "Engine/LOG.hpp"
-
-PlayScene *coin::getPlayScene() {
-    return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
-}
-
-void coin::OnExplode() {
-    getPlayScene()->EffectGroup->AddNewObject(new ExplosionEffect(Position.x, Position.y));
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> distId(1, 3);
-    std::uniform_int_distribution<std::mt19937::result_type> dist(1, 20);
-    for (int i = 0; i < 10; i++) {
-        // Random add 10 dirty effects.
-        getPlayScene()->GroundEffectGroup->AddNewObject(new DirtyEffect("play/dirty-" + std::to_string(distId(rng)) + ".png", dist(rng), Position.x, Position.y));
-    }
-}
+#include "Player.hpp"
+#include "Engine/Collider.hpp"
 
 
-coin::coin(std::string img, float x, float y, float radius, float speed, float hp, int money) :
-    Sprite(img, x, y),
-    hp(hp),
-    money(money) {
-    CollisionRadius = radius;
-    cooldown=0;
+Coin::Coin(int x, int y,std::string type) : Enemy("play/coins_1.png", x, y, 50, 50, 20, 1000,type) 
+{
     timeTicks=0;
-    for (int i = 1; i <= 6; i++) {
-        bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_walk" + std::to_string(i) + ".png"));
+    for (int i = 1; i <= 8; i++) {
+        rotate_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
     }
-    Engine::LOG(Engine::INFO)<<"bmps size:"<<bmps.size();
-}
-void coin::Hit(float damage) {
-    hp -= damage;
-    getPlayScene()->Hit(damage);
-}
 
-void coin::Update(float deltaTime){
-    //Sprite::Update(deltaTime);
-    rotate(deltaTime);
-    if(cooldown<=0){
-        PlayScene *scene = getPlayScene();
-        for (auto &it : scene->EnemyGroup->GetObjects()) {
-            Enemy *enemy = dynamic_cast<Enemy *>(it);
-            if (!enemy->Visible)
-                continue;
-            if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) {
-                OnExplode();
-                //enemy->Hit(damage);
-                //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-                Hit(1);
-                cooldown=2;
-                return;
-            }
-        }
-    }
-    else{
-        cooldown-=deltaTime;
+     for (int i = 9; i<=16 ; i++) {
+        hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
     }
 }
 
-void coin::Draw() const {
-    Sprite::Draw();
+void Coin::CreateBullet() {
+    
+}
+
+void Coin::Draw() const
+{
+     al_draw_tinted_scaled_rotated_bitmap(bmp.get(), Tint, Anchor.x * GetBitmapWidth(), Anchor.y * GetBitmapHeight(),
+                                             Position.x, Position.y, Size.x/3 , Size.y/3 , Rotation, 0);
     if (PlayScene::DebugMode) {
         // Draw collision radius.
-        al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()),Position.y-(this->GetBitmapHeight()),
+                          Position.x+(this->GetBitmapWidth()),Position.y+(this->GetBitmapHeight())
+                          , al_map_rgb(255, 0, 0), 2);
     }
+    
 }
 
-void coin::rotate(float deltaTime) {
-    timeTicks+=deltaTime;
+void Coin::Update(float deltatime)
+{
+    timeTicks+=deltatime;
     if(timeTicks>=timeSpan) timeTicks-=timeSpan;
-    int phase = floor(timeTicks / timeSpan * bmps.size());
+    int phase = floor(timeTicks / timeSpan * rotate_bmps.size());
     //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
-    bmp = bmps[phase];
-    Sprite::Update(deltaTime);
+    bmp = rotate_bmps[phase];
+    Enemy::Update(deltatime);
+
+    PlayScene *scene = getPlayScene();
+    Engine:: Point max;
+    Engine:: Point min;
+    Engine:: Point Pmax;
+    Engine:: Point Pmin;
+    min.x=Position.x-(this->GetBitmapWidth());
+    min.y=Position.y-(this->GetBitmapHeight());
+    max.x=Position.x+(this->GetBitmapWidth());
+    max.y=Position.y+(this->GetBitmapHeight());
+
+     for (auto &it : scene->PlayerGroup->GetObjects()) 
+     {
+        Player *player = dynamic_cast<Player *>(it);
+        Pmin.x=player->Position.x-(player->GetBitmapWidth()/3);
+        Pmin.y=player->Position.y-(player->GetBitmapHeight()/3);
+        Pmax.x=player->Position.x+(player->GetBitmapWidth()/3);
+        Pmax.y=player->Position.y+(player->GetBitmapHeight()/3);
+        if (Engine::Collider::IsRectOverlap(min, max, Pmin, Pmax)) 
+        {
+            OnExplode(deltatime);
+        }
+     }
+}
+
+void Coin::OnExplode(float deltatime)
+{
+    timeTicks+=deltatime;
+    if(timeTicks>=timeSpan) timeTicks-=timeSpan;
+    int phase = floor(timeTicks / timeSpan * hit_bmps.size());
+    //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    bmp = hit_bmps[phase];
+    PlayScene *scene = getPlayScene();
+    if(phase<4)
+    {
+        AudioHelper::PlayAudio("coins.wav");
+    }
+    if(phase==7)
+    {
+        scene->coinGroup->RemoveObject(objectIterator);
+        scene->EarnMoney(10);
+    }
+    //std::cout << phase << std::endl;
 }

@@ -148,7 +148,7 @@ void Enemy::Update(float deltaTime) {
         Emin.y=enemy->Position.y-(enemy->GetBitmapHeight()/3);
         Emax.x=enemy->Position.x+(enemy->GetBitmapWidth()/3);
         Emax.y=enemy->Position.y+(enemy->GetBitmapHeight()/3);
-        if (!enemy->Visible || enemy==this || enemy->type!="Car"||(enemy->type=="Car" && this->type=="Hole"))
+        if (this->type=="Coin" || !enemy->Visible || enemy==this || enemy->type!="Car"||(enemy->type=="Car" && this->type=="Hole"))
         {
             continue;
         }

@@ -51,6 +51,7 @@ public:
     bool planeflag;
     int MapId;
     float ticks;
+    float ticks_coin;
     float deathCountDown;
     Engine::backgroundImage *back1;
     Engine::backgroundImage *back2;
@@ -67,6 +68,8 @@ public:
     Group *UIGroup;
     Group *PauseGroup;
     Group *PlayerGroup;
+    Group *coinGroup;
+    // Group *coinGroup;
     Engine::Label *UIMoney;
     Engine::Label *UILives;
     Engine::Image *imgTarget;
@@ -76,6 +79,8 @@ public:
     std::vector<std::vector<int>> mapDistance;
     std::list<std::pair<int, float>> enemyWaveData;
     std::vector<std::vector<int>> enemyWaveData_new;
+    std::list<std::pair<int, float>> coinWaveData;
+    std::vector<std::vector<int>> coinWaveData_new;
     std::list<int> keyStrokes;
     static Engine::Point GetClientSize();
     explicit PlayScene() = default;
@@ -93,7 +98,7 @@ public:
     void EarnMoney(int money);
     void ReadMap();
     void ReadEnemyWave();
-    void ReadCoinWave();
+    // void ReadCoinWave();
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);

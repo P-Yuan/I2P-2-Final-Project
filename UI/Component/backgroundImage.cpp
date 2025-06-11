@@ -1,6 +1,5 @@
 #include <allegro5/allegro.h>
 #include <memory>
-#include <iostream>
 
 #include "Scene/PlayScene.hpp"
 #include "Engine/IObject.hpp"
@@ -9,13 +8,26 @@
 #include "backgroundImage.hpp"
 
 namespace Engine {
-   backgroundImage::backgroundImage(std::string img,int w,int h)
+   backgroundImage::backgroundImage(std::string img,int w,int h,int t)
+   :type(t)
    {
+        
         bmp = Resources::GetInstance().GetBitmap(img); 
-        bgWidth=GetBitmapWidth();
-        sx=0;sy=0;sw=bgWidth/2,sh=GetBitmapHeight();
-        dx=0;dy=0;dw=w,dh=h;
+        if(type==1)
+        {
+            bgWidth=GetBitmapWidth();
+            sx=0;sy=0;sw=bgWidth/2,sh=GetBitmapHeight();
+            dx=0;dy=0;dw=w,dh=h;
+        }
+        else if(type==2)
+        {
+            bgWidth=h;
+            sx=0;sy=0;sw=GetBitmapWidth(),sh=0;
+            dx=0;dy=0;dw=w,dh=0;
+        }
+        
     }
+
     void backgroundImage::Draw() const 
     {
         al_draw_scaled_bitmap(bmp.get(), 
@@ -33,10 +45,34 @@ namespace Engine {
 
     void backgroundImage::Update(float deltaTime) 
     {
-        sx += scrollSpeed;
-        if (bgWidth - sx < sw || sx >= bgWidth) 
+        if(type==1)
         {
-            sx = 0;
+            if (bgWidth - sx < sw || sx >= bgWidth ) 
+            {
+                sx = 0;
+            }
+            else if(winflag && bgWidth - sx < sw || sx >= bgWidth)
+            {
+                return;
+            }
+            else
+            {
+                sx += scrollSpeed;
+            }
         }
+        else if(type==2)
+        {
+            
+            if(sh==bgWidth)
+            {
+                return;
+            }
+            else
+            {
+                sh+=scrollSpeed;
+                dh+=scrollSpeed;
+            }
+        }
+       
     };
 }

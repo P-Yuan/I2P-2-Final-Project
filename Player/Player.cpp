@@ -55,6 +55,7 @@ Player::Player(std::string img, float x, float y, float radius, float speed, flo
         hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/player_hit" + std::to_string(i) + ".png"));
     }
 }
+
 void Player::Hit(float damage) {
     hp -= damage;
     getPlayScene()->Hit(damage);
@@ -73,12 +74,26 @@ void Player::Update(float deltaTime){
 
     if(cooldown<=0){
         Walking(deltaTime);
+        
         PlayScene *scene = getPlayScene();
-        for (auto &it : scene->EnemyGroup->GetObjects()) {
+        Engine:: Point max;
+        Engine:: Point min;
+        Engine:: Point Emax;
+        Engine:: Point Emin;
+        min.x=Position.x-(this->GetBitmapWidth()/3);
+        min.y=Position.y-(this->GetBitmapHeight()/3);
+        max.x=Position.x+(this->GetBitmapWidth()/3);
+        max.y=Position.y+(this->GetBitmapHeight()/3);
+        for (auto &it : scene->EnemyGroup->GetObjects()) 
+        {
             Enemy *enemy = dynamic_cast<Enemy *>(it);
+            Emin.x=enemy->Position.x-(enemy->GetBitmapWidth()/3);
+            Emin.y=enemy->Position.y-(enemy->GetBitmapHeight()/3);
+            Emax.x=enemy->Position.x+(enemy->GetBitmapWidth()/3);
+            Emax.y=enemy->Position.y+(enemy->GetBitmapHeight()/3);
             if (!enemy->Visible)
                 continue;
-            if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) {
+            if (Engine::Collider::IsRectOverlap(min, max, Emin, Emax)) {
                 //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
@@ -96,9 +111,12 @@ void Player::Update(float deltaTime){
 
 void Player::Draw() const {
     Sprite::Draw();
-    if (PlayScene::DebugMode) {
+     if (PlayScene::DebugMode) {
         // Draw collision radius.
-        al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/3),Position.y-(this->GetBitmapHeight()/3),
+                          Position.x+(this->GetBitmapWidth()/3),Position.y+(this->GetBitmapHeight()/3)
+                          , al_map_rgb(255, 0, 0), 2);
     }
 }
 
