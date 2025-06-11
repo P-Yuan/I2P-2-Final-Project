@@ -106,6 +106,10 @@ public:
     std::vector<std::vector<int>> CalculateBFSDistance();
     bool pauseflag;
     bool pauseinitflag;
+    bool DyingAnimation = false; // True when dying or winning animation is playing
+    float DyingTimer;
+    bool WinningAnimation = false; // True when dying or winning animation is playing
+    float WinningTimer;
 };
 #endif   // PLAYSCENE_HPP
  

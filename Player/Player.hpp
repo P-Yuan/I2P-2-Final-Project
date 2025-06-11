@@ -23,10 +23,15 @@ protected:
     float HitSpan = 0.1;
     float MoveTicks;
     float MoveSpan = 0.05;
+    float DyingTicks;
+    float DyingSpan = 0.1;
+    float WinningTicks;
+    float WinningSpan = 0.2;
     PlayScene *getPlayScene();
     virtual void OnExplode();
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> walk_bmps;
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> hit_bmps;
+    std::vector<std::shared_ptr<ALLEGRO_BITMAP>> win_bmps;
     enum dir{
         UP=-1, DOWN=1
     };
@@ -39,5 +44,7 @@ public:
     void Walking(float deltatime);
     void Hitting(float deltatime);
     void OnKeyDown(int keyCode);
+    void Dying(float deltaTime);
+    void Winning(float deltaTime);
 };
 #endif   // PLAYER_HPP

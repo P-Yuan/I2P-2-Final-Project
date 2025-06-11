@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Enemy/Enemy.hpp"
-#include "Enemy/TankEnemy.hpp"
+#include "Enemy/GangEnemy.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/GameEngine.hpp"

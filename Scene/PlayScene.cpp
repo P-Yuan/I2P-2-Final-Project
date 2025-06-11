@@ -14,7 +14,7 @@
 #include "Enemy/Enemy.hpp"
 #include "Enemy/GrandmaEnemy.hpp"
 #include "Enemy/CarEnemy.hpp"
-#include "Enemy/TankEnemy.hpp" 
+#include "Enemy/GangEnemy.hpp" 
 #include "Enemy/HoleEnemy.hpp" 
 #include "Enemy/BikeEnemy.hpp"
 #include "Enemy/TreeEnemy.hpp"
@@ -45,15 +45,16 @@ int PlayScene::backgroundflag = 1;
 int PlayScene :: lives=0;
 int PlayScene :: money=0;
 float player_y_2=0;
+float DyingTimer = 0.0f;
 
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
 const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
-const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(-1, 0);
-const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(21, 7);
-const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(21, 9);
-const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(21, 11);
+const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(1, 9);
+const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(20, 7);
+const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(20, 9);
+const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(20, 11);
 const Engine::Point PlayScene::EndGridPoint = Engine::Point(MapWidth, MapHeight - 1);
 const std::vector<int> PlayScene::code = {
     ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
@@ -77,8 +78,12 @@ void PlayScene::Initialize() {
     lives = 100;
     money = 10;
     SpeedMult = 1;
-    pauseflag=false;
-    pauseinitflag=false;
+    pauseflag = false;
+    pauseinitflag = false;
+    WinningAnimation = false;
+    DyingAnimation = false;
+    WinningTimer = 0;
+    DyingTimer = 0;
     
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Group());
@@ -292,7 +297,38 @@ void PlayScene::pauseinit()
 
 }
 void PlayScene::Update(float deltaTime) {
-   
+    if (DyingAnimation) {
+        // Only update player and possibly effect/animation groups
+        auto it = PlayerGroup->GetObjects().back();
+        Player *player = dynamic_cast<Player *>(it);
+        player->Dying(deltaTime);
+        EnemyGroup->Update(deltaTime);
+        DyingTimer+=deltaTime;
+        if (DyingTimer >= 1.5f) {
+            Engine::LOG(Engine::INFO)<<"end dying";
+            Engine::GameEngine::GetInstance().ChangeScene("lose");           
+        }
+            
+        // Skip updating everything else
+        return;
+    }
+
+    if (WinningAnimation) {
+        // Only update player and possibly effect/animation groups
+        auto it = PlayerGroup->GetObjects().back();
+        Player *player = dynamic_cast<Player *>(it);
+        player->Winning(deltaTime);
+        EnemyGroup->Update(deltaTime);
+        DyingTimer+=deltaTime;
+        if (DyingTimer >= 1.5f) {
+            Engine::LOG(Engine::INFO)<<"end winning";
+            Engine::GameEngine::GetInstance().ChangeScene("win");           
+        }
+            
+        // Skip updating everything else
+        return;
+    }
+
     if(pauseflag)
     {
         if(!pauseinitflag)
@@ -364,8 +400,11 @@ void PlayScene::Update(float deltaTime) {
         // }
         if (enemyWaveData_new.empty()) { 
             if (EnemyGroup->GetObjects().empty()) {
-                WinScene :: storelives();
-                Engine::GameEngine::GetInstance().ChangeScene("win");
+                WinningAnimation=true;
+                SpeedMult = 0; // freeze enemy bullets and movement
+                AudioHelper::StopBGM(bgmId);
+                // WinScene :: storelives();
+                // Engine::GameEngine::GetInstance().ChangeScene("win");
             }
             continue;
         }
@@ -392,7 +431,9 @@ void PlayScene::Update(float deltaTime) {
         case 3:
             SpawnCoordinate = Engine::Point(SpawnGridPoint_3.x * BlockSize + BlockSize / 2, SpawnGridPoint_3.y * BlockSize );
             break;
-        
+        case 4:
+            SpawnCoordinate = Engine::Point(SpawnGridPoint.x * BlockSize + BlockSize / 2, SpawnGridPoint.y * BlockSize );
+            break;
         default:
             SpawnCoordinate = Engine::Point(SpawnGridPoint_1.x * BlockSize + BlockSize / 2, SpawnGridPoint_1.y * BlockSize );
             break;
@@ -405,19 +446,22 @@ void PlayScene::Update(float deltaTime) {
                 EnemyGroup->AddNewObject(enemy = new HoleEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Hole"));
                 break;
             case 2:
-                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Grandma"));
+                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Tree"));
                 break;
             case 3:
                 EnemyGroup->AddNewObject(enemy = new BikeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Bike"));
                 break;
             case 4:
-                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Car"));
+                EnemyGroup->AddNewObject(enemy = new GrandmaEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Grandma"));
                 break;
             case 5:
-                EnemyGroup->AddNewObject(enemy = new TreeEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Tree"));
+                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Truck"));
                 break;
             case 6:
-                EnemyGroup->AddNewObject(enemy = new TruckEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Truck"));
+                EnemyGroup->AddNewObject(enemy = new CarEnemy(SpawnCoordinate.x, SpawnCoordinate.y,"Car"));
+                break;
+            case 7:
+                EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y,3,"89"));
                 break;
             default:
                 continue;
@@ -549,9 +593,10 @@ void PlayScene::OnKeyDown(int keyCode) {
         Player *player = dynamic_cast<Player *>(it);
         player->OnKeyDown(keyCode);
     }
-    // if(keyCode == ALLEGRO_KEY_DOWN){
-    //     Engine::LOG(Engine::INFO)<<"key down";
-    // }
+    else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
+        // Hotkey for Speed up.
+        SpeedMult = keyCode - ALLEGRO_KEY_0;
+    }
 
     // else if(keyCode == ALLEGRO_KEY_A || keyCode == ALLEGRO_KEY_B || keyCode == ALLEGRO_KEY_UP || keyCode == ALLEGRO_KEY_DOWN || keyCode == ALLEGRO_KEY_LEFT || keyCode == ALLEGRO_KEY_RIGHT || keyCode == ALLEGRO_KEY_LSHIFT ||keyCode == ALLEGRO_KEY_ENTER )
     // {
@@ -567,10 +612,7 @@ void PlayScene::OnKeyDown(int keyCode) {
     //     UIBtnClicked(1);
     // }
     
-    // else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
-    //     // Hotkey for Speed up.
-    //     SpeedMult = keyCode - ALLEGRO_KEY_0;
-    // }
+    
     // else 
     // {
     //     keyStrokes.push_back(keyCode);
@@ -601,7 +643,10 @@ void PlayScene::Hit(int l) {
     lives-=l;
     UILives->Text = std::string("Life ") + std::to_string(lives);
     if (lives <= 0) {
-        Engine::GameEngine::GetInstance().ChangeScene("lose");
+        // When losing
+        DyingAnimation = true;
+        SpeedMult = 0; // freeze enemy bullets and movement
+        AudioHelper::StopBGM(bgmId);
     }
 }
 int PlayScene::GetMoney() {
@@ -673,6 +718,7 @@ void PlayScene::ReadEnemyWave() {
     // Read enemy file.
     float type, wait, repeat, line;
     enemyWaveData.clear();
+    enemyWaveData_new.clear();
     std::ifstream fin(filename);
     while (fin >> type && fin >> wait && fin >> repeat && fin>>line) {
         for (int i = 0; i < repeat; i++){
@@ -693,6 +739,7 @@ void PlayScene::ReadCoinWave() {
     // Read enemy file.
     float type, wait, repeat, line;
     enemyWaveData.clear();
+    enemyWaveData_new.clear();
     std::ifstream fin(filename);
     while (fin >> type && fin >> wait && fin >> repeat && fin>>line) {
         for (int i = 0; i < repeat; i++){

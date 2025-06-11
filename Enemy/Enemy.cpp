@@ -129,7 +129,7 @@ void Enemy::Update(float deltaTime) {
     //     }
     // }
     // Rotation = atan2(Velocity.y, Velocity.x);
-    Position.x-=speed*0.1;
+    if(type!="89" && !((type=="Hole" || type=="Tree") && (getPlayScene()->DyingAnimation || getPlayScene()->WinningAnimation))) Position.x-=speed*0.1;
     Sprite::Update(deltaTime);
 
     PlayScene *scene = getPlayScene();
@@ -158,6 +158,9 @@ void Enemy::Update(float deltaTime) {
             //getPlayScene()->BulletGroup->RemoveObject(objectIterator);
             return;
         }
+    }
+    if (max.x<0){
+        getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
     }
 }
 void Enemy::Draw() const {

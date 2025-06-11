@@ -1,5 +1,5 @@
-#ifndef TANKENEMY_HPP
-#define TANKENEMY_HPP
+#ifndef GangEnemy_HPP
+#define GangEnemy_HPP
 #include "Enemy.hpp"
 #include "Engine/Sprite.hpp"
 #include "UI/Animation/Plane.hpp"
@@ -21,4 +21,4 @@ public:
     void attack(Plane * plane,float deltaTime);
     void CreateBullet() override;
 };
-#endif   // TANKENEMY_HPP
+#endif   // GangEnemy_HPP
