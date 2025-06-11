@@ -161,8 +161,9 @@ void PlayScene::Update(float deltaTime) {
         Player *player = dynamic_cast<Player *>(it);
         player->Winning(deltaTime);
         EnemyGroup->Update(deltaTime);
+        backgroundGroup->Update(deltaTime);
         DyingTimer+=deltaTime;
-        if (DyingTimer >= 1.5f) {
+        if (DyingTimer >= 3.0f) {
             Engine::LOG(Engine::INFO)<<"end winning";
             Engine::GameEngine::GetInstance().ChangeScene("win");           
         }

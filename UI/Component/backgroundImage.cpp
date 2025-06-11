@@ -69,8 +69,8 @@ namespace Engine {
             }
             else
             {
-                sh+=scrollSpeed;
-                dh+=scrollSpeed;
+                sh+=scrollSpeed*4;
+                dh+=scrollSpeed*4;
             }
         }
        
