@@ -30,6 +30,9 @@ protected:
     float WinningSpan = 0.2;
     int attackingcnt=0;
     
+    float gochase;
+    float chasing;
+    float goback;
     PlayScene *getPlayScene();
     virtual void OnExplode();
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> walk_bmps;
@@ -40,14 +43,15 @@ protected:
     };
     dir move_dir;
 public:
+    
     Player(std::string img, float x, float y, float radius, float speed, float hp, int money);
     void Hit(float damage);
     void Update(float deltaTime) override;
     void Draw() const override;
-    void Walking(float deltatime);
+    virtual void Walking(float deltatime);
     void Hitting(float deltatime);
     void OnKeyDown(int keyCode);
-    void Dying(float deltaTime);
+    virtual void Dying(float deltaTime);
     void Winning(float deltaTime);
     void attacking();
     static bool attackingmode;

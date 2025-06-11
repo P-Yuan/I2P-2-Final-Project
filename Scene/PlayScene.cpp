@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "Player/Player.hpp"
+#include "Player/Gang.hpp"
 #include "Enemy/Enemy.hpp"
 #include "Enemy/GrandmaEnemy.hpp"
 #include "Enemy/CarEnemy.hpp"
@@ -85,14 +86,16 @@ void PlayScene::Initialize() {
     DyingAnimation = false;
     WinningTimer = 0;
     DyingTimer = 0;
+    GangHit = false;
     
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
     AddNewObject(DebugIndicatorGroup = new Group());
-    AddNewObject(PlayerGroup = new Group());
+    
     AddNewObject(TowerGroup = new Group());
     AddNewObject(EnemyGroup = new Group());
+    AddNewObject(PlayerGroup = new Group());
     AddNewObject(BulletGroup = new Group());
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
@@ -115,7 +118,9 @@ void PlayScene::Initialize() {
     UIGroup->AddNewObject(imgTarget);
 
     //Add player
-    PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 200, halfH / 2 +365, 50,0,100,110));
+    //if(MapId==3)
+    PlayerGroup->AddNewObject(new Gang("play/gang_walk1.png", 100, halfH / 2 +365, 50,0));
+    PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 300, halfH / 2 +365, 50,0,100,110));
 
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+500, halfH / 2 +500, 200, 100);
@@ -143,10 +148,16 @@ void PlayScene::Update(float deltaTime)
 {
     if (DyingAnimation) {
         // Only update player and possibly effect/animation groups
-        auto it = PlayerGroup->GetObjects().back();
+        
+        auto &it = PlayerGroup->GetObjects().back();
         Player *player = dynamic_cast<Player *>(it);
         player->Dying(deltaTime);
-        EnemyGroup->Update(deltaTime);
+        if(GangHit){
+            it = PlayerGroup->GetObjects().front();
+            Gang *gang = dynamic_cast<Gang *>(it);
+            gang->Dying(deltaTime);
+        }
+        
         DyingTimer+=deltaTime;
         if (DyingTimer >= 1.5f) {
             Engine::LOG(Engine::INFO)<<"end dying";
@@ -447,10 +458,19 @@ void PlayScene::OnKeyDown(int keyCode) {
     }
 
     if(keyCode == ALLEGRO_KEY_UP || keyCode == ALLEGRO_KEY_DOWN){
-        Engine::LOG(Engine::INFO)<<"key up/down";
-        auto it = PlayerGroup->GetObjects().back();
-        Player *player = dynamic_cast<Player *>(it);
-        player->OnKeyDown(keyCode);
+        
+        // auto it = PlayerGroup->GetObjects().back();
+        // Player *player = dynamic_cast<Player *>(it);
+        // player->OnKeyDown(keyCode);
+        // it = PlayerGroup->GetObjects().front();
+        // player = dynamic_cast<Player *>(it);
+        // player->OnKeyDown(keyCode);
+        for(auto& it:PlayerGroup->GetObjects()){
+            Engine::LOG(Engine::INFO)<<"one player up/down";
+            Player *player = dynamic_cast<Player *>(it);
+            player->OnKeyDown(keyCode);
+        }
+        
     }
     else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
         // Hotkey for Speed up.
@@ -506,6 +526,7 @@ void PlayScene::Hit(int l) {
         DyingAnimation = true;
         SpeedMult = 0; // freeze enemy bullets and movement
         AudioHelper::StopBGM(bgmId);
+        AudioHelper::PlayAudio("lose.wav");
     }
 }
 int PlayScene::GetMoney() {

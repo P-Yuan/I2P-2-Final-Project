@@ -171,9 +171,17 @@ void Player::Update(float deltaTime){
                 //OnExplode();
                 //enemy->Hit(damage);
                 //getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
-                HitTicks=0.6;
+                //HitTicks=0.6;
                 Hit(enemy->getdamage());
-                cooldown=1.5;
+                //cooldown=1.5;
+                for(auto &pit:getPlayScene()->PlayerGroup->GetObjects()){
+                    Player *p = dynamic_cast<Player *>(pit);
+                    p->chasing=8;
+                    p->gochase=4;
+                    p->cooldown=1.5;
+                    p->HitTicks=0.6;
+                    p->goback=0;
+                }
                 return;
             }
         }
@@ -216,7 +224,11 @@ void Player::Walking(float deltaTime) {
 }
 
 void Player::Hitting(float deltaTime) {
-    HitTicks-=deltaTime;
+    for(auto &pit:getPlayScene()->PlayerGroup->GetObjects()){
+        Player *p = dynamic_cast<Player *>(pit);
+        p->HitTicks-=deltaTime;
+    }
+    //HitTicks-=deltaTime;
     if(HitTicks<=0){
         //Engine::LOG(Engine::INFO)<<"End hit";
         return;
@@ -232,7 +244,7 @@ void Player::OnKeyDown(int keyCode){
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    if(cooldown<=0){
+    if(HitTicks<=0){
         if(keyCode==ALLEGRO_KEY_UP){
             if(Position.y >= halfH / 2 +365){
                 MoveTicks=0.04;

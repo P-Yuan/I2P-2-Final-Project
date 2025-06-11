@@ -9,7 +9,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-HoleEnemy::HoleEnemy(int x, int y,int type) : Enemy("play/hole.png", x, y, 50, 30, 10, 100,type) {
+HoleEnemy::HoleEnemy(int x, int y,int type) : Enemy("play/work.png", x, y, 50, 30, 10, 100,type) {
 }
 
 void HoleEnemy::CreateBullet() {
