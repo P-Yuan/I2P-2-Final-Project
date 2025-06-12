@@ -27,10 +27,10 @@ void plotScene::Initialize() {
     Engine::ImageButton *btn;
     page=1;
 
-    AddNewObject(new Engine::Image("start_back.jpg", halfW, halfH, 1600, 800, 0.5, 0.5));
+    AddNewObject(new Engine::Image("city.jpg", halfW, halfH, w, h, 0.5, 0.5));
 
     //Next button
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW +350, halfH+250, 400, 80);
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW +350, halfH+250, 400, 80);
     btn->SetOnClickCallback(std::bind(&plotScene::NextClick, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Image("play/people1.png", halfW-550, halfH+200, 300, 200, 0.5, 0.5));

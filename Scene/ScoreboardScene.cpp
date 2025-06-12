@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
@@ -30,25 +31,26 @@ void ScoreboardScene::Initialize() {
     Engine::ImageButton *btn;
     textnum=0;
 
+    AddNewObject(new Engine::Image("leaderboard.png", halfW, halfH, w, h, 0.5, 0.5));
     //Scoreboard text
-    AddNewObject(new Engine::Label("ScoreBoard", "pirulen.ttf", 48, halfW, halfH / 3-100, 10, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("ScoreBoard", "pirulen.ttf", 48, halfW, halfH / 3, 47, 79, 79, 255, 0.5, 0.5));
     
     //Next button
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 650, halfH * 3 / 2 - 50, 400, 100);
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 650, halfH * 7/4 - 50, 400, 100);
     btn->SetOnClickCallback(std::bind(&ScoreboardScene::PrevClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("PREV PAGE", "pirulen.ttf", 48, halfW-450, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("PREV PAGE", "pirulen.ttf", 48, halfW-450, halfH * 7/4, 0, 0, 0, 255, 0.5, 0.5));
 
     //Prev button
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 250, halfH * 3 / 2 - 50, 400, 100);
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW + 250, halfH * 7/4 - 50, 400, 100);
     btn->SetOnClickCallback(std::bind(&ScoreboardScene::NextClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("NEXT PAGE", "pirulen.ttf", 48, halfW + 450, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("NEXT PAGE", "pirulen.ttf", 48, halfW + 450, halfH * 7/4, 0, 0, 0, 255, 0.5, 0.5));
     //back button
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-200 , halfH * 3 / 2 - 50, 400, 100);
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW-200 , halfH * 7/4 - 50, 400, 100);
     btn->SetOnClickCallback(std::bind(&ScoreboardScene::BackOnClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7/4, 0, 0, 0, 255, 0.5, 0.5));
 
     std::sort(arr.begin(), arr.end(), mycompare());
     
@@ -61,7 +63,7 @@ void ScoreboardScene::Initialize() {
         }
         textnum++;
         s=arr[page*5+i].name + " " + std::to_string(arr[page*5+i].scores) + " " + arr[page*5+i].date + " " + arr[page*5+i].timee;
-        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 3+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 2+(i*50), 10, 255, 255, 255, 0.5, 0.5));
     } 
     
 

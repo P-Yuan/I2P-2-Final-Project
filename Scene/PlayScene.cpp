@@ -89,7 +89,8 @@ void PlayScene::Initialize() {
     GangHit = false;
     
     // Add groups from bottom to top.
-    AddNewObject(TileMapGroup = new Group());
+    //AddNewObject(TileMapGroup = new Group());
+    AddNewObject(backgroundGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
     AddNewObject(DebugIndicatorGroup = new Group());
     
@@ -100,12 +101,14 @@ void PlayScene::Initialize() {
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
     AddNewObject(coinGroup = new Group());
-    AddNewObject(backgroundGroup = new Group());
+    
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
 
-    backgroundGroup->AddNewObject(new Engine::backgroundImage("play/background.png",1280,385,1));
+    //backgroundGroup->AddNewObject(new Engine::backgroundImage("play/Taichung_color.png",1280,385,1));
+    //backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/background") + std::to_string(MapId) + ".png",1280,385,1));
+    backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/road") + std::to_string(MapId) + ".png",w,h,1));
 
     ReadMap();
     ReadEnemyWave();
@@ -159,7 +162,7 @@ void PlayScene::Update(float deltaTime)
         }
         
         DyingTimer+=deltaTime;
-        if (DyingTimer >= 1.5f) {
+        if (DyingTimer >= 4.0f) {
             Engine::LOG(Engine::INFO)<<"end dying";
             Engine::GameEngine::GetInstance().ChangeScene("lose");           
         }
@@ -541,7 +544,7 @@ void PlayScene::EarnMoney(int money) {
     
 }
 void PlayScene::ReadMap() {
-    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
+    std::string filename = std::string("Resource/map") + std::to_string(1) + ".txt";
     // Read map file.
     char c;
     std::vector<bool> mapData;
@@ -579,17 +582,17 @@ void PlayScene::ReadMap() {
             mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
             if (num){
                 if(num==1){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
                 if(num==2){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_up.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_up.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
                 if(num==3){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_down.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_down.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
             }
-            else
-                TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            else{}
+                //TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
         }
     }
 }
@@ -616,11 +619,11 @@ void PlayScene::ReadEnemyWave() {
 
 void PlayScene::ConstructUI() {
     // Background
-    UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));
+    UIGroup->AddNewObject(new Engine::Image("play/skillboard.png", 1352, 0, 250, 840 ,0,0.01));
     // Text
-    UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1294, 0));
-    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
-    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
+    UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1400, 20));
+    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1400, 68));
+    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1400, 88));
     
 
     
