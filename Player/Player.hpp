@@ -56,7 +56,7 @@ public:
     virtual void Dying(float deltaTime);
     void Winning(float deltaTime);
     void attacking(float deltaTime);
-    void supering(float deltaTime);
+
     static bool attackingmode;
     static bool superingmode;
 };

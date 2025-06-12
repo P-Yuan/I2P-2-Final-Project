@@ -150,6 +150,21 @@ void PlayScene::Terminate() {
 
 void PlayScene::Update(float deltaTime) 
 {
+    if(pauseflag)
+    {
+        if(!pauseinitflag)
+        {
+            pauseinit();
+            pauseinitflag=true;
+            std::cout << "1" << std:: endl;
+        }
+        else
+        {
+            //PauseGroup->Update(deltaTime);
+        }
+        return;
+    }
+    
     if (DyingAnimation) {
         // Only update player and possibly effect/animation groups
         
@@ -186,20 +201,6 @@ void PlayScene::Update(float deltaTime)
         }
             
         // Skip updating everything else
-        return;
-    }
-
-    if(pauseflag)
-    {
-        if(!pauseinitflag)
-        {
-            pauseinit();
-            pauseinitflag=true;
-        }
-        else
-        {
-            PauseGroup->Update(deltaTime);
-        }
         return;
     }
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
@@ -689,6 +690,11 @@ void PlayScene::ConstructUI() {
     dangerIndicator = new Engine::Sprite("play/benjamin.png", w - shift, h - shift);
     dangerIndicator->Tint.a = 0;
     UIGroup->AddNewObject(dangerIndicator);
+}
+
+void PlayScene::ShopOnClick()
+{
+    pauseflag=true;
 }
 
 void PlayScene::UIBtnClicked(int id) {

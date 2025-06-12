@@ -374,8 +374,3 @@ void Player::attacking(float deltaTime)
     AudioHelper::PlayAudio("fireball.wav");
     Sprite::Update(deltaTime);
 }
-
-//  void supering(float deltaTime)
-//  {
-
-//  }

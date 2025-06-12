@@ -10,34 +10,12 @@
 #include <ctime>
 #include <iostream>
 
-#include "Player/Player.hpp"
-#include "Enemy/Enemy.hpp"
-#include "Enemy/GrandmaEnemy.hpp"
-#include "Enemy/CarEnemy.hpp"
-#include "Enemy/GangEnemy.hpp" 
-#include "Enemy/HoleEnemy.hpp" 
-#include "Enemy/BikeEnemy.hpp"
-#include "Enemy/TreeEnemy.hpp"
-#include "Enemy/TruckEnemy.hpp"
-#include "Engine/AudioHelper.hpp"
-#include "Engine/GameEngine.hpp"
-#include "Engine/Group.hpp"
-#include "Engine/IObject.hpp"
-#include "Engine/LOG.hpp"
-#include "Engine/Resources.hpp"
-#include "Engine/Sprite.hpp"
 #include "PlayScene.hpp"
-#include "Scene/ScoreboardScene.hpp"
-#include "Scene/WinScene.hpp"
-#include "Turret/LaserTurret.hpp"
-#include "Turret/MachineGunTurret.hpp"
-#include "Turret/FireTurret.hpp"
-#include "UI/Animation/DirtyEffect.hpp"
-#include "UI/Animation/Plane.hpp"
+#include "Engine/GameEngine.hpp"
+#include "UI/Component/ImageButton.hpp"
+#include "UI/Component/Image.hpp"
 #include "UI/Component/Label.hpp"
-#include "UI/Component/backgroundImage.hpp"
-#include "UI/Component/skillImage.hpp"
-#include "Enemy/coin.hpp"
+
 
 void PlayScene::pauseinit()
 {
@@ -47,8 +25,8 @@ void PlayScene::pauseinit()
     int halfH = h / 2;
     //Engine::GameEngine::GetInstance().ChangeScene("shop");
 
-    // Engine::ImageButton *btn;
-    // PauseGroup->AddNewObject(new Engine::Image("play/shovel-base.png", halfW-100, halfH, 1000, 800, 0.5, 0.5));
+    Engine::ImageButton *btn;
+    PauseGroup->AddNewObject(new Engine::Image("play/shop.png", halfW-100, halfH, 1000, 800, 0.5, 0.5));
     // PauseGroup->AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 48, halfW-100, halfH-350, 0, 0, 0, 255, 0.5, 0.5));
     // //laserturret
     // PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
@@ -83,11 +61,7 @@ void PlayScene::pauseinit()
 
 }
 
-void PlayScene::ShopOnClick()
-{
-    Engine::GameEngine::GetInstance().resume=true;
-    pauseflag=true;
-}
+
 void PlayScene::laserOnClick()
 {
     // if(money-500>=0)
