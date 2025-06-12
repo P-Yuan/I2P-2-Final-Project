@@ -95,6 +95,12 @@ add_executable(2025_I2P2_TowerDefense
     Scene/WinScene.hpp
     Scene/plotScene.cpp
     Scene/plotScene.hpp
+    Scene/Plot1Scene.cpp
+    Scene/Plot1Scene.hpp
+    Scene/Plot2Scene.cpp
+    Scene/Plot2Scene.hpp
+    Scene/Plot3Scene.cpp
+    Scene/Plot3Scene.hpp
     Scene/pausefunc.cpp
 
     Turret/LaserTurret.cpp

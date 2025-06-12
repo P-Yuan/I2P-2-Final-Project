@@ -16,7 +16,7 @@
 #include "Engine/Collider.hpp"
 
 
-Coin::Coin(int x, int y,int type) : Enemy("play/coins_1.png", x, y, 50, 50, 20, 1000,type) 
+Coin::Coin(int x, int y,int type) : Enemy("play/coins_1.png", x, y, 50, 30, 20, 1000,type) 
 {
     timeTicks=0;
     for (int i = 1; i <= 8; i++) {

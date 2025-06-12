@@ -11,6 +11,9 @@
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/plotScene.hpp"
+#include "Scene/Plot1Scene.hpp"
+#include "Scene/Plot2Scene.hpp"
+#include "Scene/Plot3Scene.hpp"
 
 int main(int argc, char **argv) {
 	Engine::LOG::SetConfig(true);
@@ -25,6 +28,9 @@ int main(int argc, char **argv) {
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("scoreboard-scene", new ScoreboardScene());
 	game.AddNewScene("plot", new plotScene());
+	game.AddNewScene("plot1", new plot1Scene());
+	game.AddNewScene("plot2", new plot2Scene());
+	game.AddNewScene("plot3", new plot3Scene());
 
 	ScoreboardScene :: inputtoset();
 
