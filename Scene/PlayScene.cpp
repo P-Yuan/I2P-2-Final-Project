@@ -55,9 +55,9 @@ const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
 const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(1, 9);
-const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(20, 7);
-const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(20, 9);
-const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(20, 11);
+const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(22, 7);
+const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(22, 9);
+const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(22, 11);
 const Engine::Point PlayScene::EndGridPoint = Engine::Point(MapWidth, MapHeight - 1);
 const std::vector<int> PlayScene::code = {
     ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
@@ -91,7 +91,8 @@ void PlayScene::Initialize() {
     GangHit = false;
     
     // Add groups from bottom to top.
-    AddNewObject(TileMapGroup = new Group());
+    //AddNewObject(TileMapGroup = new Group());
+    AddNewObject(backgroundGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
     AddNewObject(DebugIndicatorGroup = new Group());
     
@@ -103,12 +104,13 @@ void PlayScene::Initialize() {
     AddNewObject(PlaneGroup = new Group());
     AddNewObject(coinGroup = new Group());
     AddNewObject(backgroundGroup = new Group());
-   
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
 
-    backgroundGroup->AddNewObject(new Engine::backgroundImage("play/background.png",1280,385,1));
+    //backgroundGroup->AddNewObject(new Engine::backgroundImage("play/Taichung_color.png",1280,385,1));
+    //backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/background") + std::to_string(MapId) + ".png",1280,385,1));
+    backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/road") + std::to_string(MapId) + ".png",1385,832,1));
 
     ReadMap();
     ReadEnemyWave();
@@ -162,7 +164,7 @@ void PlayScene::Update(float deltaTime)
         }
         
         DyingTimer+=deltaTime;
-        if (DyingTimer >= 1.5f) {
+        if (DyingTimer >= 4.0f) {
             Engine::LOG(Engine::INFO)<<"end dying";
             Engine::GameEngine::GetInstance().ChangeScene("lose");           
         }
@@ -544,7 +546,7 @@ void PlayScene::EarnMoney(int money) {
     
 }
 void PlayScene::ReadMap() {
-    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
+    std::string filename = std::string("Resource/map") + std::to_string(1) + ".txt";
     // Read map file.
     char c;
     std::vector<bool> mapData;
@@ -582,17 +584,17 @@ void PlayScene::ReadMap() {
             mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
             if (num){
                 if(num==1){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
                 if(num==2){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_up.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_up.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
                 if(num==3){
-                    TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_down.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/floor_line_down.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
                 }
             }
-            else
-                TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            else{}
+                //TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
         }
     }
 }
@@ -619,11 +621,12 @@ void PlayScene::ReadEnemyWave() {
 
 void PlayScene::ConstructUI() {
     // Background
-    UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));
+    UIGroup->AddNewObject(new Engine::Image("play/skillboard.png", 1352, 0, 250, 840 ,0,0.01));
     // Text
     UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1294, 0));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
+    
 
     
     

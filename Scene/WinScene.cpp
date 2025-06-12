@@ -7,6 +7,7 @@
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Point.hpp"
+#include "Engine/Resources.hpp"
 #include "PlayScene.hpp"
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
@@ -32,12 +33,14 @@ void WinScene::Initialize() {
     AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  0, 0, 0, 255, 0.5, 0.5));
     AddNewObject(new Engine::Label("Please Enter Your Name", "pirulen.ttf", 24, halfW+300, halfH-100, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW-300, halfH / 4 - 10, 0, 0, 0, 255, 0.5, 0.5));
-    // Engine::ImageButton *btn;
-    // btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 500, halfH * 7 / 4 - 50, 400, 100);
-    // btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
-    // AddNewControlObject(btn);
-    // AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW-300, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW-300, halfH / 4 - 10, 25, 25, 112, 255, 0.5, 0.5));
+    
+    Engine::ImageButton *btn;
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 500, halfH * 7 / 4 - 50, 400, 100);
+    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW-300, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+
     bgmId = AudioHelper::PlayAudio("win.wav");
     AddNewObject(textGroup);
 }
@@ -57,10 +60,10 @@ void WinScene::Update(float deltaTime) {
         bgmId = AudioHelper::PlayBGM("happy.ogg");
     }
 }
-// void WinScene::BackOnClick(int stage) {
-//     // Change to select scene.
-//     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
-// }
+void WinScene::BackOnClick(int stage) {
+    // Change to select scene.
+    Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+}
 
 void WinScene::OnKeyDown(int keyCode) 
 {
@@ -102,7 +105,7 @@ void WinScene::OnKeyDown(int keyCode)
         Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
     }
      textGroup->Clear();
-     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  0, 0, 0, 255, 0.5, 0.5));
+     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  25, 25, 112, 255, 0.5, 0.5));
      textGroup->Update(0);
    
     
