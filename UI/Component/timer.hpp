@@ -1,0 +1,26 @@
+#ifndef TIMER_HPP
+#define TIMER_HPP
+#include <string>
+
+#include "Engine/Sprite.hpp"
+#include "UI/Component/ImageButton.hpp"
+
+class PlayScene;
+
+class Timer :public Engine::Sprite {
+protected:
+    PlayScene *getPlayScene();
+
+public: 
+    float timeTicks;
+    float timeSpan = 0.18;
+    // Engine::Sprite Base;
+    // Engine::Sprite Turret;
+    std::vector<std::shared_ptr<ALLEGRO_BITMAP>> start_bmps;
+    Timer(std::string img, float x, float y, float w , float h ,std::string t);
+    void Update(float deltaTime) ;
+    void Draw() ;//const override;
+    static bool startflag;
+    std::string type;
+};
+#endif   // TURRETBUTTON_HPP

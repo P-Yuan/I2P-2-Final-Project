@@ -123,6 +123,8 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Slider.hpp
     UI/Component/skillImage.cpp
     UI/Component/skillImage.hpp
+    UI/Component/timer.cpp
+    UI/Component/timer.hpp
     
     main.cpp
 )

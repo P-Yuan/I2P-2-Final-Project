@@ -53,7 +53,7 @@ public:
     void OnKeyDown(int keyCode);
     virtual void Dying(float deltaTime);
     void Winning(float deltaTime);
-    void attacking();
+    void attacking(float deltaTime);
     static bool attackingmode;
 };
 #endif   // PLAYER_HPP

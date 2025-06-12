@@ -69,6 +69,7 @@ public:
     Group *PauseGroup;
     Group *PlayerGroup;
     Group *coinGroup;
+    Group *timerGroup;
     // Group *coinGroup;
     Engine::Label *UIMoney;
     Engine::Label *UILives;

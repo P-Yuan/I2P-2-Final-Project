@@ -21,6 +21,7 @@
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
 #include "UI/Component/skillImage.hpp"
+#include "UI/Component/timer.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/LOG.hpp"
 #include "Bullet/LaserBullet.hpp"
@@ -98,17 +99,23 @@ void Player::Update(float deltaTime){
         {
             auto it = scene->UIGroup->GetObjects();
             skillImage* btn=nullptr;
+            Timer *bbtn=nullptr;
             for(auto itt =it.begin();itt!=it.end();itt++)
             {
                 btn = dynamic_cast<skillImage*>(*itt);
+                bbtn = dynamic_cast<Timer*>(*itt);
                 if(btn!=nullptr && btn->useflag!=true)
                 {
                     if(btn->type=="gun")
                     {
-                        // EarnMoney(-500);
                         btn->useflag=true;
-                        // UIGroup->Update(0);
-                        break;
+                    }
+                }
+                 if(bbtn!=nullptr && bbtn->startflag!=true)
+                {
+                    if(bbtn->type=="gun")
+                    {
+                        bbtn->startflag=true;
                     }
                 }
             }
@@ -116,8 +123,8 @@ void Player::Update(float deltaTime){
         
         attackingcnt++;
         if (attackcooldown<=0) {
-            attacking();
-            attackcooldown=0.5;
+            attacking(deltaTime);
+            attackcooldown=0.1;
         }
         else
         {
@@ -130,20 +137,27 @@ void Player::Update(float deltaTime){
             attackcooldown=0;
             auto it = scene->UIGroup->GetObjects();
             skillImage* btn=nullptr;
+            Timer *bbtn=nullptr;
             for(auto itt =it.begin();itt!=it.end();itt++)
             {
                 btn = dynamic_cast<skillImage*>(*itt);
+                bbtn = dynamic_cast<Timer*>(*itt);
                 if(btn!=nullptr && btn->useflag!=false)
                 {
                     if(btn->type=="gun")
                     {
                         btn->useflag=false;
-                        //scene->UIGroup->Update(0);
-                        break;
                     }
                 }
-            }
+                if(bbtn!=nullptr && bbtn->startflag!=false)
+                {
+                    if(bbtn->type=="gun")
+                    {
+                        bbtn->startflag=false;
+                    }
+                }
             
+            }
         }
     }
 
@@ -286,7 +300,7 @@ void Player::Winning(float deltaTime){
     Sprite::Update(deltaTime);
 }
 
-void Player::attacking()
+void Player::attacking(float deltaTime)
 {
     //Engine::Point diff = Engine::Point(0,0);//cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));
     Engine::Point diff = Engine::Point(cos(Rotation ), sin(Rotation - ALLEGRO_PI ));
@@ -297,4 +311,5 @@ void Player::attacking()
     getPlayScene()->BulletGroup->AddNewObject(new LaserBullet(Position + normalized * 36 - normal * 6, diff, rotation));
     //getPlayScene()->BulletGroup->AddNewObject(new Fireball(Position + normalized * 36 + normal * 6, diff, rotation, this));
     AudioHelper::PlayAudio("fireball.wav");
+    Sprite::Update(deltaTime);
 }

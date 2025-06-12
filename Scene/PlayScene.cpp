@@ -38,8 +38,10 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/backgroundImage.hpp"
 #include "UI/Component/skillImage.hpp"
+#include "UI/Component/timer.hpp"
 #include "Player/coin.hpp"
 #include "Player/gun.hpp"
+
 
 bool PlayScene::DebugMode = false;
 // int PlayScene::backgroundflag = 1;
@@ -101,6 +103,7 @@ void PlayScene::Initialize() {
     AddNewObject(PlaneGroup = new Group());
     AddNewObject(coinGroup = new Group());
     AddNewObject(backgroundGroup = new Group());
+   
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
@@ -621,7 +624,6 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1294, 0));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
-    
 
     
     
@@ -629,10 +631,13 @@ void PlayScene::ConstructUI() {
     
     skillImage *btn;
     Engine::Image *bbtn;
+    Timer *timer;
+
     // Button 1
     
     //UIGroup->AddNewObject(bbtn=new Engine::Image("play/tower-base.png",1294,136,100,100));
-    UIGroup->AddNewObject(btn=new skillImage("play/gun.png",1340,180,100,100,"gun"));
+    UIGroup->AddNewObject(btn=new skillImage("play/gun.png",1390,250,100,100,"gun"));
+    UIGroup->AddNewObject(timer=new Timer("play/timer (1).png", 1390,250, 220,200,"gun"));
     // Engine::Sprite("play/tower-base.png", 1294, 136, 100, 100, 0, 0),
     //                        Engine::Sprite(, 1294, 136 - 8, 75, 75, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
     // Reference: Class Member Function Pointer and std::bind.

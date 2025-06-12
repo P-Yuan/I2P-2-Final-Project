@@ -161,37 +161,37 @@ void PlayScene::fireOnClick()
 
 void PlayScene::planeOnClick()
 {
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    if(money-1500>=0)
-    {
-        auto it = UIGroup->GetObjects();
-        planeflag=true;
-        Engine::Sprite* btn=nullptr;
-        for(auto itt =it.begin();itt!=it.end();itt++)
-        {
-            btn = dynamic_cast<Engine::Sprite*>(*itt);
-            if(btn!=nullptr && btn->useflag!=2)
-            {
-                EarnMoney(-1500);
-                btn->useflag=2;
-                UIGroup->Update(0);
-                break;
-            }
-        }
-    }
-    else
-    {
-       Engine::Sprite *sprite;
+    // int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    // int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    // int halfW = w / 2;
+    // int halfH = h / 2;
+    // if(money-1500>=0)
+    // {
+    //     auto it = UIGroup->GetObjects();
+    //     planeflag=true;
+    //     Engine::Sprite* btn=nullptr;
+    //     for(auto itt =it.begin();itt!=it.end();itt++)
+    //     {
+    //         btn = dynamic_cast<Engine::Sprite*>(*itt);
+    //         if(btn!=nullptr && btn->useflag!=2)
+    //         {
+    //             EarnMoney(-1500);
+    //             btn->useflag=2;
+    //             UIGroup->Update(0);
+    //             break;
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //    Engine::Sprite *sprite;
 
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
-        sprite->Rotation = 0;
-    }
+    //     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    //     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    //     int shift = 135 + 25;
+    //     PauseGroup->AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3, w-shift , h-shift-200 ));
+    //     sprite->Rotation = 0;
+    // }
 }
 void PlayScene::backOnClick()
 {

@@ -50,7 +50,6 @@ namespace Engine {
         /// </summary>
         /// <param name="deltaTime">Time elapsed since last update, can be used to calculate value changes.</param>
         void Update(float deltaTime) override;
-        int useflag;
     };
 }
 #endif   // SPRITE_HPP
