@@ -103,7 +103,6 @@ void PlayScene::Initialize() {
     AddNewObject(EffectGroup = new Group());
     AddNewObject(PlaneGroup = new Group());
     AddNewObject(coinGroup = new Group());
-    AddNewObject(backgroundGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
     AddNewControlObject(PauseGroup = new Group());
