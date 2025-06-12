@@ -53,9 +53,9 @@ const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
 const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(1, 9);
-const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(20, 7);
-const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(20, 9);
-const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(20, 11);
+const Engine::Point PlayScene::SpawnGridPoint_1 = Engine::Point(22, 7);
+const Engine::Point PlayScene::SpawnGridPoint_2 = Engine::Point(22, 9);
+const Engine::Point PlayScene::SpawnGridPoint_3 = Engine::Point(22, 11);
 const Engine::Point PlayScene::EndGridPoint = Engine::Point(MapWidth, MapHeight - 1);
 const std::vector<int> PlayScene::code = {
     ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
@@ -108,7 +108,7 @@ void PlayScene::Initialize() {
 
     //backgroundGroup->AddNewObject(new Engine::backgroundImage("play/Taichung_color.png",1280,385,1));
     //backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/background") + std::to_string(MapId) + ".png",1280,385,1));
-    backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/road") + std::to_string(MapId) + ".png",w,h,1));
+    backgroundGroup->AddNewObject(new Engine::backgroundImage(std::string("play/road") + std::to_string(MapId) + ".png",1385,832,1));
 
     ReadMap();
     ReadEnemyWave();
