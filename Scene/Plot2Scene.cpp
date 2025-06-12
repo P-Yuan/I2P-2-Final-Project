@@ -41,10 +41,10 @@ void plot2Scene::Initialize() {
     AddNewControlObject(btn2);
 
     
-    AddNewObject(new Engine::Label("新竹的交通狀況如何呢?", "IMing.ttf", 40, halfW +100, halfH* 3/2 -80, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("有什麼要注意的地方嗎? ", "IMing.ttf", 40, halfW +100, halfH* 3/2 -20, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("簡直是行人天堂 !  人行道什麼的根本不需要啦~ ", "IMing.ttf", 30, halfW, halfH/2 -50 -15, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("小心有人會騎貢丸喔 !", "IMing.ttf", 30, halfW , halfH/2 + 100 -15, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("台北的街道真是繁忙呢 !", "IMing.ttf", 40, halfW +100, halfH* 3/2 -80, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("車子好多喔 !", "IMing.ttf", 40, halfW +100, halfH* 3/2 -20, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("是啊 ! 無時無刻都要小心車子喔 !", "IMing.ttf", 30, halfW, halfH/2 -50 -15, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("你有看到新聞嗎? 一定要注意車子喔 !", "IMing.ttf", 30, halfW , halfH/2 + 100 -15, 0, 0, 0, 255, 0.5, 0.5));
 
     bgmInstance = AudioHelper::PlaySample("happy.ogg", true, AudioHelper::BGMVolume,5);
 }
@@ -68,11 +68,24 @@ void plot2Scene::NextClick(int choice) {
     {
     case 2:
         popObject(4);
-        AddNewObject(new Engine::Label("Let's   go~", "IMing.ttf", 30, halfW, halfH/2 -50 -15, 0, 0, 0, 255, 0.5, 0.5));
-        AddNewObject(new Engine::Label("走吧 ! 可惜我們沒有貢丸可以騎", "IMing.ttf", 30, halfW, halfH/2 +100 -15, 0, 0, 0, 255, 0.5, 0.5));
-        AddNewObject(new Engine::Label("真的嗎 !   那我們出發吧 !", "IMing.ttf", 40, halfW +100, halfH* 3/2 -50, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("沒問題 ! 我們趕緊出發吧 !", "IMing.ttf", 40, halfW +100, halfH* 3/2 -80, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("我已經迫不急待要走九遍忠孝東路了", "IMing.ttf", 40, halfW +100, halfH* 3/2 -20, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("哈哈哈~  那我們出發吧 !", "IMing.ttf", 30, halfW, halfH/2 -50 -15, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("你剛失戀喔?", "IMing.ttf", 30, halfW, halfH/2 +100 -15, 0, 0, 0, 255, 0.5, 0.5));
         break;
-    
+    case 3:
+        if(choice==1){
+            page=0;
+            PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
+            scene->MapId = 2;
+            Engine::GameEngine::GetInstance().ChangeScene("play");
+        }
+        else{
+            popObject(5);
+            AddNewObject(new Engine::Label("......", "IMing.ttf", 40, halfW +100, halfH* 3/2 -50, 0, 0, 0, 255, 0.5, 0.5));
+            AddNewObject(new Engine::Label("哈哈哈~  那我們出發吧 !", "IMing.ttf", 30, halfW, halfH/2 -50 -15, 0, 0, 0, 255, 0.5, 0.5));
+        }
+        break;
     default:
         page=0;
         PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
