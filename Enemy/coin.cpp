@@ -4,55 +4,55 @@
 #include <random>
 #include <string>
 #include <vector>
-#include <iostream>
 
-#include "gun.hpp"
+#include "coin.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Bullet/FireBullet.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
-#include "Player.hpp"
+#include "Player/Player.hpp"
 #include "Engine/Collider.hpp"
 
-Gun::Gun(int x, int y,int type) : Enemy("play/gun.png", x, y, 50, 50, 20, 1000,type) 
+
+Coin::Coin(int x, int y,int type) : Enemy("play/coins_1.png", x, y, 50, 50, 20, 1000,type) 
 {
     timeTicks=0;
-    // for (int i = 1; i <= 8; i++) {
-    //     rotate_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
-    // }
+    for (int i = 1; i <= 8; i++) {
+        rotate_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
+    }
 
-     for (int i =13; i<=16 ; i++) {
+     for (int i = 9; i<=16 ; i++) {
         hit_bmps.push_back(Engine::Resources::GetInstance().GetBitmap("play/coins_" + std::to_string(i) + ".png"));
     }
 }
 
-void Gun::CreateBullet() {
+void Coin::CreateBullet() {
     
 }
 
-void Gun::Draw() const
+void Coin::Draw() const
 {
      al_draw_tinted_scaled_rotated_bitmap(bmp.get(), Tint, Anchor.x * GetBitmapWidth(), Anchor.y * GetBitmapHeight(),
-                                             Position.x, Position.y, Size.x / (GetBitmapWidth()*4), Size.y / (GetBitmapHeight()*4) , Rotation, 0);
+                                             Position.x, Position.y, Size.x/3 , Size.y/3 , Rotation, 0);
     if (PlayScene::DebugMode) {
         // Draw collision radius.
         //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
-        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/12),Position.y-(this->GetBitmapHeight()/12),
-                          Position.x+(this->GetBitmapWidth()/12),Position.y+(this->GetBitmapHeight()/12)
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()),Position.y-(this->GetBitmapHeight()),
+                          Position.x+(this->GetBitmapWidth()),Position.y+(this->GetBitmapHeight())
                           , al_map_rgb(255, 0, 0), 2);
     }
     
 }
 
-void Gun::Update(float deltatime)
+void Coin::Update(float deltatime)
 {
-    // timeTicks+=deltatime;
-    // if(timeTicks>=timeSpan) timeTicks-=timeSpan;
-    // int phase = floor(timeTicks / timeSpan * rotate_bmps.size());
-    // //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
-    // bmp = rotate_bmps[phase];
+    timeTicks+=deltatime;
+    if(timeTicks>=timeSpan) timeTicks-=timeSpan;
+    int phase = floor(timeTicks / timeSpan * rotate_bmps.size());
+    //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
+    bmp = rotate_bmps[phase];
     Enemy::Update(deltatime);
 
     PlayScene *scene = getPlayScene();
@@ -60,13 +60,14 @@ void Gun::Update(float deltatime)
     Engine:: Point min;
     Engine:: Point Pmax;
     Engine:: Point Pmin;
-    min.x=Position.x-(this->GetBitmapWidth()/12);
-    min.y=Position.y-(this->GetBitmapHeight()/12);
-    max.x=Position.x+(this->GetBitmapWidth()/12);
-    max.y=Position.y+(this->GetBitmapHeight()/12);
+    min.x=Position.x-(this->GetBitmapWidth());
+    min.y=Position.y-(this->GetBitmapHeight());
+    max.x=Position.x+(this->GetBitmapWidth());
+    max.y=Position.y+(this->GetBitmapHeight());
 
-     for (auto &it : scene->PlayerGroup->GetObjects()) 
-     {
+    //  for (auto &it : scene->PlayerGroup->GetObjects()) 
+    //  {
+        auto &it= scene->PlayerGroup->GetObjects().back();
         Player *player = dynamic_cast<Player *>(it);
         Pmin.x=player->Position.x-(player->GetBitmapWidth()/3);
         Pmin.y=player->Position.y-(player->GetBitmapHeight()/3);
@@ -76,10 +77,10 @@ void Gun::Update(float deltatime)
         {
             OnExplode(deltatime);
         }
-     }
+    // }
 }
 
-void Gun::OnExplode(float deltatime)
+void Coin::OnExplode(float deltatime)
 {
     timeTicks+=deltatime;
     if(timeTicks>=timeSpan) timeTicks-=timeSpan;
@@ -87,19 +88,14 @@ void Gun::OnExplode(float deltatime)
     //Engine::LOG(Engine::INFO)<<"Find walking phase:"<<phase;
     bmp = hit_bmps[phase];
     PlayScene *scene = getPlayScene();
-    // if(phase<4)
-    // {
-    //     AudioHelper::PlayAudio("coins.wav");
-    // }
-    if(phase==1)
+    if(phase<4)
     {
-        for (auto &it : scene->PlayerGroup->GetObjects()) 
-        {
-            Player *player = dynamic_cast<Player *>(it);
-            player->attackingmode=true;
-        }
+        AudioHelper::PlayAudio("coins.wav");
+    }
+    if(phase==7)
+    {
         scene->coinGroup->RemoveObject(objectIterator);
-        //scene->EarnMoney(10);
+        scene->EarnMoney(10);
     }
     //std::cout << phase << std::endl;
 }

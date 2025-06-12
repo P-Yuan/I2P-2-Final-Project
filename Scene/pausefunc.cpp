@@ -37,7 +37,7 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/backgroundImage.hpp"
 #include "UI/Component/skillImage.hpp"
-#include "Player/coin.hpp"
+#include "Enemy/coin.hpp"
 
 void PlayScene::pauseinit()
 {
@@ -47,39 +47,39 @@ void PlayScene::pauseinit()
     int halfH = h / 2;
     //Engine::GameEngine::GetInstance().ChangeScene("shop");
 
-    Engine::ImageButton *btn;
-    PauseGroup->AddNewObject(new Engine::Image("play/shovel-base.png", halfW-100, halfH, 1000, 800, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 48, halfW-100, halfH-350, 0, 0, 0, 255, 0.5, 0.5));
-    //laserturret
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/turret-2.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
-    //fireturret
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/turret-fire.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
-    //plane
-    PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
-    PauseGroup->AddNewObject(new Engine::Image("play/plane.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
-    //laserbutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-500, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::laserOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW-400, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
-    //firebutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-200, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::fireOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1000", "pirulen.ttf", 30, halfW-100, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
-    //planebutton
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+100, halfH-100, 200, 90);
-    btn->SetOnClickCallback(std::bind(&PlayScene::planeOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1500", "pirulen.ttf", 30, halfW+200, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
+    // Engine::ImageButton *btn;
+    // PauseGroup->AddNewObject(new Engine::Image("play/shovel-base.png", halfW-100, halfH, 1000, 800, 0.5, 0.5));
+    // PauseGroup->AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 48, halfW-100, halfH-350, 0, 0, 0, 255, 0.5, 0.5));
+    // //laserturret
+    // PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
+    // PauseGroup->AddNewObject(new Engine::Image("play/turret-2.png", halfW-400, halfH-200, 150, 150, 0.5, 0.5));
+    // //fireturret
+    // PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
+    // PauseGroup->AddNewObject(new Engine::Image("play/turret-fire.png", halfW-100, halfH-200, 150, 150, 0.5, 0.5));
+    // //plane
+    // PauseGroup->AddNewObject(new Engine::Image("play/floor.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
+    // PauseGroup->AddNewObject(new Engine::Image("play/plane.png", halfW+200, halfH-200, 150, 150, 0.5, 0.5));
+    // //laserbutton
+    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-500, halfH-100, 200, 90);
+    // btn->SetOnClickCallback(std::bind(&PlayScene::laserOnClick, this));
+    // PauseGroup->AddNewControlObject(btn);
+    // PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW-400, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
+    // //firebutton
+    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-200, halfH-100, 200, 90);
+    // btn->SetOnClickCallback(std::bind(&PlayScene::fireOnClick, this));
+    // PauseGroup->AddNewControlObject(btn);
+    // PauseGroup->AddNewObject(new Engine::Label("$1000", "pirulen.ttf", 30, halfW-100, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
+    // //planebutton
+    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW+100, halfH-100, 200, 90);
+    // btn->SetOnClickCallback(std::bind(&PlayScene::planeOnClick, this));
+    // PauseGroup->AddNewControlObject(btn);
+    // PauseGroup->AddNewObject(new Engine::Label("$1500", "pirulen.ttf", 30, halfW+200, halfH-60, 0, 0, 0, 255, 0.5, 0.5));
     
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-300, halfH +250, 400, 100);
-    btn->SetOnClickCallback(std::bind(&PlayScene::backOnClick, this));
-    PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW-100, halfH+300, 0, 0, 0, 255, 0.5, 0.5));
+    // btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW-300, halfH +250, 400, 100);
+    // btn->SetOnClickCallback(std::bind(&PlayScene::backOnClick, this));
+    // PauseGroup->AddNewControlObject(btn);
+    // PauseGroup->AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW-100, halfH+300, 0, 0, 0, 255, 0.5, 0.5));
 
 }
 

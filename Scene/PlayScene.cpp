@@ -20,6 +20,9 @@
 #include "Enemy/BikeEnemy.hpp"
 #include "Enemy/TreeEnemy.hpp"
 #include "Enemy/TruckEnemy.hpp"
+#include "Enemy/gun.hpp"
+#include "Enemy/coin.hpp"
+#include "Enemy/Super.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
@@ -39,9 +42,6 @@
 #include "UI/Component/backgroundImage.hpp"
 #include "UI/Component/skillImage.hpp"
 #include "UI/Component/timer.hpp"
-#include "Player/coin.hpp"
-#include "Player/gun.hpp"
-
 
 bool PlayScene::DebugMode = false;
 // int PlayScene::backgroundflag = 1;
@@ -335,6 +335,9 @@ void PlayScene::Update(float deltaTime)
             case 9:
                 coinGroup->AddNewObject(enemy = new Gun(SpawnCoordinate.x, SpawnCoordinate.y,9));
                 break;
+            case 10:
+                coinGroup->AddNewObject(enemy = new Super(SpawnCoordinate.x, SpawnCoordinate.y,10));
+                break;
             default:
                 continue;
         }
@@ -625,21 +628,20 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1294, 0));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
-    
 
-    
-    
-    
-    
     skillImage *btn;
-    Engine::Image *bbtn;
-    Timer *timer;
+    // Timer *timer;
 
-    // Button 1
-    
-    //UIGroup->AddNewObject(bbtn=new Engine::Image("play/tower-base.png",1294,136,100,100));
-    UIGroup->AddNewObject(btn=new skillImage("play/gun.png",1390,250,100,100,"gun"));
-    UIGroup->AddNewObject(timer=new Timer("play/timer (1).png", 1390,250, 220,200,"gun"));
+    //GUN
+
+
+    UIGroup->AddNewObject(new skillImage("play/gun.png","gun",1480,250,100,100));
+    //UIGroup->AddNewObject(new Engine::Sprite("play/gun.png.png",1480,250, 100, 100, 0, 0,0,0,0,0, 0, 0, 160));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,250, 220,200,"gun"));
+
+    //SUPER
+    UIGroup->AddNewObject(new skillImage("play/super.png","super",1480,450,200,100));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,450, 220,200,"super"));
     // Engine::Sprite("play/tower-base.png", 1294, 136, 100, 100, 0, 0),
     //                        Engine::Sprite(, 1294, 136 - 8, 75, 75, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
     // Reference: Class Member Function Pointer and std::bind.

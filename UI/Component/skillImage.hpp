@@ -2,8 +2,9 @@
 #define TURRETBUTTON_HPP
 #include <string>
 
+#include "Engine/IControl.hpp"
+#include "Image.hpp"
 #include "Engine/Sprite.hpp"
-#include "UI/Component/ImageButton.hpp"
 
 class PlayScene;
 
@@ -12,13 +13,14 @@ protected:
     PlayScene *getPlayScene();
 
 public:
+
     int money;
     // Engine::Sprite Base;
     // Engine::Sprite Turret;
-    skillImage(std::string img, float x, float y, float w , float h ,std::string t);
-    void Update(float deltaTime) ;
-    void Draw() ;//const override;
-    static bool useflag;
+    skillImage(std::string img, std::string t,float x, float y, float w , float h );
+    void Update(float deltaTime) override;
+    void Draw() const override;
+    bool useflag;
     std::string type;
 };
 #endif   // TURRETBUTTON_HPP

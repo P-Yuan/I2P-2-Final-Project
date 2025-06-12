@@ -1,6 +1,6 @@
 #ifndef gun_HPP
 #define gun_HPP
-#include "Enemy/Enemy.hpp"
+#include "Enemy.hpp"
 
 class Gun : public Enemy {
 public:

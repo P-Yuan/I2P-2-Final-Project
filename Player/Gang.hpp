@@ -26,5 +26,6 @@ public:
     void Draw() const override;
     void Walking(float deltatime) override;
     void Dying(float deltatime) override;
+    bool nochase;
 };
 #endif   // GANG_HPP

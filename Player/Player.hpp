@@ -18,6 +18,7 @@ protected:
     int money;
     float cooldown;
     float attackcooldown;
+
     float timeTicks;
     float timeSpan = 0.7;
     float HitTicks;
@@ -29,6 +30,7 @@ protected:
     float WinningTicks;
     float WinningSpan = 0.2;
     int attackingcnt=0;
+    int superingcnt=0;
     
     float gochase;
     float chasing;
@@ -54,6 +56,8 @@ public:
     virtual void Dying(float deltaTime);
     void Winning(float deltaTime);
     void attacking(float deltaTime);
+    void supering(float deltaTime);
     static bool attackingmode;
+    static bool superingmode;
 };
 #endif   // PLAYER_HPP

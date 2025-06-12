@@ -25,9 +25,10 @@
 #include "Engine/Resources.hpp"
 #include "Engine/LOG.hpp"
 #include "Bullet/LaserBullet.hpp"
-#
+#include "Gang.hpp"
 
 bool Player::attackingmode=false;
+bool Player::superingmode=false;
 PlayScene *Player::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
@@ -83,12 +84,81 @@ void Player::Update(float deltaTime){
     //Sprite::Update(deltaTime);
     //Engine::LOG(Engine::INFO)<<"update player ";
     PlayScene *scene = getPlayScene();
-    if(HitTicks>0){
+
+    if(superingmode)
+    {
+        if(superingcnt==0)
+        {
+            Tint=al_map_rgba(255, 255, 0, 255);
+            auto it = scene->UIGroup->GetObjects();
+            auto gt = scene->PlayerGroup->GetObjects();
+            skillImage* btn=nullptr;
+            Timer *bbtn=nullptr;
+            Gang *gang=nullptr;
+            for(auto itt =it.begin();itt!=it.end();itt++)
+            {
+                btn = dynamic_cast<skillImage*>(*itt);
+                bbtn = dynamic_cast<Timer*>(*itt);
+                if(btn!=nullptr&&btn->type=="super")
+                {
+                    btn->useflag=true;
+                }
+                 if(bbtn!=nullptr && bbtn->type=="super")
+                {
+                    bbtn->startflag=true;
+                }
+            }
+            for(auto itt =gt.begin();itt!=gt.end();itt++)
+            {
+                gang = dynamic_cast<Gang*>(*itt);
+                if(gang!=nullptr)
+                {
+                    gang->nochase=true;
+                }
+            }
+        }
+        superingcnt++;
+        if(superingcnt>200)
+        {
+            Tint=al_map_rgba(255, 255, 255, 255);
+            superingmode=false;
+            superingcnt=0;
+            auto it = scene->UIGroup->GetObjects();
+           auto gt = scene->PlayerGroup->GetObjects();
+            skillImage* btn=nullptr;
+            Timer *bbtn=nullptr;
+            Gang *gang=nullptr;
+            for(auto itt =it.begin();itt!=it.end();itt++)
+            {
+                btn = dynamic_cast<skillImage*>(*itt);
+                bbtn = dynamic_cast<Timer*>(*itt);
+                if(btn!=nullptr && btn->type=="super")
+                {
+                    btn->useflag=false;
+                }
+                if(bbtn!=nullptr && bbtn->type=="super")
+                {
+                    bbtn->startflag=false;
+                }
+            }
+            for(auto itt =gt.begin();itt!=gt.end();itt++)
+            {
+                gang = dynamic_cast<Gang*>(*itt);
+                if(gang!=nullptr)
+                {
+                    gang->nochase=false;
+                }
+            }
+        }
+    }
+    if(HitTicks>0 && !superingmode){
         Hitting(deltaTime);
     }
     else{
         Walking(deltaTime);
     }
+
+   
     if(MoveTicks>0){
         Position.y+=32*move_dir;
         MoveTicks-=0.01;
@@ -104,14 +174,11 @@ void Player::Update(float deltaTime){
             {
                 btn = dynamic_cast<skillImage*>(*itt);
                 bbtn = dynamic_cast<Timer*>(*itt);
-                if(btn!=nullptr && btn->useflag!=true)
+                if(btn!=nullptr&&btn->type=="gun")
                 {
-                    if(btn->type=="gun")
-                    {
-                        btn->useflag=true;
-                    }
+                    btn->useflag=true;
                 }
-                 if(bbtn!=nullptr && bbtn->startflag!=true)
+                 if(bbtn!=nullptr && bbtn->type=="gun")
                 {
                     if(bbtn->type=="gun")
                     {
@@ -142,26 +209,20 @@ void Player::Update(float deltaTime){
             {
                 btn = dynamic_cast<skillImage*>(*itt);
                 bbtn = dynamic_cast<Timer*>(*itt);
-                if(btn!=nullptr && btn->useflag!=false)
+                if(btn!=nullptr && btn->type=="gun")
                 {
-                    if(btn->type=="gun")
-                    {
-                        btn->useflag=false;
-                    }
+                    btn->useflag=false;
                 }
-                if(bbtn!=nullptr && bbtn->startflag!=false)
+                if(bbtn!=nullptr && bbtn->type=="gun")
                 {
-                    if(bbtn->type=="gun")
-                    {
-                        bbtn->startflag=false;
-                    }
+                    bbtn->startflag=false;
                 }
             
             }
         }
     }
 
-    if(cooldown<=0){
+    if(cooldown<=0 && !superingmode){
         //Walking(deltaTime);
         
         Engine:: Point max;
@@ -313,3 +374,8 @@ void Player::attacking(float deltaTime)
     AudioHelper::PlayAudio("fireball.wav");
     Sprite::Update(deltaTime);
 }
+
+//  void supering(float deltaTime)
+//  {
+
+//  }

@@ -31,6 +31,8 @@ PlayScene *Gang::getPlayScene() {
 Gang::Gang(std::string img, float x, float y, float radius, float speed):Player(img, x, y, radius, speed, 0, 0){
     CollisionRadius = radius;
 
+    nochase=false;
+
     chasing=1;
     goback=0;
 
@@ -57,8 +59,8 @@ void Gang::Update(float deltaTime){
         MoveTicks-=0.005;
     }
 
-    if(gochase>0){
-        Engine::LOG(Engine::INFO)<<"Gang go chase";
+    if(gochase>0 && !nochase){
+        //Engine::LOG(Engine::INFO)<<"Gang go chase";
         Position.x+=0.5;
         gochase-=deltaTime;
         if(gochase<=0){
@@ -66,7 +68,7 @@ void Gang::Update(float deltaTime){
         }
     }
     else if(goback>0){
-        Engine::LOG(Engine::INFO)<<"Gang go back";
+        //Engine::LOG(Engine::INFO)<<"Gang go back";
         Position.x-=0.5;
         if(Position.x<-15){
             goback=0;

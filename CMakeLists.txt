@@ -41,6 +41,12 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/TreeEnemy.hpp
     Enemy/TruckEnemy.cpp
     Enemy/TruckEnemy.hpp
+    Enemy/gun.cpp
+    Enemy/gun.hpp
+    Enemy/coin.cpp
+    Enemy/coin.hpp
+    Enemy/Super.cpp
+    Enemy/Super.hpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp
@@ -69,10 +75,6 @@ add_executable(2025_I2P2_TowerDefense
     
     Player/Player.cpp
     Player/Player.hpp
-    Player/gun.cpp
-    Player/gun.hpp
-    Player/coin.cpp
-    Player/coin.hpp
     Player/Gang.cpp
     Player/Gang.hpp
 

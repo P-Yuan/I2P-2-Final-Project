@@ -18,9 +18,9 @@ public:
     // Engine::Sprite Turret;
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> start_bmps;
     Timer(std::string img, float x, float y, float w , float h ,std::string t);
-    void Update(float deltaTime) ;
-    void Draw() ;//const override;
-    static bool startflag;
+    void Update(float deltaTime)override ;
+    void Draw() const override;
+    bool startflag;
     std::string type;
 };
 #endif   // TURRETBUTTON_HPP

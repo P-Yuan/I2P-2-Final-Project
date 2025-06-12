@@ -6,8 +6,6 @@
 #include "timer.hpp"
 #include "Engine/Resources.hpp"
 
-bool Timer :: startflag=false;
-
 PlayScene *Timer::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
@@ -36,10 +34,11 @@ void Timer::Update(float deltatime) {
     else
     {
         bmp=start_bmps[0];
+        timeTicks=0;
     }
     
 }
-void Timer::Draw() {
+void Timer::Draw() const{
     Sprite::Draw();
     // Base.Draw();
     // Turret.Draw();
