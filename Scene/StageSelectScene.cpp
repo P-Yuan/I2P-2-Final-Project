@@ -63,9 +63,12 @@ void StageSelectScene::BackOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 void StageSelectScene::PlayOnClick(int stage) {
-    PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
-    scene->MapId = stage;
-    Engine::GameEngine::GetInstance().ChangeScene("play");
+    // PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
+    // scene->MapId = stage;
+    // Engine::GameEngine::GetInstance().ChangeScene("play");
+    std::string place;
+    place = std::string("plot") + std::to_string(stage);
+    Engine::GameEngine::GetInstance().ChangeScene(place);
 }
 void StageSelectScene::ScoreboardOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");

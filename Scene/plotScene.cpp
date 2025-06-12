@@ -27,15 +27,15 @@ void plotScene::Initialize() {
     Engine::ImageButton *btn;
     page=1;
 
-    AddNewObject(new Engine::Image("city.jpg", halfW, halfH, w, h, 0.5, 0.5));
+    AddNewObject(new Engine::Image("scenes/textbox_back.png", halfW, halfH, w, h, 0.5, 0.5));
 
     //Next button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW +350, halfH+250, 400, 80);
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW , halfH/2 , 800, 80,0.5,0.5);
     btn->SetOnClickCallback(std::bind(&plotScene::NextClick, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Image("play/people1.png", halfW-550, halfH+200, 300, 200, 0.5, 0.5));
     AddNewObject(new Engine::Label("Welcome to NTHU", "pirulen.ttf", 24, halfW +530, halfH+290, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Image("play/textbox1.png", halfW-50, halfH+250, 780, 180, 0.5, 0.5));
+    //AddNewObject(new Engine::Image("play/textbox1.png", halfW-50, halfH+250, 780, 180, 0.5, 0.5));
 
     bgmInstance = AudioHelper::PlaySample("happy.ogg", true, AudioHelper::BGMVolume,5);
 }
@@ -78,7 +78,6 @@ void plotScene::NextClick() {
         page=0;
         Engine::GameEngine::GetInstance().ChangeScene("stage-select");
     }
-    
     
 }
 
