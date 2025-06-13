@@ -193,7 +193,8 @@ void PlayScene::Update(float deltaTime)
         Player *player = dynamic_cast<Player *>(it);
         player->Winning(deltaTime);
         EnemyGroup->Update(deltaTime);
-        backgroundGroup->Update(deltaTime);
+        //backgroundGroup->Update(deltaTime);
+        backgroundGroup->GetObjects().back()->Update(deltaTime);
         DyingTimer+=deltaTime;
         if (DyingTimer >= 3.0f) {
             Engine::LOG(Engine::INFO)<<"end winning";

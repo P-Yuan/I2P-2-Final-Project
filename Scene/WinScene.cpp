@@ -19,27 +19,35 @@
 
 int WinScene::winlives;
 void WinScene::Initialize() {
-    
+    typing = true;
     ticks = 0;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    AddNewObject(new Engine::Image("start_back.jpg", halfW, halfH, 1600, 800, 0.5, 0.5));
+
+    std::string winplace;
+    PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
+    winplace = std::string("win/win") + std::to_string(scene->MapId) + std::string(".png");
+    AddNewObject(new Engine::Image(winplace, halfW, halfH, w, h, 0.5, 0.5));
+    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 64, halfW, halfH / 4 , 0, 0, 0, 255, 0.5, 0.5));
+
     s="|";
     NEWs="|";
     textGroup = new Group();
-    AddNewObject(new Engine::Image("win/doge.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
-    AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
-    textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Please Enter Your Name", "pirulen.ttf", 24, halfW+300, halfH-100, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW-300, halfH / 4 - 10, 25, 25, 112, 255, 0.5, 0.5));
+    //AddNewObject(new Engine::Image("win/doge.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
+    //AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
+    textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW * 3/2 -115, halfH * 3/2 +65,  0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("YOUR NAME:", "pirulen.ttf", 48, halfW/2 +90, halfH * 3/2 +65, 0, 0, 0, 255, 0.5, 0.5));
     
     Engine::ImageButton *btn;
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 500, halfH * 7 / 4 - 50, 400, 100);
-    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW -150, halfH * 7/4 +10, 300, 80);
+    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW-300, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Nope", "pirulen.ttf", 48, halfW, halfH * 7 / 4 +50 , 0, 0, 0, 255, 0.5, 0.5));
+
+    AddNewObject(new Engine::Label("謝謝你的幫助!", "IMing.ttf", 36, halfW/2 +50, halfH-80, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("可以告訴我你的名字嗎?", "IMing.ttf", 36, halfW/2 +50, halfH-30, 0, 0, 0, 255, 0.5, 0.5));
 
     bgmId = AudioHelper::PlayAudio("win.wav");
     AddNewObject(textGroup);
@@ -60,7 +68,7 @@ void WinScene::Update(float deltaTime) {
         bgmId = AudioHelper::PlayBGM("happy.ogg");
     }
 }
-void WinScene::BackOnClick(int stage) {
+void WinScene::BackOnClick() {
     // Change to select scene.
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
@@ -73,20 +81,29 @@ void WinScene::OnKeyDown(int keyCode)
     int halfH = h / 2;
     
     IScene::OnKeyDown(keyCode);
-    if(keyCode>=1 && keyCode<=26) 
+    if(keyCode>=1 && keyCode<=26 && typing) 
     {
         if(s=="|")
         {
             s=char(*al_keycode_to_name(keyCode));
         }
-        else
+        else if(s.size()<12)
         {
             s.push_back(char(*al_keycode_to_name(keyCode)));
-
         }
     }
-    else if(keyCode==67)
+    else if(keyCode==67 && typing)
     {
+        typing=false;
+
+        popObject(4);
+        AddNewObject(new Engine::Label("Bye", "pirulen.ttf", 48, halfW, halfH * 7 / 4 +50, 0, 0, 0, 255, 0.5, 0.5));
+
+        AddNewObject(new Engine::Label("謝謝你", "IMing.ttf", 36, halfW/2 +50, halfH-80, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "IMing.ttf", 36, halfW/2 +50, halfH-30, 0, 0, 0, 255, 0.5, 0.5));
+
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW * 3/2 -115, halfH * 3/2 +65, 25, 25, 112, 255, 0.5, 0.5));
+
         time_t now=time(0);
         tm* ltm = localtime(&now);
         std::ostringstream dateStream, timeStream;
@@ -102,10 +119,10 @@ void WinScene::OnKeyDown(int keyCode)
         std::string date = dateStream.str();
         std::string timee = timeStream.str();
         ScoreboardScene :: storetovec(winlives,s,date,timee); 
-        Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
+        //Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
     }
      textGroup->Clear();
-     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW+300, halfH,  25, 25, 112, 255, 0.5, 0.5));
+     textGroup->AddNewObject(new Engine::Label(s, "pirulen.ttf", 48, halfW * 3/2 -115, halfH* 3/2 +65,  0, 0, 0, 255, 0.5, 0.5));
      textGroup->Update(0);
    
     

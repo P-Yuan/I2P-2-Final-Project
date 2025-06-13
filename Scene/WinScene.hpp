@@ -11,13 +11,14 @@ private:
     ALLEGRO_SAMPLE_ID bgmId;
     Group *textGroup;
     static int winlives;
+    bool typing = true;
 
 public:
     explicit WinScene() = default;
     void Initialize() override;
     void Terminate() override;
     void Update(float deltaTime) override;
-    void BackOnClick(int stage);
+    void BackOnClick();
     void OnKeyDown(int keyCode) override;
     void Draw() const override;
     static void storelives();
