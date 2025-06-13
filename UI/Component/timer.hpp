@@ -13,7 +13,7 @@ protected:
 
 public: 
     float timeTicks;
-    float timeSpan = 0.18;
+    float timeSpan;
     // Engine::Sprite Base;
     // Engine::Sprite Turret;
     std::vector<std::shared_ptr<ALLEGRO_BITMAP>> start_bmps;
@@ -23,4 +23,4 @@ public:
     bool startflag;
     std::string type;
 };
-#endif   // TURRETBUTTON_HPP
+#endif   // TIMER_HPP

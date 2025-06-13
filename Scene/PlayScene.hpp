@@ -9,6 +9,7 @@
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
 #include "UI/Component/backgroundImage.hpp"
+#include "UI/Component/skillImage.hpp"
 
 class Turret;
 namespace Engine {
@@ -94,6 +95,7 @@ public:
     void OnMouseUp(int button, int mx, int my) override;
     void OnKeyDown(int keyCode) override;
     void Hit(int l);
+    void full_lives(int l);
     static int GetMoney();
     static int Getlives();
     void EarnMoney(int money);
@@ -104,14 +106,17 @@ public:
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
     void ShopOnClick();
-    void laserOnClick();
-    void fireOnClick();
-    void planeOnClick();
+    void coinOnClick();
+    void hpOnClick();
+    void gunOnClick();
+    void superOnClick();
     void backOnClick();
+    void nomoney();
     void pauseinit();
     std::vector<std::vector<int>> CalculateBFSDistance();
     bool pauseflag;
     bool pauseinitflag;
+    bool doublecoinmode;
     bool DyingAnimation = false; // True when dying or winning animation is playing
     float DyingTimer;
     bool WinningAnimation = false; // True when dying or winning animation is playing

@@ -35,6 +35,6 @@ int main(int argc, char **argv) {
 	ScoreboardScene :: inputtoset();
 
     // TODO HACKATHON-1 (1/1): Change the start scene
-	game.Start("stage-select", 60, 1600, 832);
+	game.Start("start", 60, 1600, 832);
 	return 0;
 }

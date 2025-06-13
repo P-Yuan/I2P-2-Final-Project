@@ -95,7 +95,14 @@ void Coin::OnExplode(float deltatime)
     if(phase==7)
     {
         scene->coinGroup->RemoveObject(objectIterator);
-        scene->EarnMoney(10);
+        if(scene->doublecoinmode)
+        {
+            scene->EarnMoney(20);
+        }
+        else
+        {
+            scene->EarnMoney(10);
+        }
     }
     //std::cout << phase << std::endl;
 }
