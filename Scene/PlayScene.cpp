@@ -669,8 +669,8 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new skillImage("play/super.png","super",1480,410,200,100));
     UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,410, 220,200,"super"));
 
-    UIGroup->AddNewObject(new skillImage("play/shop_coin.png","double_coin",1480,650,95,95));
-    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,650, 220,200,"double_coin"));
+    UIGroup->AddNewObject(new skillImage("play/shop_coin.png","double_coin",1480,600,95,95));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,600, 220,200,"double_coin"));
     // Engine::Sprite("play/tower-base.png", 1294, 136, 100, 100, 0, 0),
     //                        Engine::Sprite(, 1294, 136 - 8, 75, 75, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
     // Reference: Class Member Function Pointer and std::bind.

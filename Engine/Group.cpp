@@ -142,4 +142,12 @@ namespace Engine {
         }
     }
 
+    void Group::popcontrolObject(int num)
+    {
+        for(int i=0;i<num;i++)
+        {
+            controls.pop_back();
+        }
+    }
+
 }
