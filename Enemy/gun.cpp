@@ -16,7 +16,7 @@
 #include "Player/Player.hpp"
 #include "Engine/Collider.hpp"
 
-Gun::Gun(int x, int y,int type) : Enemy("play/gun.png", x, y, 50, 30, 20, 1000,type) 
+Gun::Gun(int x, int y,int type) : Enemy("play/hand_gun.png", x, y, 50, 30, 20, 1000,type) 
 {
     timeTicks=0;
     // for (int i = 1; i <= 8; i++) {
@@ -40,8 +40,8 @@ void Gun::Draw() const
     if (PlayScene::DebugMode) {
         // Draw collision radius.
         //al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
-        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/12),Position.y-(this->GetBitmapHeight()/12),
-                          Position.x+(this->GetBitmapWidth()/12),Position.y+(this->GetBitmapHeight()/12)
+        al_draw_rectangle(Position.x-(this->GetBitmapWidth()/16),Position.y-(this->GetBitmapHeight()/16),
+                          Position.x+(this->GetBitmapWidth()/16),Position.y+(this->GetBitmapHeight()/16)
                           , al_map_rgb(255, 0, 0), 2);
     }
     
@@ -66,18 +66,17 @@ void Gun::Update(float deltatime)
     max.x=Position.x+(this->GetBitmapWidth()/12);
     max.y=Position.y+(this->GetBitmapHeight()/12);
 
-     for (auto &it : scene->PlayerGroup->GetObjects()) 
-     {
-        Player *player = dynamic_cast<Player *>(it);
-        Pmin.x=player->Position.x-(player->GetBitmapWidth()/3);
-        Pmin.y=player->Position.y-(player->GetBitmapHeight()/3);
-        Pmax.x=player->Position.x+(player->GetBitmapWidth()/3);
-        Pmax.y=player->Position.y+(player->GetBitmapHeight()/3);
-        if (Engine::Collider::IsRectOverlap(min, max, Pmin, Pmax)) 
-        {
-            OnExplode(deltatime);
-        }
-     }
+    auto &it = scene->PlayerGroup->GetObjects().back();
+    Player *player = dynamic_cast<Player *>(it);
+    Pmin.x=player->Position.x-(player->GetBitmapWidth()/3);
+    Pmin.y=player->Position.y-(player->GetBitmapHeight()/3);
+    Pmax.x=player->Position.x+(player->GetBitmapWidth()/3);
+    Pmax.y=player->Position.y+(player->GetBitmapHeight()/3);
+    if (Engine::Collider::IsRectOverlap(min, max, Pmin, Pmax)) 
+    {
+        OnExplode(deltatime);
+    }
+
 }
 
 void Gun::OnExplode(float deltatime)

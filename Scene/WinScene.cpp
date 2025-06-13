@@ -27,7 +27,6 @@ void WinScene::Initialize() {
     int halfH = h / 2;
     AddNewObject(new Engine::Image("start_back.jpg", halfW, halfH, 1600, 800, 0.5, 0.5));
     s="|";
-    NEWs="|";
     textGroup = new Group();
     AddNewObject(new Engine::Image("win/doge.png", halfW-300, halfH, 0, 0, 0.5, 0.5));
     AddNewObject(new Engine::Image("win/text.png", halfW+300, halfH, 500, 500, 0.5, 0.5));
