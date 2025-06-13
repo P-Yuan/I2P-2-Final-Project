@@ -251,8 +251,8 @@ void Player::Update(float deltaTime){
                 //cooldown=1.5;
                 for(auto &pit:getPlayScene()->PlayerGroup->GetObjects()){
                     Player *p = dynamic_cast<Player *>(pit);
-                    p->chasing=8;
-                    p->gochase=4;
+                    p->chasing+=8;
+                    p->gochase+=4;
                     p->cooldown=1.5;
                     p->HitTicks=0.6;
                     p->goback=0;

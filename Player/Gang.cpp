@@ -95,6 +95,7 @@ void Gang::Update(float deltaTime){
         if (Engine::Collider::IsRectOverlap(min, max, Emin, Emax)) {
             player->Hit(1000);
             scene->GangHit=true;
+            Engine::LOG(Engine::INFO)<<"gang hit";
             return;
         }
         chasing-=deltaTime;
@@ -134,14 +135,14 @@ void Gang::Walking(float deltaTime) {
 }
 
 void Gang::Dying(float deltaTime) {
-    Engine::LOG(Engine::INFO)<<"Gang hit";
+    //Engine::LOG(Engine::INFO)<<"Gang hit";
     AttackTicks-=deltaTime;
     if(AttackTicks<=0){
         //Engine::LOG(Engine::INFO)<<"End hit";
         return;
     }
     int phase = floor((AttackSpan*3 - AttackTicks) / AttackSpan);
-    Engine::LOG(Engine::INFO)<<"Find attack phase:"<<phase;
+    //Engine::LOG(Engine::INFO)<<"Find attack phase:"<<phase;
     bmp = hit_bmps[phase];
     Sprite::Update(deltaTime);
 }

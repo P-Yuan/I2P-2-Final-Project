@@ -50,6 +50,7 @@ int PlayScene :: lives=0;
 int PlayScene :: money=0;
 float player_y_2=0;
 float DyingTimer = 0.0f;
+bool PlayScene :: GangHit = false;
 
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
 const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
@@ -89,7 +90,7 @@ void PlayScene::Initialize() {
     DyingAnimation = false;
     WinningTimer = 0;
     DyingTimer = 0;
-    GangHit = false;
+    //GangHit = false;
     doublecoinmode=false;
     goend=false;
     
@@ -125,8 +126,7 @@ void PlayScene::Initialize() {
     UIGroup->AddNewObject(imgTarget);
 
     //Add player
-    //if(MapId==3)
-    PlayerGroup->AddNewObject(new Gang("play/gang_walk1.png", 100, halfH / 2 +365, 50,0));
+    if(MapId==3)PlayerGroup->AddNewObject(new Gang("play/gang_walk1.png", 100, halfH / 2 +365, 50,0));
     PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 300, halfH / 2 +365, 50,0,100,110));
 
     Engine::ImageButton *btn;
@@ -137,10 +137,26 @@ void PlayScene::Initialize() {
 
     
     // Preload Lose Scene
-    deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
+    deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("tobecontinue.mp3");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    bgmId = AudioHelper::PlayBGM("play.ogg");
+    
+    switch (MapId)
+    {
+    case 1:
+        bgmId = AudioHelper::PlayBGM("music1.ogg");
+        break;
+    case 2:
+        bgmId = AudioHelper::PlayBGM("music2.ogg");
+        break;
+    case 3:
+        bgmId = AudioHelper::PlayBGM("music3.mp3");
+        break;
+    
+    default:
+        bgmId = AudioHelper::PlayBGM("music1.ogg");
+        break;
+    }    
 }
 
 
@@ -175,7 +191,7 @@ void PlayScene::Update(float deltaTime)
     if (DyingAnimation) {
         // Only update player and possibly effect/animation groups
         
-        auto &it = PlayerGroup->GetObjects().back();
+        auto it = PlayerGroup->GetObjects().back();
         Player *player = dynamic_cast<Player *>(it);
         player->Dying(deltaTime);
         if(GangHit){
@@ -185,8 +201,10 @@ void PlayScene::Update(float deltaTime)
         }
         
         DyingTimer+=deltaTime;
-        if (DyingTimer >= 4.0f) {
+        if (DyingTimer >= 3.75f) {
+            AudioHelper::StopSample(deathBGMInstance);
             Engine::LOG(Engine::INFO)<<"end dying";
+            Engine::LOG(Engine::INFO)<<"gang hit at lose:"<<GangHit;
             Engine::GameEngine::GetInstance().ChangeScene("lose");           
         }
             
@@ -196,6 +214,7 @@ void PlayScene::Update(float deltaTime)
 
     if (WinningAnimation) {
         // Only update player and possibly effect/animation groups
+        
         auto it = PlayerGroup->GetObjects().back();
         Player *player = dynamic_cast<Player *>(it);
         player->Winning(deltaTime);
@@ -204,6 +223,7 @@ void PlayScene::Update(float deltaTime)
         backgroundGroup->GetObjects().back()->Update(deltaTime);
         DyingTimer+=deltaTime;
         if (DyingTimer >= 3.0f) {
+            AudioHelper::StopBGM(bgmId);
             Engine::LOG(Engine::INFO)<<"end winning";
             WinScene :: storelives();
             Engine::GameEngine::GetInstance().ChangeScene("win");           
@@ -283,7 +303,6 @@ void PlayScene::Update(float deltaTime)
                 std::string place = std::string("play/end") + std::to_string(MapId) + std::string(".png");
                 coinGroup->AddNewObject(new Sign(SpawnCoordinate.x, SpawnCoordinate.y, 11, place));
                 
-                AudioHelper::StopBGM(bgmId);
             }
             continue;
         }
@@ -358,7 +377,6 @@ void PlayScene::Update(float deltaTime)
         // Compensate the time lost.
         enemy->Update(ticks);
     }
-
 
     backgroundGroup->Update(deltaTime);
     BulletGroup->Update(deltaTime);
@@ -547,7 +565,8 @@ void PlayScene::Hit(int l) {
         DyingAnimation = true;
         SpeedMult = 0; // freeze enemy bullets and movement
         AudioHelper::StopBGM(bgmId);
-        AudioHelper::PlayAudio("lose.wav");
+        //AudioHelper::PlayAudio("tobecontinue.mp3");
+        deathBGMInstance = AudioHelper::PlaySample("tobecontinue.mp3", false, AudioHelper::BGMVolume,0);
     }
 }
 int PlayScene::GetMoney() {
@@ -669,8 +688,8 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new skillImage("play/super.png","super",1480,410,200,100));
     UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,410, 220,200,"super"));
 
-    UIGroup->AddNewObject(new skillImage("play/shop_coin.png","double_coin",1480,650,95,95));
-    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,650, 220,200,"double_coin"));
+    UIGroup->AddNewObject(new skillImage("play/shop_coin.png","double_coin",1480,600,95,95));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,600, 220,200,"double_coin"));
     // Engine::Sprite("play/tower-base.png", 1294, 136, 100, 100, 0, 0),
     //                        Engine::Sprite(, 1294, 136 - 8, 75, 75, 0, 0), 1294, 136, MachineGunTurret::Price,"machine");
     // Reference: Class Member Function Pointer and std::bind.

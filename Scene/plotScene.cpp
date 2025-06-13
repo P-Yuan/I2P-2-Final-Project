@@ -44,7 +44,7 @@ void plotScene::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("可以", "IMing.ttf", 36, halfW, halfH *3/2 +40, 0, 0, 0, 255, 0.5, 0.5));
 
-    bgmInstance = AudioHelper::PlaySample("happy.ogg", true, AudioHelper::BGMVolume,5);
+    bgmInstance = AudioHelper::PlaySample("radio.mp3", true, AudioHelper::BGMVolume,0);
 }
 
 
