@@ -193,6 +193,7 @@ namespace Engine {
         /// </summary>
         /// <returns>A linked-list of all objects contained.</returns>
          void popObject(int num);
+         void popcontrolObject(int num);
  
         std::list<IObject *> GetObjects();
         /// <summary>
