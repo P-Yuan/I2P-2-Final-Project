@@ -73,9 +73,9 @@ void plotScene::NextClick() {
         btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW /2, halfH/4 +100, 800, 80);
         btn->SetOnClickCallback(std::bind(&plotScene::NextClick, this));
         AddNewControlObject(btn);
-        AddNewObject(new Engine::Label("你好，喬尼", "IMing.ttf", 36, halfW, halfH /2 +40, 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("你好，迪亞哥", "IMing.ttf", 36, halfW, halfH /2 +40, 0, 0, 0, 255, 0.5, 0.5));
 
-        AddNewObject(new Engine::Label("你好，我是喬尼", "IMing.ttf", 40, halfW +100, halfH* 3/2 -50 , 0, 0, 0, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label("你好，我是迪亞哥", "IMing.ttf", 40, halfW +100, halfH* 3/2 -50 , 0, 0, 0, 255, 0.5, 0.5));
         break;
     case 3:
         popObject(2);

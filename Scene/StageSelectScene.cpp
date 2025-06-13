@@ -20,36 +20,52 @@ void StageSelectScene::Initialize() {
     int halfH = h / 2;
     Engine::ImageButton *btn;
     AddNewObject(new Engine::Image("city.jpg", halfW, halfH, w, h, 0.5, 0.5));
+    AddNewObject(new Engine::Image("stage-select/vertical.png", halfW/2 +105, halfH, 0, 0, 0.5, 0.5));
     
     //stage1 button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 200, halfH / 3 - 50, 400, 100);
+    btn = new Engine::ImageButton("stage-select/right.png", "stage-select/right_down.png", halfW/2 +100, halfH / 3 - 50, 400, 130);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Stage 1", "pirulen.ttf", 48, halfW, halfH / 3, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Hsinchu", "pirulen.ttf", 48, halfW/2 +290, halfH / 3 +10, 0, 0, 0, 255, 0.5, 0.5));
 
-    //stage2 button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 200, halfH / 3 + 150, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 2));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Stage 2", "pirulen.ttf", 48, halfW, halfH / 3+200, 0, 0, 0, 255, 0.5, 0.5));
-
-    //stage3 button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 200, halfH / 3 + 350, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 3));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Stage 3", "pirulen.ttf", 48, halfW, halfH / 3 + 400, 0, 0, 0, 255, 0.5, 0.5));
-    
-    //back button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW - 400, halfH * 3 / 2 +50, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelectScene::BackOnClick, this));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW-200, halfH * 3 / 2+100, 0, 0, 0, 255, 0.5, 0.5));
-
-    // Scoreboard button
-    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW +100, halfH * 3 / 2 + 50, 400, 100);
+    // Scoreboard1 button
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW *3/2 -200 , halfH / 3 - 50, 400, 100);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::ScoreboardOnClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 40, halfW + 300, halfH * 3 / 2+100, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Hsinchu", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 -20, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 +20, 0, 0, 0, 255, 0.5, 0.5));
+
+    //stage2 button
+    btn = new Engine::ImageButton("stage-select/left.png", "stage-select/left_down.png", halfW/2 - 240, halfH / 3 + 110, 360, 130);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 2));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Taipei", "pirulen.ttf", 48, halfW/2 -40, halfH / 3+170, 0, 0, 0, 255, 0.5, 0.5));
+
+    // Scoreboard2 button
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW *3/2 -200, halfH / 3 + 110, 400, 100);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::ScoreboardOnClick, this));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Taipei", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 140, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 180, 0, 0, 0, 255, 0.5, 0.5));
+
+    //stage3 button
+    btn = new Engine::ImageButton("stage-select/right.png", "stage-select/right_down.png", halfW/2 +100, halfH / 3 + 310, 400, 130);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 3));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Taichung", "pirulen.ttf", 48, halfW/2 +290, halfH / 3 + 370, 0, 0, 0, 255, 0.5, 0.5));
+
+    // Scoreboard3 button
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW *3/2 -200, halfH / 3 + 310, 400, 100);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::ScoreboardOnClick, this));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Taichung", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 340, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 380, 0, 0, 0, 255, 0.5, 0.5));
+
+    //back button
+    btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW *3/2 -200, halfH * 3 / 2 +50, 400, 100);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::BackOnClick, this));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW *3/2, halfH * 3 / 2+100, 0, 0, 0, 255, 0.5, 0.5));
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     //bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);

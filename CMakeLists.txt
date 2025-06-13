@@ -47,6 +47,8 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/coin.hpp
     Enemy/Super.cpp
     Enemy/Super.hpp
+    Enemy/Sign.cpp
+    Enemy/Sign.hpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp

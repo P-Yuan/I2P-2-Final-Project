@@ -122,6 +122,7 @@ public:
     bool WinningAnimation = false; // True when dying or winning animation is playing
     float WinningTimer;
     bool GangHit = false;
+    bool goend = false;
 };
 #endif   // PLAYSCENE_HPP
  
