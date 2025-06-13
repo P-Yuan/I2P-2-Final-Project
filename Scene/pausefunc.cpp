@@ -75,21 +75,24 @@ void PlayScene::coinOnClick()
     {
         doublecoinmode=true;
         auto it = UIGroup->GetObjects();
-        skillImage* btn=nullptr;
+        skillImage* skill=nullptr;
+        Timer* timer=nullptr;
         for(auto itt =it.begin();itt!=it.end();itt++)
         {
-            btn = dynamic_cast<skillImage*>(*itt);
-            if(btn!=nullptr && btn->useflag!=true)
+            skill = dynamic_cast<skillImage*>(*itt);
+            timer= dynamic_cast<Timer*>(*itt);
+            if(skill!=nullptr && skill->type=="double_coin")
             {
-                if(btn->type=="double_coin")
-                {
-                    EarnMoney(-500);
-                    btn->useflag=true;
-                    UIGroup->Update(0);
-                    break;
-                }
+                EarnMoney(-500);
+                skill->useflag=true;
+            }
+            if(timer!=nullptr && timer->type=="double_coin")
+            {
+                timer->startflag=true;
+                timer->bmp=timer->start_bmps[20];
             }
         }
+        UIGroup->Update(0);
     }
     else
     {
@@ -144,7 +147,6 @@ void PlayScene::gunOnClick()
         nomoney();
     }
     UIGroup->Update(0);
-    std::cout << "1" <<std::endl;
 }
 void PlayScene::superOnClick()
 {

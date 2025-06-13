@@ -22,5 +22,6 @@ public:
     void Draw() const override;
     bool startflag;
     std::string type;
+    int phase;
 };
 #endif   // TIMER_HPP

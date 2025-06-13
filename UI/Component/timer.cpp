@@ -33,14 +33,22 @@ Timer::Timer(std::string img, float x, float y, float w, float h ,std::string t)
 }
 void Timer::Update(float deltatime) {
     Sprite::Update(deltatime);
+    PlayScene *scene=getPlayScene();
     if(startflag)
-    {
-         timeTicks+=deltatime;
-        //if(timeTicks>=timeSpan) timeTicks-=timeSpan;
-        int phase = floor((timeSpan*start_bmps.size() - timeTicks) / timeSpan);
-        if((type=="pause" && 0<=phase && phase<=2) || (type!="pause" && 0<=phase && phase<=20))
+    { 
+        timeTicks+=deltatime;
+        if(type=="pause")
         {
-             bmp = start_bmps[phase];
+            phase = floor((timeSpan*start_bmps.size() - timeTicks) / timeSpan);
+        }
+        else
+        {
+            phase = floor((timeSpan*start_bmps.size() - timeTicks) / timeSpan)-1;
+        }
+
+        if((type=="pause" && 0<=phase && phase<=2) || (type!="pause" && 0<=phase && phase<21))
+        {
+            bmp = start_bmps[phase];
         }
         else if(type=="pause")
         {
@@ -49,14 +57,32 @@ void Timer::Update(float deltatime) {
             scene->PauseGroup->RemoveObject(objectIterator);
             return;
         }
+        else if(type=="double_coin")
+        {
+            startflag=false;
+            scene->doublecoinmode=false;
+            auto it=scene->UIGroup->GetObjects();
+            skillImage *btn=nullptr;
+            for(auto itt=it.begin();itt!=it.end();itt++)
+            {
+                skillImage *btn=nullptr;
+                btn=dynamic_cast<skillImage*>(*itt);
+                if(btn!=nullptr && btn->type=="double_coin")
+                {
+                    btn->useflag=false;
+                    break;
+                }
+            }
+            timeTicks=0;
+            phase=0;    
+            return;
+        }
         else
         {
             timeTicks=0;
             phase=0;    
             return;
-
         }
-
     }
     else
     {

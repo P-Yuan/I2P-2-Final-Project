@@ -76,6 +76,7 @@ void Coin::Update(float deltatime)
         if (Engine::Collider::IsRectOverlap(min, max, Pmin, Pmax)) 
         {
             OnExplode(deltatime);
+            
         }
     // }
 }
