@@ -344,7 +344,7 @@ void Player::Dying(float deltaTime){
         return;
     }
     int phase = floor((DyingSpan*4 - DyingTicks) / DyingSpan);
-    Engine::LOG(Engine::INFO)<<"Find dying phase:"<<phase;
+    //Engine::LOG(Engine::INFO)<<"Find dying phase:"<<phase;
     bmp = hit_bmps[phase];
     Sprite::Update(deltaTime);
 }
@@ -356,7 +356,7 @@ void Player::Winning(float deltaTime){
         return;
     }
     int phase = floor((WinningSpan*4 - WinningTicks) / WinningSpan);
-    Engine::LOG(Engine::INFO)<<"Find winning phase:"<<phase;
+    //Engine::LOG(Engine::INFO)<<"Find winning phase:"<<phase;
     bmp = win_bmps[phase];
     Sprite::Update(deltaTime);
 }

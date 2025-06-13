@@ -23,6 +23,7 @@
 #include "Enemy/gun.hpp"
 #include "Enemy/coin.hpp"
 #include "Enemy/Super.hpp"
+#include "Enemy/Sign.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
@@ -90,6 +91,7 @@ void PlayScene::Initialize() {
     DyingTimer = 0;
     GangHit = false;
     doublecoinmode=false;
+    goend=false;
     
     // Add groups from bottom to top.
     //AddNewObject(TileMapGroup = new Group());
@@ -128,10 +130,10 @@ void PlayScene::Initialize() {
     PlayerGroup->AddNewObject(new Player("play/player_walk1.png", 300, halfH / 2 +365, 50,0,100,110));
 
     Engine::ImageButton *btn;
-    btn = new Engine::ImageButton("play/7-11.png", "play/7-11b.png", halfW+610, halfH +325, 150, 50);
+    btn = new Engine::ImageButton("play/7-11.png", "play/7-11b.png", 1410,710, 140, 80);
     btn->SetOnClickCallback(std::bind(&PlayScene::ShopOnClick, this));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 30, halfW+685, halfH +350, 0, 0, 0, 255, 0.5, 0.5));
+   // AddNewObject(new Engine::Label("SHOP", "pirulen.ttf", 20, halfW+685, halfH +350, 0, 0, 0, 255, 0.5, 0.5));
 
     
     // Preload Lose Scene
@@ -203,6 +205,7 @@ void PlayScene::Update(float deltaTime)
         DyingTimer+=deltaTime;
         if (DyingTimer >= 3.0f) {
             Engine::LOG(Engine::INFO)<<"end winning";
+            WinScene :: storelives();
             Engine::GameEngine::GetInstance().ChangeScene("win");           
         }
             
@@ -266,17 +269,21 @@ void PlayScene::Update(float deltaTime)
         //     }
         //     continue;
         // }
-        if (enemyWaveData_new.empty()) { 
-            if (EnemyGroup->GetObjects().empty()) {
+        if (enemyWaveData_new.empty() ) { 
+            if (EnemyGroup->GetObjects().empty() && !goend) {
                 Engine::backgroundImage *it;
                 backgroundGroup->AddNewObject(it=new Engine::backgroundImage("play/you_win.png",1380,385,2));
-                //WinScene :: storelives();
-                //Engine::GameEngine::GetInstance().ChangeScene("win");
-                WinningAnimation=true;
-                SpeedMult = 0; // freeze enemy bullets and movement
+                goend = true;
+                Engine::LOG(Engine::INFO)<<"goend";
+                //WinningAnimation=true;
+                //SpeedMult = 0; // freeze enemy bullets and movement
+
+                Engine::Point SpawnCoordinate;
+                SpawnCoordinate = Engine::Point(SpawnGridPoint_2.x * BlockSize + BlockSize / 2, SpawnGridPoint_2.y * BlockSize );           
+                std::string place = std::string("play/end") + std::to_string(MapId) + std::string(".png");
+                coinGroup->AddNewObject(new Sign(SpawnCoordinate.x, SpawnCoordinate.y, 11, place));
+                
                 AudioHelper::StopBGM(bgmId);
-                // WinScene :: storelives();
-                // Engine::GameEngine::GetInstance().ChangeScene("win");
             }
             continue;
         }
@@ -480,7 +487,7 @@ void PlayScene::OnKeyDown(int keyCode) {
         // player = dynamic_cast<Player *>(it);
         // player->OnKeyDown(keyCode);
         for(auto& it:PlayerGroup->GetObjects()){
-            Engine::LOG(Engine::INFO)<<"one player up/down";
+            //Engine::LOG(Engine::INFO)<<"one player up/down";
             Player *player = dynamic_cast<Player *>(it);
             player->OnKeyDown(keyCode);
         }
@@ -648,19 +655,19 @@ void PlayScene::ConstructUI() {
             break;
     }
 
-    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1400, 50));
-    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1400, 80));
+    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1410, 45));
+    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1410, 80));
 
     skillImage *btn;
     //GUN
 
-    UIGroup->AddNewObject(new skillImage("play/gun.png","gun",1480,250,100,100));
+    UIGroup->AddNewObject(new skillImage("play/gun.png","gun",1480,220,100,100));
     //UIGroup->AddNewObject(new Engine::Sprite("play/gun.png.png",1480,250, 100, 100, 0, 0,0,0,0,0, 0, 0, 160));
-    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,250, 220,200,"gun"));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,220, 220,200,"gun"));
 
     //SUPER
-    UIGroup->AddNewObject(new skillImage("play/super.png","super",1480,450,200,100));
-    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,450, 220,200,"super"));
+    UIGroup->AddNewObject(new skillImage("play/super.png","super",1480,410,200,100));
+    UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,410, 220,200,"super"));
 
     UIGroup->AddNewObject(new skillImage("play/shop_coin.png","double_coin",1480,650,95,95));
     UIGroup->AddNewObject(new Timer("play/timer (1).png", 1480,650, 220,200,"double_coin"));
