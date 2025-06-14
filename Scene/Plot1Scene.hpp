@@ -23,9 +23,7 @@ public:
     void Initialize() override;
     void Terminate() override;
     void NextClick(int choice);
-    
-    void BGMSlideOnValueChanged(float value);
-    void SFXSlideOnValueChanged(float value);
+
 };
 
 #endif   // PLOT1SCENE_HPP

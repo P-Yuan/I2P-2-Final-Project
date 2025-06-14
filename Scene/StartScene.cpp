@@ -21,7 +21,6 @@
 #include "UI/Component/Slider.hpp"
 
 std::map<std::string,std::string> StartScene::arr;
-// TODO HACKATHON-2 (1/3): You can imitate the 2 files: 'StartScene.hpp', 'StartScene.cpp' to implement your SettingsScene.
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -133,17 +132,6 @@ void StartScene::RegisterOnClick(int stage)
     LoginGroup->AddNewObject(new Engine::Label(s,"pirulen.ttf", 48, 970, 365, 0, 0, 0, 255, 0.5, 0.5));
 }
 
-// void StartScene::OnMouseDown(int button, int mx, int my) 
-// {
-//     Group::OnKeyDown(button);
-//     LoginGroup->OnMouseDown(button, mx, my);
-
-// }
-// void StartScene::OnMouseUp(int button, int mx, int my)
-// {
-//     Group::OnKeyUp(button);
-//     LoginGroup->OnMouseUp(button, mx, my);
-// }
 
 
 void StartScene::OnKeyDown(int keyCode) 

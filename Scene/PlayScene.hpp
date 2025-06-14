@@ -90,12 +90,12 @@ public:
     void Terminate() override;
     void Update(float deltaTime) override;
     void Draw() const override;
-    void OnMouseDown(int button, int mx, int my) override;
-    void OnMouseMove(int mx, int my) override;
-    void OnMouseUp(int button, int mx, int my) override;
+    //void OnMouseDown(int button, int mx, int my) override;
+    //void OnMouseMove(int mx, int my) override;
+    //void OnMouseUp(int button, int mx, int my) override;
     void OnKeyDown(int keyCode) override;
     void Hit(int l);
-    void full_lives(int l);
+    //void full_lives(int l);
     static int GetMoney();
     static int Getlives();
     void EarnMoney(int money);
@@ -104,7 +104,7 @@ public:
     // void ReadCoinWave();
     void ConstructUI();
     void UIBtnClicked(int id);
-    bool CheckSpaceValid(int x, int y);
+    //bool CheckSpaceValid(int x, int y);
     void ShopOnClick();
     void coinOnClick();
     void hpOnClick();

@@ -20,6 +20,7 @@ public:
     void Terminate() override;
     void Update(float deltaTime) override;
     void BackOnClick();
+    void ScoreboardOnClick();
     //void OnKeyDown(int keyCode) override;
     void Draw() const override;
     static void storelives();
