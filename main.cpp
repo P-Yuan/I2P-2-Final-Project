@@ -32,9 +32,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("plot2", new plot2Scene());
 	game.AddNewScene("plot3", new plot3Scene());
 
-	ScoreboardScene :: inputtoset();
 	StartScene::inputdata();
-	std::cout <<"1" << std::endl;
 
     // TODO HACKATHON-1 (1/1): Change the start scene
 	game.Start("start", 60, 1600, 832);

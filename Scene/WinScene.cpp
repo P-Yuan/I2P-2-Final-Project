@@ -42,7 +42,7 @@ void WinScene::Initialize() {
     
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW -200, halfH * 7/4 +10, 450, 80);
-    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this));
+    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this,scene->MapId));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("next level", "pirulen.ttf", 48, halfW+30, halfH * 7 / 4 +50 , 0, 0, 0, 255, 0.5, 0.5));
 
@@ -71,7 +71,7 @@ void WinScene::Update(float deltaTime) {
         bgmId = AudioHelper::PlayBGM("happy.ogg");
     }
 }
-void WinScene::BackOnClick() {
+void WinScene::BackOnClick(int stage) {
     // Change to select scene.
     time_t now=time(0);
     tm* ltm = localtime(&now);
@@ -88,6 +88,8 @@ void WinScene::BackOnClick() {
     std::string date = dateStream.str();
     std::string timee = timeStream.str();
 
+    ScoreboardScene :: storetovec(stage); 
+    ScoreboardScene :: inputnewdata(wincoin,username,date,timee,stage); 
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 
