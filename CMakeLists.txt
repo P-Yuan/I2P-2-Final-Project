@@ -15,16 +15,9 @@ file(COPY allegro_monolith-5.2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 add_executable(2025_I2P2_TowerDefense
     Bullet/Bullet.cpp
     Bullet/Bullet.hpp
-    Bullet/Fireball.cpp
-    Bullet/Fireball.hpp
-    Bullet/FireBullet.cpp
-    Bullet/FireBullet.hpp
     Bullet/LaserBullet.cpp
     Bullet/LaserBullet.hpp
-    Bullet/TankBullet.cpp
-    Bullet/TankBullet.hpp
 
-    # TODO HACKATHON-3 (3/3): Add the new enemy source files here
     Enemy/Enemy.cpp
     Enemy/Enemy.hpp
     Enemy/GrandmaEnemy.cpp

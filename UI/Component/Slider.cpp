@@ -15,7 +15,6 @@ Slider::Slider(float x, float y, float w, float h)
     Anchor = Engine::Point(0.5, 0.5);
 }
 void Slider::Draw() const {
-    // TODO HACKATHON-5 (3/4): The slider's component should be drawn here.
     
     Bar.Draw();       
     End1.Draw();      
@@ -27,7 +26,6 @@ void Slider::SetOnValueChangedCallback(std::function<void(float value)> onValueC
     OnValueChangedCallback = onValueChangedCallback;
 }
 void Slider::SetValue(float value) {
-    // TODO HACKATHON-5 (4/4): Set the value of the slider and call the callback.
     this->value=value;
     Position.x = Bar.Position.x + value * Bar.Size.x;
     OnValueChangedCallback(value);
