@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
@@ -79,6 +80,7 @@ void ScoreboardScene::Terminate() {
 }
 void ScoreboardScene::BackOnClick() {
     page=0;
+    arr.clear();
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 void ScoreboardScene::NextClick() {
@@ -108,7 +110,8 @@ void ScoreboardScene::NextClick() {
         }
         textnum++;
         s=arr[page*5+i].name + " " + std::to_string(arr[page*5+i].scores) + " " + arr[page*5+i].date + " " + arr[page*5+i].timee;
-        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 3+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 2+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        
     } 
 }
 void ScoreboardScene::PrevClick() {
@@ -133,7 +136,7 @@ void ScoreboardScene::PrevClick() {
         }
         textnum++;
         s=arr[page*5+i].name + " " + std::to_string(arr[page*5+i].scores) + " " + arr[page*5+i].date + " " + arr[page*5+i].timee;
-        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 3+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 2+(i*50), 10, 255, 255, 255, 0.5, 0.5));
     } 
 }
 void ScoreboardScene::BGMSlideOnValueChanged(float value) {
@@ -144,15 +147,30 @@ void ScoreboardScene::SFXSlideOnValueChanged(float value) {
     AudioHelper::SFXVolume = value;
 }
 
-void ScoreboardScene::storetovec(int lives,std::string name,std::string date,std::string timee)
+void ScoreboardScene::storetovec(int stage)
 {
-    arr.push_back(scorenode(lives,name,date,timee));
+    arr.clear();
+    std::string load="C:\\Users\\user\\OneDrive\\Desktop\\Final Project\\Resource\\scoreboard" + std::to_string(stage) + ".txt";
+    std::ifstream in(load);
+
+    std::string username;
+    std::string coin;
+    std::string date;
+    std::string timee;
+    while(in >> username >> coin >> date >> timee)
+    {
+        arr.push_back(scorenode(std::stoi(coin),username,date,timee));
+    }
+    in.close();
 }
 
-void ScoreboardScene::storetotxt()
+
+void ScoreboardScene::inputnewdata(int coin,std::string name,std::string date,std::string timee,int stage)
 {
-    
-    std::ofstream out("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
+    arr.push_back(scorenode(coin,name,date,timee));
+
+    std::string load="C:\\Users\\user\\OneDrive\\Desktop\\Final Project\\Resource\\scoreboard" + std::to_string(stage) + ".txt";
+    std::ofstream out(load);
     for (auto &p : arr) 
     {
         out << p.name << " " << p.scores << " " << p.date << " " << p.timee << "\n"; 
@@ -160,17 +178,30 @@ void ScoreboardScene::storetotxt()
     out.close();
 }
 
-void ScoreboardScene::inputtoset()
-{
-    std::ifstream in("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
 
-    std::string name;
-    std::string date;
-    std::string timee;
-    std::string score;
-    while(in >> name >> score >> date >> timee)
-    {
-        arr.push_back(scorenode(std::stoi(score),name,date,timee));
-    }
-    in.close();
-}
+//int lives,std::string name,std::string date,std::string timee
+// void ScoreboardScene::storetotxt()
+// {
+//     std:;string load="C:\\Users\\user\\OneDrive\\Desktop\\Final Project\\Resource\\scoreboard" + to_string(stage) +
+//     std::ofstream out("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
+//     for (auto &p : arr) 
+//     {
+//         out << p.name << " " << p.scores << " " << p.date << " " << p.timee << "\n"; 
+//     }
+//     out.close();
+// }
+
+// void ScoreboardScene::inputtoset()
+// {
+//     std::ifstream in("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
+
+//     std::string name;
+//     std::string date;
+//     std::string timee;
+//     std::string score;
+//     while(in >> name >> score >> date >> timee)
+//     {
+//         arr.push_back(scorenode(std::stoi(score),name,date,timee));
+//     }
+//     in.close();
+// }

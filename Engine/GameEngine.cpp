@@ -225,7 +225,6 @@ namespace Engine {
         LOG(INFO) << "Game start event loop";
         // This call blocks until the game is finished.
         startEventLoop();
-        ScoreboardScene::storetotxt();
         LOG(INFO) << "Game Terminating...";
         activeScene->Terminate();
         LOG(INFO) << "Game terminated";

@@ -18,10 +18,10 @@ private:
         std::string timee;
         int scores;
         scorenode(){};
-        scorenode(int lives,std::string name,std::string date,std::string timee)
+        scorenode(int c,std::string n,std::string date,std::string timee)
         {
-            this->scores=lives;
-            this->name=name;
+            this->scores=c;
+            this->name=n;
             this->date=date;
             this->timee=timee;
         }
@@ -46,9 +46,10 @@ public:
     void PrevClick();
     void BackOnClick();
     void printscore();
-    static void storetovec(int lives,std::string name,std::string date,std::string timee);
-    static void storetotxt();
-    static void inputtoset();
+    static void storetovec(int stage);
+    static void inputnewdata(int coin,std::string name,std::string date,std::string timee,int stage);
+    // static void storetotxt();
+    // static void inputtoset();
     
     
 
