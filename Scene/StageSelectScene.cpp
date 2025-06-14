@@ -46,8 +46,8 @@ void StageSelectScene::Initialize() {
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW *3/2 -200, halfH / 3 + 110, 400, 100);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::ScoreboardOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Taipei", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 160, 0, 0, 0, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 200, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Taipei", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 140, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW *3/2 , halfH / 3 + 180, 0, 0, 0, 255, 0.5, 0.5));
 
     //stage3 button
     btn = new Engine::ImageButton("stage-select/right.png", "stage-select/right_down.png", halfW/2 +100, halfH / 3 + 310, 400, 130);

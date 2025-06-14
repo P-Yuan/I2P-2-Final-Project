@@ -110,7 +110,8 @@ void ScoreboardScene::NextClick() {
         }
         textnum++;
         s=arr[page*5+i].name + " " + std::to_string(arr[page*5+i].scores) + " " + arr[page*5+i].date + " " + arr[page*5+i].timee;
-        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 3+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 2+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        
     } 
 }
 void ScoreboardScene::PrevClick() {
@@ -135,7 +136,7 @@ void ScoreboardScene::PrevClick() {
         }
         textnum++;
         s=arr[page*5+i].name + " " + std::to_string(arr[page*5+i].scores) + " " + arr[page*5+i].date + " " + arr[page*5+i].timee;
-        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 3+(i*50), 10, 255, 255, 255, 0.5, 0.5));
+        AddNewObject(new Engine::Label(s, "pirulen.ttf", 30, halfW, halfH / 2+(i*50), 10, 255, 255, 255, 0.5, 0.5));
     } 
 }
 void ScoreboardScene::BGMSlideOnValueChanged(float value) {
@@ -148,6 +149,7 @@ void ScoreboardScene::SFXSlideOnValueChanged(float value) {
 
 void ScoreboardScene::storetovec(int stage)
 {
+    arr.clear();
     std::string load="C:\\Users\\user\\OneDrive\\Desktop\\Final Project\\Resource\\scoreboard" + std::to_string(stage) + ".txt";
     std::ifstream in(load);
 
@@ -168,7 +170,7 @@ void ScoreboardScene::inputnewdata(int coin,std::string name,std::string date,st
     arr.push_back(scorenode(coin,name,date,timee));
 
     std::string load="C:\\Users\\user\\OneDrive\\Desktop\\Final Project\\Resource\\scoreboard" + std::to_string(stage) + ".txt";
-    std::ofstream out("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
+    std::ofstream out(load);
     for (auto &p : arr) 
     {
         out << p.name << " " << p.scores << " " << p.date << " " << p.timee << "\n"; 

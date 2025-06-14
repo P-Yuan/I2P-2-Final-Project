@@ -36,12 +36,12 @@ void WinScene::Initialize() {
     
     Engine::ImageButton *btn;
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW/2 , halfH * 3/2 +30, 450, 80);
-    btn->SetOnClickCallback(std::bind(&WinScene::ScoreboardOnClick, this));
+    btn->SetOnClickCallback(std::bind(&WinScene::ScoreboardOnClick, this,scene->MapId));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("scoreboard", "pirulen.ttf", 36, halfW/2+230, halfH * 3/2 +70 , 0, 0, 0, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW +200, halfH * 3/2 +30, 450, 80);
-    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this));
+    btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this,scene->MapId));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("back", "pirulen.ttf", 36, halfW+430, halfH * 3/2 +70 , 0, 0, 0, 255, 0.5, 0.5));
 
@@ -93,14 +93,31 @@ void WinScene::BackOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 
-void WinScene::ScoreboardOnClick() {
+void WinScene::ScoreboardOnClick(int stage) {
     // Change to scoreboard scene.
+    time_t now=time(0);
+    tm* ltm = localtime(&now);
+    std::ostringstream dateStream, timeStream;
+
+    dateStream << std::setw(4) << std::setfill('0') << (ltm->tm_year + 1900) << "-"
+            << std::setw(2) << std::setfill('0') << (ltm->tm_mon + 1) << "-"  // 注意：tm_mon 是從 0 開始
+            << std::setw(2) << std::setfill('0') << ltm->tm_mday;
+
+    timeStream << std::setw(2) << std::setfill('0') << ltm->tm_hour << ":"
+            << std::setw(2) << std::setfill('0') << ltm->tm_min << ":"
+            << std::setw(2) << std::setfill('0') << ltm->tm_sec;
+
+    std::string date = dateStream.str();
+    std::string timee = timeStream.str();
+
+    ScoreboardScene :: storetovec(stage); 
+    ScoreboardScene :: inputnewdata(wincoin,username,date,timee,stage); 
     Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
 }
 
 void WinScene::storelives()
 {
-    wincoin=PlayScene :: Getlives();
+    wincoin=PlayScene :: GetMoney();
     username=PlayScene :: Getusername();
 
 }
