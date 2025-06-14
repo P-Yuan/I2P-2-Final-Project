@@ -92,6 +92,7 @@ void StartScene::backOnClick(int stage)
 }
 
 void StartScene::SettingsOnClick(int stage) {
+
     Engine::GameEngine::GetInstance().ChangeScene("settings");
 }
 
@@ -210,18 +211,26 @@ void StartScene::OnKeyDown(int keyCode)
             if(mode==6)
             {
                 arr.insert({username,password});
+                outputdata();
                 mode=3;
                 LoginGroup->AddNewObject(new Engine::Label("Register complete, Press enter to play","pirulen.ttf", 24, 800, 600, 0, 0, 0, 255, 0.5, 0.5));
             }
             else
             {
                 auto it=arr.find(username);
-                std::cout << arr.begin()->first << std::endl;
-                std::cout << username << std::endl;
                 if(it!=arr.end())
                 {
-                    mode=3;
-                    LoginGroup->AddNewObject(new Engine::Label("Login complete, Press enter to play","pirulen.ttf", 24, 800, 600, 0, 0, 0, 255, 0.5, 0.5));
+                    
+                    if(it->second==password)
+                    {
+                        mode=3;
+                        LoginGroup->AddNewObject(new Engine::Label("Login complete, Press enter to play","pirulen.ttf", 24, 800, 600, 0, 0, 0, 255, 0.5, 0.5));
+                    }
+                    else
+                    {
+                        mode=4;
+                        LoginGroup->AddNewObject(new Engine::Label("Wrong username or password. Press the Enter key to re-enter","pirulen.ttf", 24, 800, 600, 0, 0, 0, 255, 0.5, 0.5));
+                    }
                 }
                 else
                 {
@@ -232,7 +241,7 @@ void StartScene::OnKeyDown(int keyCode)
         }
         else if(mode==3)
         {
-            outputdata();
+            PlayScene::username=username;
             Engine::GameEngine::GetInstance().ChangeScene("plot");
         }
         else if(mode==4)

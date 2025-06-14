@@ -165,6 +165,7 @@ void ScoreboardScene::storetovec(int lives,std::string name,std::string date,std
 
 void ScoreboardScene::storetotxt()
 {
+    
     std::ofstream out("C:\\Users\\user\\OneDrive\\Desktop\\Introduction to Programing-2\\Mini_Project 2\\2025_I2P2_TowerDefense-main\\Resource\\scoreboard.txt");
     for (auto &p : arr) 
     {

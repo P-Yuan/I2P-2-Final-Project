@@ -123,6 +123,8 @@ public:
     float WinningTimer;
     static bool GangHit;
     bool goend = false;
+    static std::string username;
+    static std::string Getusername();
 };
 #endif   // PLAYSCENE_HPP
  

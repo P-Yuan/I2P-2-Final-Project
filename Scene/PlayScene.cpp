@@ -51,6 +51,7 @@ int PlayScene :: money=0;
 float player_y_2=0;
 float DyingTimer = 0.0f;
 bool PlayScene :: GangHit = false;
+std::string PlayScene ::username;
 
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
 const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
@@ -574,6 +575,9 @@ int PlayScene::GetMoney() {
 }
 int PlayScene::Getlives() {
     return lives;
+}
+std::string PlayScene::Getusername() {
+    return username;
 }
 void PlayScene::EarnMoney(int money) {
         this->money += money;

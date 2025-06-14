@@ -10,7 +10,8 @@ private:
     float ticks;
     ALLEGRO_SAMPLE_ID bgmId;
     Group *textGroup;
-    static int winlives;
+    static int wincoin;
+    static std::string username;
     bool typing = true;
 
 public:
@@ -19,12 +20,10 @@ public:
     void Terminate() override;
     void Update(float deltaTime) override;
     void BackOnClick();
-    void OnKeyDown(int keyCode) override;
+    //void OnKeyDown(int keyCode) override;
     void Draw() const override;
     static void storelives();
-
-    std::string s;
-    std::string NEWs;
+    
 };
 
 #endif   // WINSCENE_HPP
