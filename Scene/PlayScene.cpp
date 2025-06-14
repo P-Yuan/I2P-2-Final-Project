@@ -299,7 +299,7 @@ void PlayScene::Update(float deltaTime)
                 //SpeedMult = 0; // freeze enemy bullets and movement
 
                 Engine::Point SpawnCoordinate;
-                SpawnCoordinate = Engine::Point(SpawnGridPoint_2.x * BlockSize + BlockSize / 2, SpawnGridPoint_2.y * BlockSize );           
+                SpawnCoordinate = Engine::Point(SpawnGridPoint_2.x * BlockSize + BlockSize , SpawnGridPoint_2.y * BlockSize );           
                 std::string place = std::string("play/end") + std::to_string(MapId) + std::string(".png");
                 coinGroup->AddNewObject(new Sign(SpawnCoordinate.x, SpawnCoordinate.y, 11, place));
                 
@@ -559,13 +559,13 @@ void PlayScene::OnKeyDown(int keyCode) {
 }
 void PlayScene::Hit(int l) {
     lives-=l;
+    if(lives<=0) lives=0;
     UILives->Text = std::string("Life ") + std::to_string(lives);
     if (lives <= 0) {
         // When losing
         DyingAnimation = true;
         SpeedMult = 0; // freeze enemy bullets and movement
         AudioHelper::StopBGM(bgmId);
-        //AudioHelper::PlayAudio("tobecontinue.mp3");
         deathBGMInstance = AudioHelper::PlaySample("tobecontinue.mp3", false, AudioHelper::BGMVolume,0);
     }
 }
