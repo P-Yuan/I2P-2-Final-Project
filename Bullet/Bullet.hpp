@@ -6,7 +6,7 @@
 
 class Enemy;
 class PlayScene;
-class Turret;
+//class Turret;
 class Plane;
 namespace Engine {
     struct Point;
@@ -16,7 +16,7 @@ class Bullet : public Engine::Sprite {
 protected:
     float speed;
     float damage;
-    Turret *parent;
+    //Turret *parent;
     PlayScene *getPlayScene();
     virtual void OnExplode(Enemy *enemy);
 

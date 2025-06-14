@@ -9,7 +9,7 @@
 #include "Scene/PlayScene.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 
-class Turret;
+//class Turret;
 
 LaserBullet::LaserBullet(Engine::Point position, Engine::Point forwardDirection, float rotation) : Bullet("play/bullet-2.png", 800, 2, position, forwardDirection, rotation - ALLEGRO_PI / 2) {
 }

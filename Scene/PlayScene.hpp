@@ -11,7 +11,7 @@
 #include "UI/Component/backgroundImage.hpp"
 #include "UI/Component/skillImage.hpp"
 
-class Turret;
+//class Turret;
 namespace Engine {
     class Group;
     class Image;
@@ -76,7 +76,7 @@ public:
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
-    Turret *preview;
+    //Turret *preview;
     std::vector<std::vector<TileType>> mapState;
     std::vector<std::vector<int>> mapDistance;
     std::list<std::pair<int, float>> enemyWaveData;

@@ -9,7 +9,7 @@
 
 class Bullet;
 class PlayScene;
-class Turret;
+//class Turret;
 
 class Enemy : public Engine::Sprite {
 protected:
@@ -29,7 +29,7 @@ public:
     bool Enabled = true;
     bool Preview = false;
     float reachEndTime;
-    std::list<Turret *> lockedTurrets;
+    //std::list<Turret *> lockedTurrets;
     std::list<Bullet *> lockedBullets;
     Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money,int type);
     void Hit();

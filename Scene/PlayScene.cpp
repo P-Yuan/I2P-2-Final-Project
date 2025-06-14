@@ -34,9 +34,9 @@
 #include "PlayScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/WinScene.hpp"
-#include "Turret/LaserTurret.hpp"
-#include "Turret/MachineGunTurret.hpp"
-#include "Turret/FireTurret.hpp"
+// #include "Turret/LaserTurret.hpp"
+// #include "Turret/MachineGunTurret.hpp"
+// #include "Turret/FireTurret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
@@ -121,7 +121,7 @@ void PlayScene::Initialize() {
     ConstructUI();
     imgTarget = new Engine::Image("play/target.png", 0, 0);
     imgTarget->Visible = false;
-    preview = nullptr;
+    //preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
 
     //Add player
@@ -380,11 +380,11 @@ void PlayScene::Update(float deltaTime)
     backgroundGroup->Update(deltaTime);
     BulletGroup->Update(deltaTime);
 
-    if (preview) {
-        preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
-        // To keep responding when paused.
-        preview->Update(deltaTime);
-    }
+    // if (preview) {
+    //     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
+    //     // To keep responding when paused.
+    //     preview->Update(deltaTime);
+    // }
 }
 void PlayScene::Draw() const 
 {
@@ -660,39 +660,39 @@ void PlayScene::ShopOnClick()
     pauseflag=true;
 }
 
-void PlayScene::UIBtnClicked(int id) {
-    if (preview)
-        UIGroup->RemoveObject(preview->GetObjectIterator());
-    if (id == 0 && money >= MachineGunTurret::Price)
-        preview = new MachineGunTurret(0, 0);
-    else if (id == 1 && money >= LaserTurret::Price)
-        preview = new LaserTurret(0, 0);
-    else if (id == 2 && money >= FireTurret::Price)
-        preview = new FireTurret(0, 0);
-    else if(id==3)
-    {
-        Hit(-1);
-        EarnMoney(-50);
-    }
-    else
-    {
-        int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-        int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-        int shift = 135 + 25;
-        Engine::Sprite *sprite;
-        AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3,  w - shift, h - shift-200 ));
-        sprite->Rotation = 0;
+// void PlayScene::UIBtnClicked(int id) {
+//     if (preview)
+//         UIGroup->RemoveObject(preview->GetObjectIterator());
+//     if (id == 0 && money >= MachineGunTurret::Price)
+//         preview = new MachineGunTurret(0, 0);
+//     else if (id == 1 && money >= LaserTurret::Price)
+//         preview = new LaserTurret(0, 0);
+//     else if (id == 2 && money >= FireTurret::Price)
+//         preview = new FireTurret(0, 0);
+//     else if(id==3)
+//     {
+//         Hit(-1);
+//         EarnMoney(-50);
+//     }
+//     else
+//     {
+//         int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+//         int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+//         int shift = 135 + 25;
+//         Engine::Sprite *sprite;
+//         AddNewObject(sprite = new DirtyEffect("play/nomoney.png", 3,  w - shift, h - shift-200 ));
+//         sprite->Rotation = 0;
 
-    }
-    if (!preview)
-        return;
-    preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
-    preview->Tint = al_map_rgba(255, 255, 255, 200);
-    preview->Enabled = false;
-    preview->Preview = true;
-    UIGroup->AddNewObject(preview);
-    OnMouseMove(Engine::GameEngine::GetInstance().GetMousePosition().x, Engine::GameEngine::GetInstance().GetMousePosition().y);
-}
+//     }
+//     if (!preview)
+//         return;
+//     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
+//     preview->Tint = al_map_rgba(255, 255, 255, 200);
+//     preview->Enabled = false;
+//     preview->Preview = true;
+//     UIGroup->AddNewObject(preview);
+//     OnMouseMove(Engine::GameEngine::GetInstance().GetMousePosition().x, Engine::GameEngine::GetInstance().GetMousePosition().y);
+// }
 
 // bool PlayScene::CheckSpaceValid(int x, int y) {
 //     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)

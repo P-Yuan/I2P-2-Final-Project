@@ -14,7 +14,7 @@
 #include "Engine/LOG.hpp"
 #include "Engine/Collider.hpp"
 #include "Scene/PlayScene.hpp"
-#include "Turret/Turret.hpp"
+//#include "Turret/Turret.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
 
@@ -47,10 +47,10 @@ Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float
 void Enemy::Hit() {
     OnExplode();
     // Remove all turret's reference to target.
-    for (auto &it : lockedTurrets)
-        it->Target = nullptr;
-    for (auto &it : lockedBullets)
-        it->Target = nullptr;
+    // for (auto &it : lockedTurrets)
+    //     it->Target = nullptr;
+    // for (auto &it : lockedBullets)
+    //     it->Target = nullptr;
     getPlayScene()->EarnMoney(money);
     getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
     AudioHelper::PlayAudio("explosion.wav");
@@ -58,10 +58,10 @@ void Enemy::Hit() {
 void Enemy::FireHit()
 {
     OnExplode();
-    for (auto &it : lockedTurrets)
-            it->Target = nullptr;
-        for (auto &it : lockedBullets)
-            it->Target = nullptr;
+    // for (auto &it : lockedTurrets)
+    //         it->Target = nullptr;
+    //     for (auto &it : lockedBullets)
+    //         it->Target = nullptr;
     getPlayScene()->EarnMoney(money);
     getPlayScene()->EnemyGroup->RemoveObject(objectIterator);
     AudioHelper::PlayAudio("explosion.wav");
