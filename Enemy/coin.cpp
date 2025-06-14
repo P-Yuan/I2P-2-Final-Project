@@ -7,7 +7,7 @@
 
 #include "coin.hpp"
 #include "Scene/PlayScene.hpp"
-#include "Bullet/FireBullet.hpp"
+//#include "Bullet/FireBullet.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"

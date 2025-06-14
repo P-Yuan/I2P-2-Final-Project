@@ -79,6 +79,6 @@ void TankEnemy::CreateBullet() {
     Engine::Point forwardDir = dir.Normalize();
     float rotation = atan2(forwardDir.y, forwardDir.x) + ALLEGRO_PI / 2;
     // Change bullet position to the front of the gun barrel.
-    getPlayScene()->BulletGroup->AddNewObject(new TankBullet("play/bullet-4.png", 500, 5, Position , forwardDir, rotation,this));
+    //getPlayScene()->BulletGroup->AddNewObject(new TankBullet("play/bullet-4.png", 500, 5, Position , forwardDir, rotation,this));
     AudioHelper::PlayAudio("gun.wav");
 }

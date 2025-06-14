@@ -80,7 +80,6 @@ add_executable(2025_I2P2_TowerDefense
     Player/Gang.cpp
     Player/Gang.hpp
 
-    # TODO HACKATHON-2 (3/3): Add the new scene source files here
     Scene/LoseScene.cpp
     Scene/LoseScene.hpp
     Scene/PlayScene.cpp
@@ -104,15 +103,6 @@ add_executable(2025_I2P2_TowerDefense
     Scene/Plot3Scene.cpp
     Scene/Plot3Scene.hpp
     Scene/pausefunc.cpp
-
-    Turret/LaserTurret.cpp
-    Turret/LaserTurret.hpp
-    Turret/FireTurret.cpp
-    Turret/FireTurret.hpp
-    Turret/MachineGunTurret.cpp
-    Turret/MachineGunTurret.hpp
-    Turret/Turret.cpp
-    Turret/Turret.hpp
 
     UI/Animation/DirtyEffect.cpp
     UI/Animation/DirtyEffect.hpp
