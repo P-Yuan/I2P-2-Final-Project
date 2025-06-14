@@ -81,11 +81,3 @@ void plot1Scene::NextClick(int choice) {
         break;
     }  
 }
-
-void plot1Scene::BGMSlideOnValueChanged(float value) {
-    AudioHelper::ChangeSampleVolume(bgmInstance, value);
-    AudioHelper::BGMVolume = value;
-}
-void plot1Scene::SFXSlideOnValueChanged(float value) {
-    AudioHelper::SFXVolume = value;
-}
