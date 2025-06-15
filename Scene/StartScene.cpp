@@ -85,6 +85,9 @@ void StartScene::Update(float deltaTime) {
 
 void StartScene::backOnClick(int stage) 
 {
+    username="";
+    password="";
+    s="|";
     popcontrolObject(1);
     popObject(2);
     LoginGroup->Clear();

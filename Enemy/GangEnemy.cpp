@@ -21,7 +21,7 @@ PlayScene *TankEnemy::getPlayScene() {
 }
 TankEnemy::TankEnemy(int x, int y,float c,int type)
     : Enemy("play/bikeman.png", x, y, 50, 80, 30, 500,type),
-      head("play/enemy-3-head.png", x, y), targetRotation(0),
+      head("play/bikeman.png", x, y), targetRotation(0),
       coolDown(c) {
 }
 void TankEnemy::Draw() const {

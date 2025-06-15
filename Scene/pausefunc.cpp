@@ -48,18 +48,18 @@ void PlayScene::pauseinit()
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW-295, halfH, 150, 80);
     btn->SetOnClickCallback(std::bind(&PlayScene::hpOnClick, this));
     PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1000", "pirulen.ttf", 30, halfW-225, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
+    PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW-225, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
     //gunbutton
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW-70, halfH, 150, 80);
     btn->SetOnClickCallback(std::bind(&PlayScene::gunOnClick, this));
     PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1500", "pirulen.ttf", 30, halfW, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
+    PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
 
     //superbutton
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW+150, halfH, 150, 80);
     btn->SetOnClickCallback(std::bind(&PlayScene::superOnClick, this));
     PauseGroup->AddNewControlObject(btn);
-    PauseGroup->AddNewObject(new Engine::Label("$1500", "pirulen.ttf", 30, halfW+220, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
+    PauseGroup->AddNewObject(new Engine::Label("$500", "pirulen.ttf", 30, halfW+220, halfH+40, 0, 0, 0, 255, 0.5, 0.5));
     
     //back button
     btn = new Engine::ImageButton("scenes/buttonup.png", "scenes/buttondown.png", halfW-260, halfH +150, 350, 80);

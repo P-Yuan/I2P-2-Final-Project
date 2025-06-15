@@ -83,7 +83,7 @@ void PlayScene::Initialize() {
     ticks_coin=0;
     deathCountDown = -1;
     lives = 100;
-    money = 15000;
+    money = 150;
     SpeedMult = 1;
     pauseflag = false;
     pauseinitflag = false;
@@ -137,7 +137,6 @@ void PlayScene::Initialize() {
     
     // Preload Lose Scene
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("tobecontinue.mp3");
-    Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
     
     switch (MapId)
